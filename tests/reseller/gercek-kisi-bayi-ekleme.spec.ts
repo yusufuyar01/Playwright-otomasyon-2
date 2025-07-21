@@ -44,7 +44,7 @@ test('Gerçek Kişi Bayi Ekleme', async ({ page }) => {
 
   // ===== ADIM 5: Bayi adı girilmesi =====
   // bayi adı üret ve gir
-  const bayiAdi = rastgeleString(10);
+  const bayiAdi = ("DENEME" + rastgeleString(5)).toUpperCase();
   console.log('Üretilen Bayi Adı:', bayiAdi);
 
   // Bayi adı alanına yaz
@@ -140,6 +140,39 @@ test('Gerçek Kişi Bayi Ekleme', async ({ page }) => {
   } catch (error) {
     console.log('❌ Başarı mesajı kontrol edilirken hata oluştu:', error.message);
   }
+
+  await page.reload();
+
+  // ===== ADIM 6: Bayi Silme =====
+  try {
+
+     // İlk DENEME satırını bul ve expand details butonuna tıkla
+     const expandButton = page.getByRole('row', { name: new RegExp(bayiAdi) }).getByRole('button');
+     await expandButton.click();
+
+ } catch (error) {
+   console.log(`❌ ${bayiAdi} ile başlayan bayi bulunamadı:`, error.message);
+ }
+
+ // Sil butonuna tıkla
+ await page.getByRole('button', { name: 'Sil' }).click();
+ await page.getByRole('button', { name: 'Evet' }).click();
+ await page.getByRole('button', { name: 'Evet' }).click();
+
+
+ // Başarı mesajını kontrol et
+   try {
+     const basariMesaji = page.getByText('Başarılı Bayi başarıyla');
+     await basariMesaji.waitFor();
+     if (basariMesaji) {
+       console.log('✅ Başarılı: Bayi başarıyla silindi!');
+     } else {
+       console.log('❌ Başarı mesajı bulunamadı');
+     }
+   } catch (error) {
+     console.log('❌ Başarı mesajı kontrol edilirken hata oluştu:', error.message);
+   }
+
   // Test sonunda ekranın kapanmasını engellemek için pause
   await page.pause();
 
