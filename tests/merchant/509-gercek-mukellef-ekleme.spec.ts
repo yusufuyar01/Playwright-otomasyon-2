@@ -71,7 +71,7 @@ test('509 Gerçek Mükellef Ekleme', async ({ page }) => {
 
 
    //Gerçek kişi adı ,soyadı ve iş yeri kısa adı
-   const ad = rastgeleString(10);
+   const ad = ("DENEME" + rastgeleString(5)).toUpperCase();
    const adInput = page.locator('ot-data-entry-template').filter({ hasText: /^Ad$/ }).getByRole('textbox');
    await adInput.fill(ad);
    const soyadInput = page.locator('div').filter({ hasText: /^Soyad$/ }).getByRole('textbox');
@@ -203,6 +203,42 @@ test('509 Gerçek Mükellef Ekleme', async ({ page }) => {
      } catch (error) {
        console.log('❌ Başarı mesajı kontrol edilirken hata oluştu:', error.message);
      }
+
+           // sayfayı yenile
+           await page.reload();
+
+
+
+           // ===== ADIM 6: Üye İşyeri Silme =====
+           try {
+      
+              // İlk DENEME satırını bul ve expand details butonuna tıkla
+              const expandButton = page.getByRole('row', { name: new RegExp(ad) }).getByRole('button');
+              await expandButton.click();
+      
+          } catch (error) {
+            console.log(`❌ ${ad} ile başlayan üye işyeri bulunamadı:`, error.message);
+          }
+      
+          // Sil butonuna tıkla
+          await page.getByRole('button', { name: 'Sil' }).click();
+      
+          await page.getByRole('button', { name: 'Evet' }).click();
+      
+      
+          // Başarı mesajını kontrol et
+            try {
+              const basariMesaji = page.getByText('Başarılı Üye İşyeri başarıyla silindi.');
+              await basariMesaji.waitFor();
+              if (basariMesaji) {
+                console.log('✅ Başarılı: Üye İşyeri başarıyla silindi!');
+              } else {
+                console.log('❌ Başarı mesajı bulunamadı');
+              }
+            } catch (error) {
+              console.log('❌ Başarı mesajı kontrol edilirken hata oluştu:', error.message);
+            }
+      
 
      // Test sonunda ekranın kapanmasını engellemek için pause
     await page.pause();

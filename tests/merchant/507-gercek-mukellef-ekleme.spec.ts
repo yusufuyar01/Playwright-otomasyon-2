@@ -276,42 +276,40 @@ test('507 Gerçek Mükellef Ekleme', async ({ page }) => {
      const tamamButton = page.getByRole('button', { name: 'Tamam' });
      await tamamButton.click(); 
 
+           // sayfayı yenile
+      await page.reload();
 
-    //  // ===== ADIM 6: Üye İşyeri Silme =====
-    //  try {
 
-    //     // İlk DENEME satırını bul ve expand details butonuna tıkla
-    //     const expandButton = page.getByRole('row', { name: new RegExp(ad) }).getByRole('button');
-    //     await expandButton.click();
 
-    // } catch (error) {
-    //   console.log(`❌ ${ad} ile başlayan üye işyeri bulunamadı:`, error.message);
-    // }
+     // ===== ADIM 6: Üye İşyeri Silme =====
+     try {
 
-    // // Sil butonuna tıkla
-    // await page.getByRole('button', { name: 'Sil' }).click();
+        // İlk DENEME satırını bul ve expand details butonuna tıkla
+        const expandButton = page.getByRole('row', { name: new RegExp(ad) }).getByRole('button');
+        await expandButton.click();
 
-    // // Dialog açılmasını bekle ve Sil butonuna tıkla
-    // try {
-    //   const dialogSilButton = page.locator('dialog').getByRole('button', { name: 'Sil' });
-    //   await dialogSilButton.waitFor({ state: 'visible', timeout: 5000 });
-    //   await dialogSilButton.click();
-    // } catch (error) {
-    //   console.log('❌ Silme dialog\'u açılamadı:', error.message);
-    // }
+    } catch (error) {
+      console.log(`❌ ${ad} ile başlayan üye işyeri bulunamadı:`, error.message);
+    }
 
-    // // Başarı mesajını kontrol et
-    //   try {
-    //     const basariMesaji = page.getByText('Başarılı Üye İşyeri başarıyla silindi.');
-    //     await basariMesaji.waitFor();
-    //     if (basariMesaji) {
-    //       console.log('✅ Başarılı: Üye İşyeri başarıyla silindi!');
-    //     } else {
-    //       console.log('❌ Başarı mesajı bulunamadı');
-    //     }
-    //   } catch (error) {
-    //     console.log('❌ Başarı mesajı kontrol edilirken hata oluştu:', error.message);
-    //   }
+    // Sil butonuna tıkla
+    await page.getByRole('button', { name: 'Sil' }).click();
+
+    await page.getByRole('button', { name: 'Evet' }).click();
+
+
+    // Başarı mesajını kontrol et
+      try {
+        const basariMesaji = page.getByText('Başarılı Üye İşyeri başarıyla silindi.');
+        await basariMesaji.waitFor();
+        if (basariMesaji) {
+          console.log('✅ Başarılı: Üye İşyeri başarıyla silindi!');
+        } else {
+          console.log('❌ Başarı mesajı bulunamadı');
+        }
+      } catch (error) {
+        console.log('❌ Başarı mesajı kontrol edilirken hata oluştu:', error.message);
+      }
 
      // Test sonunda ekranın kapanmasını engellemek için pause
     await page.pause();
