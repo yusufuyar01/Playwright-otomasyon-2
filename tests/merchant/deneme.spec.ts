@@ -5,7 +5,7 @@ import { rastgeleString } from '../../helpers/stringUret';
 import { ePostaUret } from '../../helpers/ePostaUret';
 import { telNoUret } from '../../helpers/telNoUret';
 import { zoom } from '../../helpers/zoom';
-import { cihazEkle, cihazGuncelle, cihazSil , cihazUyeIseyerineAtama} from '../../helpers/cihazIslemleri';
+import { cihazEkle, cihazGuncelle, cihazSil , cihazUyeIseyerindenGeriAlma, cihazUyeIseyerineAtama} from '../../helpers/cihazIslemleri';
 
 
 test('Deneme', async ({ page }) => {
@@ -31,17 +31,19 @@ test('Deneme', async ({ page }) => {
   await cihazEkle(page);""
 
 
-
-
    // Cihaz güncelleme
    await cihazGuncelle(page);
 
    // Cihazı üye işyerine atama
   await cihazUyeIseyerineAtama(page);
 
+  // // Cihazı üye işyerinden geri alma
+  await cihazUyeIseyerindenGeriAlma(page);
+
   // Cihaz silme
-  // await cihazSil(page);
-  // await cihazSil(page);
+  await cihazSil(page);
+  await cihazSil(page);
+
 
 
   // // Test sonunda ekranın kapanmasını engellemek için pause

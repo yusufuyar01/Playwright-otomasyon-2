@@ -36,8 +36,7 @@ export async function cihazEkle(page: Page): Promise<string> {
 
   //Oluştur butonu
   await page.getByRole('button', { name: 'Oluştur' }).click();
-  await page.waitForTimeout(2000);
-  await page.waitForTimeout(2000);
+  await page.waitForTimeout(500);
   //Başarı kontrolü
   try {
     const basariMesaji = page.getByText('Başarılı Cihaz başarıyla oluş');
@@ -46,6 +45,7 @@ export async function cihazEkle(page: Page): Promise<string> {
   } catch (error) {
     console.log('⚠️ Başarı mesajı görünmedi, cihaz eklenmiş olabilir');
   }
+  await page.waitForTimeout(500);
 
   return cihazSeriNo;
 }
@@ -106,7 +106,7 @@ export async function cihazGuncelle(page: Page): Promise<string> {
   // ===== ADIM 6: Güncellemeyi Kaydetme =====
   // Güncelle butonu
   await page.getByRole('button', { name: 'Güncelle' }).click();
-  await page.waitForTimeout(1000);
+  await page.waitForTimeout(500);
 
 
   // ===== ADIM 7: Başarı Kontrolü =====
@@ -117,7 +117,7 @@ export async function cihazGuncelle(page: Page): Promise<string> {
   } catch (error) {
     console.log('⚠️ Başarı mesajı görünmedi, cihaz güncellenmiş olabilir');
   }
-
+  await page.waitForTimeout(500);
   return yeniCihazSeriNo;
 }
 
@@ -144,6 +144,12 @@ export async function cihazSil(page: Page): Promise<void> {
     
     await firstRow.getByRole('button').click();
     await page.waitForTimeout(500);
+
+    // depo seçimi
+    if (await page.getByText('Seçiniz...').isVisible()) {
+    await page.getByText('Seçiniz...').click(); 
+    await page.getByRole('option', { name: 'TEST', exact: true }).click();
+    }
     
     // Sil butonuna tıkla
     await page.getByRole('button', { name: 'Sil' }).click();
@@ -169,6 +175,12 @@ export async function cihazSil(page: Page): Promise<void> {
     
     await firstRow.getByRole('button').click();
     await page.waitForTimeout(500);
+
+    // depo seçimi
+    if (await page.getByText('Seçiniz...').isVisible()) {
+      await page.getByText('Seçiniz...').click(); 
+      await page.getByRole('option', { name: 'TEST', exact: true }).click();
+      }
     
     // Sil butonuna tıkla
     await page.getByRole('button', { name: 'Sil' }).click();
@@ -183,7 +195,7 @@ export async function cihazSil(page: Page): Promise<void> {
     try {
       const basariMesaji = await page.getByText('Başarılı The Device has been successfully deleted');
       await expect(basariMesaji).toBeVisible();
-      console.log('✅ 2 Cihaz başarıyla silindi');
+      console.log('✅ 1 Cihaz başarıyla silindi');
     } catch (error) {
       console.log('⚠️ Başarı mesajı görünmedi, cihaz silinmiş olabilir');
     }
@@ -264,7 +276,7 @@ export async function cihazUyeIseyerineAtama(page: Page, cihazSeriNo?: string, g
     console.log('❌ PAVGUNCELLE ile başlayan cihaz bulunamadı');
   }
 
-  // işlemler dropdownından bayiye ata butonuna tıkla
+  // işlemler dropdownından üye işyerine ata butonuna tıkla
   await page.getByRole('button', { name: 'İşlemler ' }).click();
   await page.getByRole('button', { name: ' Üye İşyerine Ata' }).click();
 
@@ -285,5 +297,93 @@ export async function cihazUyeIseyerineAtama(page: Page, cihazSeriNo?: string, g
   await page.getByRole('option', { name: 'Demo' }).click();
   await page.getByRole('button', { name: 'Ata' }).click();
 
+  await page.waitForTimeout(1000);
 
 } 
+
+// Cihazı üye işyerinden geri alma işlemi yap
+export async function cihazUyeIseyerindenGeriAlma(page: Page, cihazSeriNo?: string, guncellenenCihazSeriNo?: string): Promise<void> {
+
+  // ===== ADIM 4: Cihaz Seçimi =====
+   // PAVDENEME ile başlayan ve Ana Bayi değeri boş olan bir cihaz seç
+   try {
+     const pavdenemeRows = page.getByRole('row').filter({ hasText: /PAVDENEME/ });
+     const pavdenemeCount = await pavdenemeRows.count();
+     
+     if (pavdenemeCount > 0) {
+       // Ana Bayi sütunu boş olan PAVDENEME cihazlarını filtrele
+       const bosAnaBayiPavdenemeRows: any[] = [];
+       
+       for (let i = 0; i < pavdenemeCount; i++) {
+         const row = pavdenemeRows.nth(i);
+         const anaBayiCell = row.locator('td:nth-child(4)'); // Ana Bayi sütunu
+         const anaBayiText = await anaBayiCell.textContent();
+         
+         if (!anaBayiText || anaBayiText.trim() === '') {
+           bosAnaBayiPavdenemeRows.push(row);
+         }
+       }
+       
+               if (bosAnaBayiPavdenemeRows.length > 0) {
+           const firstIndex = 0;
+           const pavdenemeRow = bosAnaBayiPavdenemeRows[firstIndex];
+           await pavdenemeRow.getByRole('checkbox').check();
+           console.log(`✅ PAVDENEME cihazı seçildi (${bosAnaBayiPavdenemeRows.length} adet boş Ana Bayi arasından ilk indeks)`);
+         } else {
+         console.log('❌ Ana Bayi değeri boş olan PAVDENEME cihazı bulunamadı. Otomasyon ile DENEME cihazları oluştur.');
+       }
+     } else {
+       console.log('❌ PAVDENEME ile başlayan cihaz bulunamadı.');
+     }
+   } catch (error) {
+     console.log('❌ PAVDENEME ile başlayan cihaz bulunamadı');
+   }
+   
+   // PAVGUNCELLE ile başlayan ve Ana Bayi değeri boş olan bir cihaz seç
+   try {
+     const pavguncelleRows = page.getByRole('row').filter({ hasText: /PAVGUNCELLE/ });
+     const pavguncelleCount = await pavguncelleRows.count();
+     
+     if (pavguncelleCount > 0) {
+       // Ana Bayi sütunu boş olan PAVGUNCELLE cihazlarını filtrele
+       const bosAnaBayiPavguncelleRows: any[] = [];
+       
+       for (let i = 0; i < pavguncelleCount; i++) {
+         const row = pavguncelleRows.nth(i);
+         const anaBayiCell = row.locator('td:nth-child(4)'); // Ana Bayi sütunu
+         const anaBayiText = await anaBayiCell.textContent();
+         
+         if (!anaBayiText || anaBayiText.trim() === '') {
+           bosAnaBayiPavguncelleRows.push(row);
+         }
+       }
+       
+               if (bosAnaBayiPavguncelleRows.length > 0) {
+           const firstIndex = 0;
+           const pavguncelleRow = bosAnaBayiPavguncelleRows[firstIndex];
+           await pavguncelleRow.getByRole('checkbox').check();
+           console.log(`✅ PAVGUNCELLE cihazı seçildi (${bosAnaBayiPavguncelleRows.length} adet boş Ana Bayi arasından ilk indeks)`);
+         } else {
+         console.log('❌ Ana Bayi değeri boş olan PAVGUNCELLE cihazı bulunamadı. Otomasyon ile eklenen DENEME cihazlarını otomasyon ile güncelle  cihazları oluştur.');
+       }
+     } else {
+       console.log('❌ PAVGUNCELLE ile başlayan cihaz bulunamadı');
+     }
+   } catch (error) {
+     console.log('❌ PAVGUNCELLE ile başlayan cihaz bulunamadı');
+   }
+ 
+   // işlemler dropdownından üye işyerinden geri al butonuna tıkla
+   await page.getByRole('button', { name: 'İşlemler ' }).click();
+  await page.getByRole('button', { name: ' Üye İşyerinden Geri Al' }).click();
+  await page.getByRole('dialog').locator('span').nth(1).click();
+  await page.getByRole('option', { name: 'Diğer' }).click();
+  await page.getByRole('button', { name: 'Unassign' }).click();
+ 
+   
+   await page.waitForTimeout(1000);  
+ 
+  
+ 
+ 
+ } 
