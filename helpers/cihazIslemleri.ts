@@ -37,7 +37,7 @@ export async function cihazEkle(page: Page): Promise<void> {
   //Oluştur butonu
   await page.getByRole('button', { name: 'Oluştur' }).click();
   await page.waitForTimeout(2000);
-
+  await page.waitForTimeout(2000);
   //Başarı kontrolü
   try {
     const basariMesaji = page.getByText('Başarılı Cihaz başarıyla oluş');
@@ -104,6 +104,8 @@ export async function cihazGuncelle(page: Page): Promise<void> {
   // ===== ADIM 6: Güncellemeyi Kaydetme =====
   // Güncelle butonu
   await page.getByRole('button', { name: 'Güncelle' }).click();
+  await page.waitForTimeout(1000);
+
 
   // ===== ADIM 7: Başarı Kontrolü =====
   try {
@@ -173,7 +175,8 @@ export async function cihazSil(page: Page): Promise<void> {
     // Onay butonuna tıkla
     await page.getByRole('button', { name: 'Evet' }).click();
     await page.waitForTimeout(1000);
-    
+    await page.waitForTimeout(1000);
+
     // Başarı kontrolü
     try {
       const basariMesaji = await page.getByText('Başarılı The Device has been successfully deleted');

@@ -100,9 +100,9 @@ test('Cihazları Bayiye Atama (checkbox işaretli değil)', async ({ page }) => 
   // işlemler dropdownından bayiye ata butonuna tıkla
   await page.getByRole('button', { name: 'İşlemler ' }).click();
   await page.getByRole('button', { name: ' Bayiye Ata' }).click();
-    // Transfer the operational reseller checkbox kapat
-    await page.getByRole('dialog').locator('span').click();
-    await page.waitForTimeout(1000);
+  // Transfer the operational reseller checkbox kapat
+  await page.getByRole('dialog').locator('span').click();
+  await page.waitForTimeout(1000);
     
 
 

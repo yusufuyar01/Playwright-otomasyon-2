@@ -139,6 +139,7 @@ Yazılan bağlantıyı bir pencerede açar ve otomasyon için gerekli olan locat
 
 18- npx playwright test tests/device/cihazlari-bayiye-ata-1.spec.ts --headed
 
+19- npx playwright test tests/device/cihazlari-bayiye-ata-2.spec.ts --headed
 
     npx playwright codegen https://overpayresellerdemo.overtech.com.tr/Home/Dashboard/Index
 
