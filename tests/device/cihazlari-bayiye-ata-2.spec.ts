@@ -3,7 +3,7 @@ import { login } from '../../helpers/login';
 import { zoom } from '../../helpers/zoom';
 import { cihazEkle, cihazGuncelle, cihazSil } from '../../helpers/cihazIslemleri';
 
-test('Cihazları Bayiye Atama (checkbox işaretli)', async ({ page }) => {
+test('Cihazları Bayiye Atama (checkbox işaretli değil)', async ({ page }) => {
 
   // Önce sisteme giriş yap
   await login(page);
@@ -100,6 +100,10 @@ test('Cihazları Bayiye Atama (checkbox işaretli)', async ({ page }) => {
   // işlemler dropdownından bayiye ata butonuna tıkla
   await page.getByRole('button', { name: 'İşlemler ' }).click();
   await page.getByRole('button', { name: ' Bayiye Ata' }).click();
+    // Transfer the operational reseller checkbox kapat
+    await page.getByRole('dialog').locator('span').click();
+    await page.waitForTimeout(1000);
+    
 
 
   const uyarı = page.getByText('Uyarı Lütfen en az bir öğe se');
@@ -117,6 +121,8 @@ test('Cihazları Bayiye Atama (checkbox işaretli)', async ({ page }) => {
   await page.getByRole('option', { name: 'Test Bayi Demo' }).click();
   const atamaButton = page.getByRole('button', { name: 'Ata' });
   await atamaButton.click();
+
+
   
 
   // ===== ADIM 8: Başarı Kontrolü =====

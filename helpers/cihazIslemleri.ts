@@ -5,16 +5,6 @@ import { rastgeleString } from './stringUret';
 // Cihaz ekleme fonksiyonu
 export async function cihazEkle(page: Page): Promise<void> {
 
-  // Cihaz yönetimi bul ve tıkla
-  const cihazYonetimi = page.locator('text="Cihaz Yönetimi"'); 
-  await cihazYonetimi.click();
-  await page.waitForTimeout(1000);
-
-  // Cihaz İşlemleri menü linkini bul ve tıkla
-  const cihazIslemleri = page.getByRole('link', { name: ' Cihaz İşlemleri' });
-  await cihazIslemleri.click();
-  await page.waitForTimeout(2000);
-
   // Yeni cihaz ekleme butonunu bul ve tıkla
   await page.getByRole('button', { name: '+ Yeni' }).click();
   await page.waitForTimeout(1000);
@@ -52,7 +42,7 @@ export async function cihazEkle(page: Page): Promise<void> {
   try {
     const basariMesaji = page.getByText('Başarılı Cihaz başarıyla oluş');
     await expect(basariMesaji).toBeVisible();
-    console.log('✅ Cihaz başarıyla eklendi');
+    console.log('✅ 1 Cihaz başarıyla eklendi');
   } catch (error) {
     console.log('⚠️ Başarı mesajı görünmedi, cihaz eklenmiş olabilir');
   }
@@ -119,7 +109,7 @@ export async function cihazGuncelle(page: Page): Promise<void> {
   try {
     const basariMesaji = await page.getByText('Başarılı The Device has been');
     await expect(basariMesaji).toBeVisible();
-    console.log('✅ Cihaz başarıyla güncellendi');
+    console.log('✅ 1 Cihaz başarıyla güncellendi');
   } catch (error) {
     console.log('⚠️ Başarı mesajı görünmedi, cihaz güncellenmiş olabilir');
   }
@@ -163,7 +153,7 @@ export async function cihazSil(page: Page): Promise<void> {
     try {
       const basariMesaji = await page.getByText('Başarılı The Device has been successfully deleted');
       await expect(basariMesaji).toBeVisible();
-      console.log('✅ Cihaz başarıyla silindi');
+      console.log('✅ 1 Cihaz başarıyla silindi');
     } catch (error) {
       console.log('⚠️ Başarı mesajı görünmedi, cihaz silinmiş olabilir');
     }
@@ -188,7 +178,7 @@ export async function cihazSil(page: Page): Promise<void> {
     try {
       const basariMesaji = await page.getByText('Başarılı The Device has been successfully deleted');
       await expect(basariMesaji).toBeVisible();
-      console.log('✅ Cihaz başarıyla silindi');
+      console.log('✅ 2 Cihaz başarıyla silindi');
     } catch (error) {
       console.log('⚠️ Başarı mesajı görünmedi, cihaz silinmiş olabilir');
     }

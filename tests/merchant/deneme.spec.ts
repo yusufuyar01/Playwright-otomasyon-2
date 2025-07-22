@@ -16,8 +16,20 @@ test('Deneme', async ({ page }) => {
   // Zoom işlemi
   await zoom(page);
 
+   // Cihaz yönetimi bul ve tıkla
+   const cihazYonetimi = page.locator('text="Cihaz Yönetimi"'); 
+   await cihazYonetimi.click();
+   await page.waitForTimeout(1000);
+ 
+   // Cihaz İşlemleri menü linkini bul ve tıkla
+   const cihazIslemleri = page.getByRole('link', { name: ' Cihaz İşlemleri' });
+   await cihazIslemleri.click();
+   await page.waitForTimeout(2000);
+
   // Cihaz İşlemleri menü linkini bul ve tıkla
   await cihazEkle(page);
+  await cihazEkle(page);
+
 
   // Cihaz güncelleme
   await cihazGuncelle(page);
