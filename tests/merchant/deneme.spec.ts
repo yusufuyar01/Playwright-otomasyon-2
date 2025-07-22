@@ -5,7 +5,7 @@ import { rastgeleString } from '../../helpers/stringUret';
 import { ePostaUret } from '../../helpers/ePostaUret';
 import { telNoUret } from '../../helpers/telNoUret';
 import { zoom } from '../../helpers/zoom';
-import { cihazEkle, cihazGuncelle, cihazSil  } from '../../helpers/cihazIslemleri';
+import { cihazEkle, cihazGuncelle, cihazSil , cihazUyeIseyerineAtama} from '../../helpers/cihazIslemleri';
 
 
 test('Deneme', async ({ page }) => {
@@ -28,15 +28,20 @@ test('Deneme', async ({ page }) => {
 
   // Cihaz İşlemleri menü linkini bul ve tıkla
   await cihazEkle(page);
-  await cihazEkle(page);
+  await cihazEkle(page);""
 
 
-  // Cihaz güncelleme
-  await cihazGuncelle(page);
+
+
+   // Cihaz güncelleme
+   await cihazGuncelle(page);
+
+   // Cihazı üye işyerine atama
+  await cihazUyeIseyerineAtama(page);
 
   // Cihaz silme
-  await cihazSil(page);
-  await cihazSil(page);
+  // await cihazSil(page);
+  // await cihazSil(page);
 
 
   // // Test sonunda ekranın kapanmasını engellemek için pause
