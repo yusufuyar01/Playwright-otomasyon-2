@@ -26,22 +26,18 @@ test('Deneme', async ({ page }) => {
    await cihazIslemleri.click();
    await page.waitForTimeout(2000);
 
-  // Cihaz İşlemleri menü linkini bul ve tıkla
-//   await cihazEkle(page);
-//   await page.waitForTimeout(1000);
 
-// // Cihazı bayiye ata
-// await cihaziBayiyeAta(page);
-
-// // cihazı operasyonel bayiye ata
-// await cihaziOperasyonelBayiyeAta(page);
-
-// // cihazı bayiden geri al
-// await cihaziBayidenGeriAl(page);
 
   // Cihaz silme
   await cihazSil(page);
   await cihazSil(page);
+  await cihazSil(page);
+  await cihazSil(page);
+  await cihazSil(page);
+  await cihazSil(page);
+  await cihazSil(page);
+  await cihazSil(page);
+
 
 
 

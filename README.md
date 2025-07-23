@@ -149,9 +149,9 @@ Yazılan bağlantıyı bir pencerede açar ve otomasyon için gerekli olan locat
 
 23- npx playwright test tests/device/birden-fazla-cihaza-operasyonel-bayi-ata.spec.ts --headed
 
-24- npx playwright test tests/device/tek-cihaz-operasyonel-bayi-atama.spec.ts --headed
+24-------------- npx playwright test tests/device/tek-cihaz-operasyonel-bayi-atama.spec.ts --headed
 
-
+25- npx playwright test tests/device/uye-isyerine-atanmis-cihazlari-uye-isyerine-ata.spec.ts --headed
 
 
 
