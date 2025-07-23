@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
 import { login } from '../../helpers/login';
 import { zoom } from '../../helpers/zoom';
-import { cihazEkle, cihazGuncelle, cihazSil, cihazUyeIseyerindenGeriAlma, cihazUyeIseyerineAtama, cihazlariBayiyeAta,  } from '../../helpers/cihazIslemleri';
+import { cihazEkle, cihazGuncelle, cihazSil, cihazUyeIseyerindenGeriAl, cihazUyeIseyerineAta, cihazlariBayiyeAta,  } from '../../helpers/cihazIslemleri';
 
 test('Üye İşyeri Olan Cihazları Bayiye Atama', async ({ page }) => {
 
@@ -29,7 +29,7 @@ test('Üye İşyeri Olan Cihazları Bayiye Atama', async ({ page }) => {
   await cihazGuncelle(page);
 
   // Cihazı üye işyerine atama
-  await cihazUyeIseyerineAtama(page);
+  await cihazUyeIseyerineAta(page);
 
   // ===== ADIM 4: Cihazları Bayiye  Atama =====
   await cihazlariBayiyeAta(page);
@@ -38,7 +38,7 @@ test('Üye İşyeri Olan Cihazları Bayiye Atama', async ({ page }) => {
   await page.getByRole('button', { name: ' Kapat' }).click();
 
   // cihazları üye işyerinden geri al
-  await cihazUyeIseyerindenGeriAlma(page);
+  await cihazUyeIseyerindenGeriAl(page);
   await page.waitForTimeout(1000);
   
   // // Cihaz silme

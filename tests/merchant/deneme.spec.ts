@@ -5,7 +5,7 @@ import { rastgeleString } from '../../helpers/stringUret';
 import { ePostaUret } from '../../helpers/ePostaUret';
 import { telNoUret } from '../../helpers/telNoUret';
 import { zoom } from '../../helpers/zoom';
-import { cihazEkle, cihazGuncelle, cihazSil , cihazUyeIseyerindenGeriAlma, cihazUyeIseyerineAtama, cihazlariBayiyeAta, cihazlariBayidenGeriAl} from '../../helpers/cihazIslemleri';
+import { cihazEkle, cihazGuncelle, cihazSil , cihazUyeIseyerindenGeriAl, cihazUyeIseyerineAta, cihazlariBayiyeAta, cihazlariBayidenGeriAl, cihaziBayiyeAta, cihaziBayidenGeriAl, cihaziOperasyonelBayiyeAta} from '../../helpers/cihazIslemleri';
 
 
 test('Deneme', async ({ page }) => {
@@ -29,23 +29,15 @@ test('Deneme', async ({ page }) => {
   // Cihaz İşlemleri menü linkini bul ve tıkla
   await cihazEkle(page);
   await page.waitForTimeout(1000);
-  await cihazEkle(page);
+
+// Cihazı bayiye ata
+await cihaziBayiyeAta(page);
+
+// cihazı operasyonel bayiye ata
+await cihaziBayidenGeriAl(page);
 
 
-   // Cihaz güncelleme
-   await cihazGuncelle(page);
 
-   // Cihazı üye işyerine atama
-  // await cihazUyeIseyerineAtama(page);
-
-  // // Cihazı üye işyerinden geri alma
-  // await cihazUyeIseyerindenGeriAlma(page);
-
-  // cihazları bayiye atama
-  await cihazlariBayiyeAta(page);
-
-  // cihazları bayiden geri alma
-  await cihazlariBayidenGeriAl(page); 
 
   // Cihaz silme
   await cihazSil(page);

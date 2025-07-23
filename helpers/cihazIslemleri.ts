@@ -47,7 +47,7 @@ export async function cihazEkle(page: Page): Promise<string> {
   } catch (error) {
     console.log('⚠️ Başarı mesajı görünmedi, cihaz eklenmiş olabilir');
   }
-  await page.waitForTimeout(500);
+  await page.waitForTimeout(1000);
 
   return cihazSeriNo;
 }
@@ -128,21 +128,15 @@ export async function cihazSil(page: Page): Promise<void> {
   await page.waitForTimeout(2000); // Tablo yüklenmesi için daha fazla bekle
   
   
-  // PAVGUNCELLEME ile başlayan cihazları bul
-  const pavguncellemeRows = page.locator('tr').filter({ hasText: /PAVGUNCELLEME/ });
-  const pavguncellemeCount = await pavguncellemeRows.count();
-  console.log(`🔍 PAVGUNCELLEME ile başlayan cihaz sayısı: ${pavguncellemeCount}`);
+  // PAV ile başlayan cihazları bul
+  const pavRows = page.locator('tr').filter({ hasText: /PAV/ });
+  const pavCount = await pavRows.count();
   
-  // PAVDENEME ile başlayan cihazları da kontrol et
-  const pavdenemeRows = page.locator('tr').filter({ hasText: /PAVDENEME/ });
-  const pavdenemeCount = await pavdenemeRows.count();
-  console.log(`🔍 PAVDENEME ile başlayan cihaz sayısı: ${pavdenemeCount}`);
-  
-  if (pavguncellemeCount > 0) {
+  if (pavCount > 0) {
     // İlk PAVGUNCELLEME cihazını seç ve sil
-    const firstRow = pavguncellemeRows.first();
+    const firstRow = pavRows.first();
     const rowText = await firstRow.textContent();
-    console.log(`🎯 Silinecek cihaz (PAVGUNCELLEME): ${rowText?.trim()}`);
+    console.log(`🎯 Silinecek cihaz : ${rowText?.trim()}`);
     
     await firstRow.getByRole('button').click();
     await page.waitForTimeout(500);
@@ -167,117 +161,34 @@ export async function cihazSil(page: Page): Promise<void> {
       await expect(basariMesaji).toBeVisible();
       console.log('✅ 1 Cihaz başarıyla silindi');
     } catch (error) {
-      console.log('⚠️ Başarı mesajı görünmedi, cihaz silinmiş olabilir');
+      console.log('❌ Cihazın satış kaydı bulunmaktadır. Bu cihaz silinemez.');
     }
-  } else if (pavdenemeCount > 0) {
-    // PAVGUNCELLEME yoksa PAVDENEME ile başlayan bir cihazı sil
-    const firstRow = pavdenemeRows.first();
-    const rowText = await firstRow.textContent();
-    console.log(`🎯 Silinecek cihaz (PAVDENEME): ${rowText?.trim()}`);
     
-    await firstRow.getByRole('button').click();
-    await page.waitForTimeout(500);
-
-    // depo seçimi
-    if (await page.getByText('Seçiniz...').isVisible()) {
-      await page.getByText('Seçiniz...').click(); 
-      await page.getByRole('option', { name: 'TEST', exact: true }).click();
-      }
-    
-    // Sil butonuna tıkla
-    await page.getByRole('button', { name: 'Sil' }).click();
-    await page.waitForTimeout(500);
-    
-    // Onay butonuna tıkla
-    await page.getByRole('button', { name: 'Evet' }).click();
-    await page.waitForTimeout(1000);
-    await page.waitForTimeout(1000);
-
-    // Başarı kontrolü
-    try {
-      const basariMesaji = await page.getByText('Başarılı The Device has been successfully deleted');
-      await expect(basariMesaji).toBeVisible();
-      console.log('✅ 1 Cihaz başarıyla silindi');
-    } catch (error) {
-      console.log('⚠️ Başarı mesajı görünmedi, cihaz silinmiş olabilir');
-    }
-  } else {
-    console.log('❌ Silinebilecek test cihazı bulunamadı (PAVGUNCELLEME veya PAVDENEME)');
-  }
+  } 
 } 
 
 // Cihazı üye işyerine atama işlemi yap
-export async function cihazUyeIseyerineAtama(page: Page, cihazSeriNo?: string, guncellenenCihazSeriNo?: string): Promise<void> {
+export async function cihazUyeIseyerineAta(page: Page): Promise<void> {
 
- // ===== ADIM 4: Cihaz Seçimi =====
-  // PAVDENEME ile başlayan ve Ana Bayi değeri boş olan bir cihaz seç
-  try {
-    const pavdenemeRows = page.getByRole('row').filter({ hasText: /PAVDENEME/ });
-    const pavdenemeCount = await pavdenemeRows.count();
-    
-    if (pavdenemeCount > 0) {
-      // Ana Bayi sütunu boş olan PAVDENEME cihazlarını filtrele
-      const bosAnaBayiPavdenemeRows: any[] = [];
-      
-      for (let i = 0; i < pavdenemeCount; i++) {
-        const row = pavdenemeRows.nth(i);
-        const anaBayiCell = row.locator('td:nth-child(4)'); // Ana Bayi sütunu
-        const anaBayiText = await anaBayiCell.textContent();
-        
-        if (!anaBayiText || anaBayiText.trim() === '') {
-          bosAnaBayiPavdenemeRows.push(row);
-        }
-      }
-      
-              if (bosAnaBayiPavdenemeRows.length > 0) {
-          const firstIndex = 0;
-          const pavdenemeRow = bosAnaBayiPavdenemeRows[firstIndex];
-          await pavdenemeRow.getByRole('checkbox').check();
-          console.log(`✅ PAVDENEME cihazı seçildi (${bosAnaBayiPavdenemeRows.length} adet boş Ana Bayi arasından ilk indeks)`);
-        } else {
-        console.log('❌ Ana Bayi değeri boş olan PAVDENEME cihazı bulunamadı. Otomasyon ile DENEME cihazları oluştur.');
-      }
-    } else {
-      console.log('❌ PAVDENEME ile başlayan cihaz bulunamadı.');
-    }
+ // PAVDENEME ile başlayan ilk cihazı seç
+ try {
+  const pavdenemeRows = page.getByRole('row').filter({ hasText: /PAVDENEME/ });
+  const pavDenemeFirstRow = pavdenemeRows.first();
+  await pavDenemeFirstRow.getByRole('checkbox').check();
+  console.log(`✅ PAVDENEME cihazı seçildi. (Üye işyerine atanacak cihaz)`);
   } catch (error) {
-    console.log('❌ PAVDENEME ile başlayan cihaz bulunamadı');
-  }
+    console.log('❌ PAVDENEME cihazı seçilemedi:', error);
+  } 
   
-  // PAVGUNCELLE ile başlayan ve Ana Bayi değeri boş olan bir cihaz seç
+  // PAVGUNCELLE ile başlayan ilk cihazı seç  
   try {
     const pavguncelleRows = page.getByRole('row').filter({ hasText: /PAVGUNCELLE/ });
-    const pavguncelleCount = await pavguncelleRows.count();
-    
-    if (pavguncelleCount > 0) {
-      // Ana Bayi sütunu boş olan PAVGUNCELLE cihazlarını filtrele
-      const bosAnaBayiPavguncelleRows: any[] = [];
-      
-      for (let i = 0; i < pavguncelleCount; i++) {
-        const row = pavguncelleRows.nth(i);
-        const anaBayiCell = row.locator('td:nth-child(4)'); // Ana Bayi sütunu
-        const anaBayiText = await anaBayiCell.textContent();
-        
-        if (!anaBayiText || anaBayiText.trim() === '') {
-          bosAnaBayiPavguncelleRows.push(row);
-        }
-      }
-      
-              if (bosAnaBayiPavguncelleRows.length > 0) {
-          const firstIndex = 0;
-          const pavguncelleRow = bosAnaBayiPavguncelleRows[firstIndex];
-          await pavguncelleRow.getByRole('checkbox').check();
-          console.log(`✅ PAVGUNCELLE cihazı seçildi (${bosAnaBayiPavguncelleRows.length} adet boş Ana Bayi arasından ilk indeks)`);
-        } else {
-        console.log('❌ Ana Bayi değeri boş olan PAVGUNCELLE cihazı bulunamadı. Otomasyon ile eklenen DENEME cihazlarını otomasyon ile güncelle  cihazları oluştur.');
-      }
-    } else {
-      console.log('❌ PAVGUNCELLE ile başlayan cihaz bulunamadı');
-    }
+    const pavguncelleFirstRow = pavguncelleRows.first();
+    await pavguncelleFirstRow.getByRole('checkbox').check();
+    console.log(`✅ PAVGUNCELLE cihazı seçildi. (Üye işyerine atanacak cihaz)`);
   } catch (error) {
-    console.log('❌ PAVGUNCELLE ile başlayan cihaz bulunamadı');
-  }
-
+    console.log('❌ PAVGUNCELLE cihazı seçilemedi:', error);
+  } 
   // işlemler dropdownından üye işyerine ata butonuna tıkla
   await page.getByRole('button', { name: 'İşlemler ' }).click();
   await page.getByRole('button', { name: ' Üye İşyerine Ata' }).click();
@@ -304,76 +215,27 @@ export async function cihazUyeIseyerineAtama(page: Page, cihazSeriNo?: string, g
 } 
 
 // Cihazı üye işyerinden geri alma işlemi yap
-export async function cihazUyeIseyerindenGeriAlma(page: Page, cihazSeriNo?: string, guncellenenCihazSeriNo?: string): Promise<void> {
+export async function cihazUyeIseyerindenGeriAl(page: Page): Promise<void> {
 
-  // ===== ADIM 4: Cihaz Seçimi =====
-   // PAVDENEME ile başlayan ve Ana Bayi değeri boş olan bir cihaz seç
-   try {
-     const pavdenemeRows = page.getByRole('row').filter({ hasText: /PAVDENEME/ });
-     const pavdenemeCount = await pavdenemeRows.count();
-     
-     if (pavdenemeCount > 0) {
-       // Ana Bayi sütunu boş olan PAVDENEME cihazlarını filtrele
-       const bosAnaBayiPavdenemeRows: any[] = [];
-       
-       for (let i = 0; i < pavdenemeCount; i++) {
-         const row = pavdenemeRows.nth(i);
-         const anaBayiCell = row.locator('td:nth-child(4)'); // Ana Bayi sütunu
-         const anaBayiText = await anaBayiCell.textContent();
-         
-         if (!anaBayiText || anaBayiText.trim() === '') {
-           bosAnaBayiPavdenemeRows.push(row);
-         }
-       }
-       
-               if (bosAnaBayiPavdenemeRows.length > 0) {
-           const firstIndex = 0;
-           const pavdenemeRow = bosAnaBayiPavdenemeRows[firstIndex];
-           await pavdenemeRow.getByRole('checkbox').check();
-           console.log(`✅ PAVDENEME cihazı seçildi (${bosAnaBayiPavdenemeRows.length} adet boş Ana Bayi arasından ilk indeks)`);
-         } else {
-         console.log('❌ Ana Bayi değeri boş olan PAVDENEME cihazı bulunamadı. Otomasyon ile DENEME cihazları oluştur.');
-       }
-     } else {
-       console.log('❌ PAVDENEME ile başlayan cihaz bulunamadı.');
-     }
-   } catch (error) {
-     console.log('❌ PAVDENEME ile başlayan cihaz bulunamadı');
-   }
-   
-   // PAVGUNCELLE ile başlayan ve Ana Bayi değeri boş olan bir cihaz seç
-   try {
-     const pavguncelleRows = page.getByRole('row').filter({ hasText: /PAVGUNCELLE/ });
-     const pavguncelleCount = await pavguncelleRows.count();
-     
-     if (pavguncelleCount > 0) {
-       // Ana Bayi sütunu boş olan PAVGUNCELLE cihazlarını filtrele
-       const bosAnaBayiPavguncelleRows: any[] = [];
-       
-       for (let i = 0; i < pavguncelleCount; i++) {
-         const row = pavguncelleRows.nth(i);
-         const anaBayiCell = row.locator('td:nth-child(4)'); // Ana Bayi sütunu
-         const anaBayiText = await anaBayiCell.textContent();
-         
-         if (!anaBayiText || anaBayiText.trim() === '') {
-           bosAnaBayiPavguncelleRows.push(row);
-         }
-       }
-       
-               if (bosAnaBayiPavguncelleRows.length > 0) {
-           const firstIndex = 0;
-           const pavguncelleRow = bosAnaBayiPavguncelleRows[firstIndex];
-           await pavguncelleRow.getByRole('checkbox').check();
-           console.log(`✅ PAVGUNCELLE cihazı seçildi (${bosAnaBayiPavguncelleRows.length} adet boş Ana Bayi arasından ilk indeks)`);
-         } else {
-         console.log('❌ Ana Bayi değeri boş olan PAVGUNCELLE cihazı bulunamadı. Otomasyon ile eklenen DENEME cihazlarını otomasyon ile güncelle  cihazları oluştur.');
-       }
-     } else {
-       console.log('❌ PAVGUNCELLE ile başlayan cihaz bulunamadı');
-     }
-   } catch (error) {
-     console.log('❌ PAVGUNCELLE ile başlayan cihaz bulunamadı');
-   }
+ // PAVDENEME ile başlayan ilk cihazı seç
+ try {
+  const pavdenemeRows = page.getByRole('row').filter({ hasText: /PAVDENEME/ });
+  const pavDenemeFirstRow = pavdenemeRows.first();
+  await pavDenemeFirstRow.getByRole('checkbox').check();
+  console.log(`✅ PAVDENEME cihazı seçildi. (Üye işyerinden geri alınacak cihaz)`);
+  } catch (error) {
+    console.log('❌ PAVDENEME cihazı seçilemedi:', error);
+  } 
+  
+  // PAVGUNCELLE ile başlayan ilk cihazı seç  
+  try {
+    const pavguncelleRows = page.getByRole('row').filter({ hasText: /PAVGUNCELLE/ });
+    const pavguncelleFirstRow = pavguncelleRows.first();
+    await pavguncelleFirstRow.getByRole('checkbox').check();
+    console.log(`✅ PAVGUNCELLE cihazı seçildi. (Üye işyerinden geri alınacak cihaz)`);
+  } catch (error) {
+    console.log('❌ PAVGUNCELLE cihazı seçilemedi:', error);
+  } 
  
    // işlemler dropdownından üye işyerinden geri al butonuna tıkla
    await page.getByRole('button', { name: 'İşlemler ' }).click();
@@ -395,7 +257,7 @@ try {
   const pavdenemeRows = page.getByRole('row').filter({ hasText: /PAVDENEME/ });
   const pavDenemeFirstRow = pavdenemeRows.first();
   await pavDenemeFirstRow.getByRole('checkbox').check();
-  console.log(`✅ PAVDENEME cihazı seçildi.`);
+  console.log(`✅ PAVDENEME cihazı seçildi. (Bayiye atanacak cihaz)`);
   } catch (error) {
     console.log('❌ PAVDENEME cihazı seçilemedi:', error);
   } 
@@ -405,13 +267,76 @@ try {
     const pavguncelleRows = page.getByRole('row').filter({ hasText: /PAVGUNCELLE/ });
     const pavguncelleFirstRow = pavguncelleRows.first();
     await pavguncelleFirstRow.getByRole('checkbox').check();
-    console.log(`✅ PAVGUNCELLE cihazı seçildi.`);
+    console.log(`✅ PAVGUNCELLE cihazı seçildi. (Bayiye atanacak cihaz)`);
   } catch (error) {
     console.log('❌ PAVGUNCELLE cihazı seçilemedi:', error);
   } 
   
 
-// işlemler dropdownından üye işyerine ata butonuna tıkla
+// işlemler dropdownından bayiye ata butonuna tıkla
+await page.getByRole('button', { name: 'İşlemler ' }).click();
+await page.getByRole('button', { name: ' Bayiye Ata' }).click();
+await page.getByRole('combobox').filter({ hasText: /^$/ }).click();
+await page.getByRole('combobox').filter({ hasText: /^$/ }).fill('tes');
+await page.getByRole('option', { name: 'Test Bayi Demo' }).click();
+await page.getByRole('button', { name: 'Ata' }).click();
+
+
+try {
+// Başarısız işlemler başlığının görünür olmasını bekle
+const basarisizIslemler = page.getByRole('heading', { name: 'Başarısız İşlemler' });
+await basarisizIslemler.waitFor({ state: 'visible', timeout: 1000 });
+// { state: 'visible' }
+if (await basarisizIslemler.isVisible()) {
+  console.log('❌ Başarısız işlemler görüntülendi');
+  
+  // Tablo başlıklarını yazdır
+  const headers = [
+    'Seri Numarası',
+    'Cihaz Adı', 
+    'Cihaz Modeli',
+    'Cihaz Tipi',
+    'Marka',
+    'Error Message'
+  ];
+  console.log('-'.repeat(100));
+  
+  // Tablodaki tüm satırları oku
+  const rows = page.locator('.k-grid-content .k-master-row');
+  const rowCount = await rows.count();
+  
+  for (let i = 0; i < rowCount; i++) {
+    const row = rows.nth(i);
+    const errorMessage = await row.locator('td').nth(5).textContent() || '';
+    // Satırı konsola yazdır
+    console.log(` ✅ ${errorMessage} mesajı göründü`);
+  }
+  
+  console.log('='.repeat(100));
+}
+} catch (error) {
+console.log('❌ Başarısız işlemler Gözükmedi');
+}
+   await page.waitForTimeout(1000);  
+ 
+ } 
+
+  // Cihazı bayiye atama işlemi yap
+export async function cihaziBayiyeAta(page: Page): Promise<void> {
+
+  // PAVDENEME ile başlayan ilk cihazı seç
+try {
+  const pavdenemeRows = page.getByRole('row').filter({ hasText: /PAVDENEME/ });
+  const pavDenemeFirstRow = pavdenemeRows.first();
+  await pavDenemeFirstRow.getByRole('checkbox').check();
+  console.log(`✅ PAVDENEME cihazı seçildi. (Bayiye atanacak cihaz)`);
+  } catch (error) {
+    console.log('❌ PAVDENEME cihazı seçilemedi:', error);
+  } 
+  
+  
+
+// işlemler dropdownından bayiye ata butonuna tıkla
 await page.getByRole('button', { name: 'İşlemler ' }).click();
 await page.getByRole('button', { name: ' Bayiye Ata' }).click();
 await page.getByRole('combobox').filter({ hasText: /^$/ }).click();
@@ -460,7 +385,97 @@ console.log('❌ Başarısız işlemler Gözükmedi');
  } 
 
 
+ // Cihazı operasyonel bayiye atama işlemi yap
+ export async function cihaziOperasyonelBayiyeAta(page: Page): Promise<void> {
 
+  // PAVDENEME ile başlayan ilk cihazı seç
+try {
+  const pavdenemeRows = page.getByRole('row').filter({ hasText: /PAVDENEME/ });
+  const pavDenemeFirstRow = pavdenemeRows.first();
+  await pavDenemeFirstRow.getByRole('checkbox').check();
+  console.log(`✅ PAVDENEME cihazı seçildi. (Operasyonel Bayiye atanacak cihaz)`);
+  } catch (error) {
+    console.log('❌ PAVDENEME cihazı seçilemedi:', error);
+  } 
+  
+  
+
+// işlemler dropdownından operasyonel bayiye ata butonuna tıkla
+await page.getByRole('button', { name: 'İşlemler ' }).click();
+await page.getByRole('button', { name: ' Operasyonel Bayiyi Ata' }).click();
+await page.getByText('Seçiniz...').click();
+await page.getByRole('option', { name: 'Test Bayi Demo' }).click();
+await page.getByRole('button', { name: 'Ata' }).click();
+
+try {
+// Başarısız işlemler başlığının görünür olmasını bekle
+const basarisizIslemler = page.getByRole('heading', { name: 'Başarısız İşlemler' });
+await basarisizIslemler.waitFor({ state: 'visible', timeout: 1000 });
+// { state: 'visible' }
+if (await basarisizIslemler.isVisible()) {
+  console.log('❌ Başarısız işlemler görüntülendi');
+  
+  // Tablo başlıklarını yazdır
+  const headers = [
+    'Seri Numarası',
+    'Cihaz Adı', 
+    'Cihaz Modeli',
+    'Cihaz Tipi',
+    'Marka',
+    'Error Message'
+  ];
+  console.log('-'.repeat(100));
+  
+  // Tablodaki tüm satırları oku
+  const rows = page.locator('.k-grid-content .k-master-row');
+  const rowCount = await rows.count();
+  
+  for (let i = 0; i < rowCount; i++) {
+    const row = rows.nth(i);
+    const errorMessage = await row.locator('td').nth(5).textContent() || '';
+    // Satırı konsola yazdır
+    console.log(` ✅ ${errorMessage} mesajı göründü`);
+  }
+  
+  console.log('='.repeat(100));
+}
+} catch (error) {
+console.log('❌ Başarısız işlemler Gözükmedi');
+}
+   await page.waitForTimeout(1000);  
+ 
+ } 
+
+ 
+  // Cihazı bayiden geri alma işlemi yap
+export async function cihaziBayidenGeriAl(page: Page): Promise<void> {
+
+  // PAVDENEME ile başlayan ilk cihazı seç
+try {
+  const pavdenemeRows = page.getByRole('row').filter({ hasText: /PAVDENEME/ });
+  const pavDenemeFirstRow = pavdenemeRows.first();
+  await pavDenemeFirstRow.getByRole('checkbox').check();
+  console.log(`✅ PAVDENEME cihazı seçildi. (Bayiden geri alınacak cihaz)`);
+  } catch (error) {
+    console.log('❌ PAVDENEME cihazı seçilemedi:', error);
+  } 
+  
+  
+
+// işlemler dropdownından bayiden geri al butonuna tıkla
+await page.getByRole('button', { name: 'İşlemler ' }).click();
+await page.getByRole('button', { name: ' Bayiden Geri Al' }).click();
+await page.waitForTimeout(1000);
+if (await page.getByRole('button', { name: 'Kabul', exact: true }).isVisible()) {
+await page.getByRole('button', { name: 'Kabul', exact: true }).click();
+} else if (await page.getByRole('button', { name: 'Kabul' }).isVisible()){  
+  await page.getByRole('button', { name: 'Kapat' }).click();
+  console.log('✅ İstenildiği gibi bayiden geri al işlemi yapılamamalıdır');
+}
+
+   await page.waitForTimeout(1000);  
+  
+} 
 
 
 
@@ -472,7 +487,7 @@ export async function cihazlariBayidenGeriAl(page: Page): Promise<void> {
   const pavdenemeRows = page.getByRole('row').filter({ hasText: /PAVDENEME/ });
   const pavDenemeFirstRow = pavdenemeRows.first();
   await pavDenemeFirstRow.getByRole('checkbox').check();
-  console.log(`✅ PAVDENEME cihazı seçildi.`);
+  console.log(`✅ PAVDENEME cihazı seçildi. (Bayiden geri alınacak cihaz)`);
   } catch (error) {
     console.log('❌ PAVDENEME cihazı seçilemedi:', error);
   } 
@@ -482,7 +497,7 @@ export async function cihazlariBayidenGeriAl(page: Page): Promise<void> {
     const pavguncelleRows = page.getByRole('row').filter({ hasText: /PAVGUNCELLE/ });
     const pavguncelleFirstRow = pavguncelleRows.first();
     await pavguncelleFirstRow.getByRole('checkbox').check();
-    console.log(`✅ PAVGUNCELLE cihazı seçildi.`);
+    console.log(`✅ PAVGUNCELLE cihazı seçildi. (Bayiden geri alınacak cihaz)`);
   } catch (error) {
     console.log('❌ PAVGUNCELLE cihazı seçilemedi:', error);
   } 
@@ -492,8 +507,13 @@ export async function cihazlariBayidenGeriAl(page: Page): Promise<void> {
   await page.getByRole('button', { name: 'İşlemler ' }).click();
   await page.getByRole('button', { name: ' Bayiden Geri Al' }).click();
   await page.waitForTimeout(1000);
+  if (await page.getByRole('button', { name: 'Kabul', exact: true }).isVisible()) {
   await page.getByRole('button', { name: 'Kabul', exact: true }).click();
-  
+  } else if (await page.getByRole('button', { name: 'Kabul' }).isVisible()){  
+    await page.getByRole('button', { name: 'Kapat' }).click();
+    console.log('✅ İstenildiği gibi bayiden geri al işlemi yapılamamalıdır');
+  }
+
 
 
      await page.waitForTimeout(1000);  
