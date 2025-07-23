@@ -38,6 +38,7 @@ test.describe('Tek Cihaz Operasyonel Bayi Atama Testi', () => {
     // Cihaz silme
     await cihazSil(page);
         
+    await page.pause();
 
   });
 }); 

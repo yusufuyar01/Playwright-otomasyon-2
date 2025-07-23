@@ -145,7 +145,13 @@ Yazılan bağlantıyı bir pencerede açar ve otomasyon için gerekli olan locat
 
 21- npx playwright test tests/device/bayiye-atali-cihazlari-bayiden-geri-al.spec.ts --headed
 
-22-
+22- npx playwright test tests/device/uye-isyerine-atali-cihazlari-bayiden-geri-al.spec.ts --headed
+
+23- npx playwright test tests/device/birden-fazla-cihaza-operasyonel-bayi-ata.spec.ts --headed
+
+24- npx playwright test tests/device/tek-cihaz-operasyonel-bayi-atama.spec.ts --headed
+
+
 
 
 

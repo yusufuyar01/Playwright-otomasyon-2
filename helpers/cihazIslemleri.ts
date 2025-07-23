@@ -446,6 +446,52 @@ console.log('❌ Başarısız işlemler Gözükmedi');
  
  } 
 
+
+
+ 
+ // Cihazları operasyonel bayiye atama işlemi yap
+ export async function cihazlariOperasyonelBayiyeAta(page: Page): Promise<void> {
+
+  // PAVDENEME ile başlayan ilk cihazı seç
+  try {
+  const pavdenemeRows = page.getByRole('row').filter({ hasText: /PAVDENEME/ });
+  const pavDenemeFirstRow = pavdenemeRows.first();
+  await pavDenemeFirstRow.getByRole('checkbox').check();
+  console.log(`✅ PAVDENEME cihazı seçildi. (Operasyonel Bayiye atanacak cihaz)`);
+  } catch (error) {
+    console.log('❌ PAVDENEME cihazı seçilemedi:', error);
+  } 
+
+
+  // PAVGUNCELLE ile başlayan ilk cihazı seç  
+  try {
+    const pavguncelleRows = page.getByRole('row').filter({ hasText: /PAVGUNCELLE/ });
+    const pavguncelleFirstRow = pavguncelleRows.first();
+    await pavguncelleFirstRow.getByRole('checkbox').check();
+    console.log(`✅ PAVGUNCELLE cihazı seçildi. (Operasyonel Bayiye atanacak cihaz)`);
+  } catch (error) {
+    console.log('❌ PAVGUNCELLE cihazı seçilemedi:', error);
+  } 
+  
+  
+  
+
+// işlemler dropdownından operasyonel bayiye ata butonuna tıkla
+await page.getByRole('button', { name: 'İşlemler ' }).click();
+await page.getByRole('button', { name: ' Operasyonel Bayiyi Ata' }).click();
+
+try {
+  await page.getByText('Uyarı Lütfen yalnızca bir öğe seçiniz').waitFor({ state: 'visible', timeout: 1000 });
+  console.log('✅ "Uyarı Lütfen yalnızca bir öğe seçiniz" mesajı görüntülendi');
+} catch (error) {
+  console.log('❌ "Uyarı Lütfen yalnızca bir öğe seçiniz" mesajı görüntülenmedi');
+}
+
+
+   await page.waitForTimeout(1000);  
+ 
+ } 
+
  
   // Cihazı bayiden geri alma işlemi yap
 export async function cihaziBayidenGeriAl(page: Page): Promise<void> {
