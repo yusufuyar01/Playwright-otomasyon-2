@@ -5,7 +5,7 @@ import { rastgeleString } from '../../helpers/stringUret';
 import { ePostaUret } from '../../helpers/ePostaUret';
 import { telNoUret } from '../../helpers/telNoUret';
 import { zoom } from '../../helpers/zoom';
-import { cihazEkle, cihazGuncelle, cihazSil , cihazUyeIseyerindenGeriAl, cihazUyeIseyerineAta, cihazlariBayiyeAta, cihazlariBayidenGeriAl, cihaziBayiyeAta, cihaziBayidenGeriAl, cihaziOperasyonelBayiyeAta} from '../../helpers/cihazIslemleri';
+import { cihazEkle, cihazGuncelle, cihazSil , cihazUyeIseyerindenGeriAl, cihazUyeIseyerineAta, cihazlariBayiyeAta, cihazlariBayidenGeriAl, cihaziBayiyeAta, cihaziOperasyonelBayiyeAta, cihaziBayidenGeriAl} from '../../helpers/cihazIslemleri';
 
 
 test('Deneme', async ({ page }) => {
@@ -34,13 +34,12 @@ test('Deneme', async ({ page }) => {
 await cihaziBayiyeAta(page);
 
 // cihazı operasyonel bayiye ata
+await cihaziOperasyonelBayiyeAta(page);
+
+// cihazı bayiden geri al
 await cihaziBayidenGeriAl(page);
 
-
-
-
   // Cihaz silme
-  await cihazSil(page);
   await cihazSil(page);
 
 
