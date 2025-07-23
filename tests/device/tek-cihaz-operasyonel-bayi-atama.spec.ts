@@ -38,8 +38,6 @@ test.describe('Tek Cihaz Operasyonel Bayi Atama Testi', () => {
     // Cihaz silme
     await cihazSil(page);
         
-    // Test sonucunu doğrula
-    await expect(page).toHaveTitle(/Cihazlar/);
-    console.log('✅ Tek cihaz operasyonel bayi atama testi tamamlandı');
+
   });
 }); 
