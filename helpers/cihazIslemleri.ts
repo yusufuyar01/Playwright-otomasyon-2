@@ -309,13 +309,13 @@ if (await basarisizIslemler.isVisible()) {
     const row = rows.nth(i);
     const errorMessage = await row.locator('td').nth(5).textContent() || '';
     // Satırı konsola yazdır
-    console.log(` ✅ ${errorMessage} mesajı göründü`);
+    console.log(` ⚠️✅ ${errorMessage} mesajı göründü`);
   }
   
   console.log('='.repeat(100));
 }
 } catch (error) {
-console.log('❌ Başarısız işlemler Gözükmedi');
+
 }
    await page.waitForTimeout(1000);  
  
@@ -329,7 +329,7 @@ try {
   const pavdenemeRows = page.getByRole('row').filter({ hasText: /PAVDENEME/ });
   const pavDenemeFirstRow = pavdenemeRows.first();
   await pavDenemeFirstRow.getByRole('checkbox').check();
-  console.log(`✅ PAVDENEME cihazı seçildi. (Bayiye atanacak cihaz)`);
+  console.log(`✅ PAVDENEME cihazı seçildi. (Ana Bayiye atanacak cihaz)`);
   } catch (error) {
     console.log('❌ PAVDENEME cihazı seçilemedi:', error);
   } 
@@ -372,13 +372,141 @@ if (await basarisizIslemler.isVisible()) {
     const row = rows.nth(i);
     const errorMessage = await row.locator('td').nth(5).textContent() || '';
     // Satırı konsola yazdır
-    console.log(` ✅ ${errorMessage} mesajı göründü`);
+    console.log(` ⚠️✅ ${errorMessage} mesajı göründü`);
   }
   
   console.log('='.repeat(100));
 }
 } catch (error) {
-console.log('❌ Başarısız işlemler Gözükmedi');
+
+}
+   await page.waitForTimeout(1000);  
+ 
+ } 
+
+
+ // Cihazı bayiye atama işlemi yap2
+export async function cihaziBayiyeAta2(page: Page): Promise<void> {
+
+  // PAVDENEME ile başlayan ilk cihazı seç
+try {
+  const pavdenemeRows = page.getByRole('row').filter({ hasText: /PAVDENEME/ });
+  const pavDenemeFirstRow = pavdenemeRows.first();
+  await pavDenemeFirstRow.getByRole('checkbox').check();
+  console.log(`✅ PAVDENEME cihazı seçildi. (Bayiye atanacak cihaz)`);
+  } catch (error) {
+    console.log('❌ PAVDENEME cihazı seçilemedi:', error);
+  } 
+  
+  
+
+// işlemler dropdownından bayiye ata butonuna tıkla
+await page.getByRole('button', { name: 'İşlemler ' }).click();
+await page.getByRole('button', { name: ' Bayiye Ata' }).click();
+await page.getByRole('combobox').filter({ hasText: /^$/ }).click();
+await page.getByRole('combobox').filter({ hasText: /^$/ }).fill('tes');
+await page.getByRole('option', { name: 'Test Bayi', exact: true }).click();
+await page.getByRole('button', { name: 'Ata' }).click();
+
+
+try {
+// Başarısız işlemler başlığının görünür olmasını bekle
+const basarisizIslemler = page.getByRole('heading', { name: 'Başarısız İşlemler' });
+await basarisizIslemler.waitFor({ state: 'visible', timeout: 1000 });
+// { state: 'visible' }
+if (await basarisizIslemler.isVisible()) {
+  console.log('❌ Başarısız işlemler görüntülendi');
+  
+  // Tablo başlıklarını yazdır
+  const headers = [
+    'Seri Numarası',
+    'Cihaz Adı', 
+    'Cihaz Modeli',
+    'Cihaz Tipi',
+    'Marka',
+    'Error Message'
+  ];
+  console.log('-'.repeat(100));
+  
+  // Tablodaki tüm satırları oku
+  const rows = page.locator('.k-grid-content .k-master-row');
+  const rowCount = await rows.count();
+  
+  for (let i = 0; i < rowCount; i++) {
+    const row = rows.nth(i);
+    const errorMessage = await row.locator('td').nth(5).textContent() || '';
+    // Satırı konsola yazdır
+    console.log(` ⚠️✅ ${errorMessage} mesajı göründü`);
+  }
+  
+  console.log('='.repeat(100));
+}
+} catch (error) {
+
+}
+   await page.waitForTimeout(1000);  
+ 
+ } 
+
+
+ // Cihazı bayiye atama işlemi yap3
+export async function cihaziBayiyeAta3(page: Page): Promise<void> {
+
+  // PAVDENEME ile başlayan ilk cihazı seç
+try {
+  const pavdenemeRows = page.getByRole('row').filter({ hasText: /PAVDENEME/ });
+  const pavDenemeFirstRow = pavdenemeRows.first();
+  await pavDenemeFirstRow.getByRole('checkbox').check();
+  console.log(`✅ PAVDENEME cihazı seçildi. (Alt Bayiye atanacak cihaz)`);
+  } catch (error) {
+    console.log('❌ PAVDENEME cihazı seçilemedi:', error);
+  } 
+  
+  
+
+// işlemler dropdownından bayiye ata butonuna tıkla
+await page.getByRole('button', { name: 'İşlemler ' }).click();
+await page.getByRole('button', { name: ' Bayiye Ata' }).click();
+await page.getByRole('combobox').filter({ hasText: /^$/ }).click();
+await page.getByRole('combobox').filter({ hasText: /^$/ }).fill('tes');
+await page.getByRole('option', { name: 'TEST', exact: true }).click();
+await page.getByRole('button', { name: 'Ata' }).click();
+
+
+try {
+// Başarısız işlemler başlığının görünür olmasını bekle
+const basarisizIslemler = page.getByRole('heading', { name: 'Başarısız İşlemler' });
+await basarisizIslemler.waitFor({ state: 'visible', timeout: 1000 });
+// { state: 'visible' }
+if (await basarisizIslemler.isVisible()) {
+  console.log('❌ Başarısız işlemler görüntülendi');
+  
+  // Tablo başlıklarını yazdır
+  const headers = [
+    'Seri Numarası',
+    'Cihaz Adı', 
+    'Cihaz Modeli',
+    'Cihaz Tipi',
+    'Marka',
+    'Error Message'
+  ];
+  console.log('-'.repeat(100));
+  
+  // Tablodaki tüm satırları oku
+  const rows = page.locator('.k-grid-content .k-master-row');
+  const rowCount = await rows.count();
+  
+  for (let i = 0; i < rowCount; i++) {
+    const row = rows.nth(i);
+    const errorMessage = await row.locator('td').nth(5).textContent() || '';
+    // Satırı konsola yazdır
+    console.log(` ⚠️✅ ${errorMessage} mesajı göründü`);
+  }
+  
+  console.log('='.repeat(100));
+}
+} catch (error) {
+
 }
    await page.waitForTimeout(1000);  
  
@@ -434,13 +562,76 @@ if (await basarisizIslemler.isVisible()) {
     const row = rows.nth(i);
     const errorMessage = await row.locator('td').nth(5).textContent() || '';
     // Satırı konsola yazdır
-    console.log(` ✅ ${errorMessage} mesajı göründü`);
+    console.log(` ⚠️✅ ${errorMessage} mesajı göründü`);
   }
   
   console.log('='.repeat(100));
 }
 } catch (error) {
-console.log('❌ Başarısız işlemler Gözükmedi');
+
+}
+   await page.waitForTimeout(1000);  
+ 
+ } 
+
+
+
+
+ // Cihazı operasyonel bayiye boş şekilde atama işlemi yap
+ export async function cihaziOperasyonelBayiyeBoşAta(page: Page): Promise<void> {
+
+  // PAVDENEME ile başlayan ilk cihazı seç
+try {
+  const pavdenemeRows = page.getByRole('row').filter({ hasText: /PAVDENEME/ });
+  const pavDenemeFirstRow = pavdenemeRows.first();
+  await pavDenemeFirstRow.getByRole('checkbox').check();
+  console.log(`✅ PAVDENEME cihazı seçildi. (Operasyonel Bayiye boş şekilde atanacak cihaz)`);
+  } catch (error) {
+    console.log('❌ PAVDENEME cihazı seçilemedi:', error);
+  } 
+  
+  
+
+// işlemler dropdownından operasyonel bayiye ata butonuna tıkla
+await page.getByRole('button', { name: 'İşlemler ' }).click();
+await page.getByRole('button', { name: ' Operasyonel Bayiyi Ata' }).click();
+await page.getByText('Seçiniz...').click();
+await page.getByRole('button', { name: 'Ata' }).click();
+
+try {
+// Başarısız işlemler başlığının görünür olmasını bekle
+const basarisizIslemler = page.getByRole('heading', { name: 'Başarısız İşlemler' });
+await basarisizIslemler.waitFor({ state: 'visible', timeout: 1000 });
+// { state: 'visible' }
+if (await basarisizIslemler.isVisible()) {
+  console.log('❌ Başarısız işlemler görüntülendi');
+  
+  // Tablo başlıklarını yazdır
+  const headers = [
+    'Seri Numarası',
+    'Cihaz Adı', 
+    'Cihaz Modeli',
+    'Cihaz Tipi',
+    'Marka',
+    'Error Message'
+  ];
+  console.log('-'.repeat(100));
+  
+  // Tablodaki tüm satırları oku
+  const rows = page.locator('.k-grid-content .k-master-row');
+  const rowCount = await rows.count();
+  
+  for (let i = 0; i < rowCount; i++) {
+    const row = rows.nth(i);
+    const errorMessage = await row.locator('td').nth(5).textContent() || '';
+    // Satırı konsola yazdır
+    console.log(` ⚠️ ${errorMessage} mesajı göründü`);
+  }
+  
+  console.log('='.repeat(100));
+}
+} catch (error) {
+
 }
    await page.waitForTimeout(1000);  
  

@@ -5,7 +5,7 @@ import { rastgeleString } from '../../helpers/stringUret';
 import { ePostaUret } from '../../helpers/ePostaUret';
 import { telNoUret } from '../../helpers/telNoUret';
 import { zoom } from '../../helpers/zoom';
-import { cihazEkle, cihazGuncelle, cihazSil , cihazUyeIseyerindenGeriAl, cihazUyeIseyerineAta, cihazlariBayiyeAta, cihazlariBayidenGeriAl, cihaziBayiyeAta, cihaziOperasyonelBayiyeAta, cihaziBayidenGeriAl} from '../../helpers/cihazIslemleri';
+import { cihazEkle, cihazGuncelle, cihazSil , cihazUyeIseyerindenGeriAl, cihazUyeIseyerineAta, cihazlariBayiyeAta, cihazlariBayidenGeriAl, cihaziBayiyeAta, cihaziOperasyonelBayiyeAta, cihaziBayidenGeriAl, cihaziBayiyeAta2, cihaziBayiyeAta3, cihaziOperasyonelBayiyeBoşAta} from '../../helpers/cihazIslemleri';
 
 
 test('Deneme', async ({ page }) => {
@@ -27,16 +27,27 @@ test('Deneme', async ({ page }) => {
    await page.waitForTimeout(2000);
 
 
+   // cihaz ekleme
+   await cihazEkle(page);
+
+   // cihazı bayiye ata
+   await cihaziBayiyeAta(page);
+
+   // cihazı bayiye ata2
+   await cihaziBayiyeAta2(page);
+
+  // cihazı bayiye ata3
+  await cihaziBayiyeAta3(page);
+
+   // operasyonel bayiye ata
+   await cihaziOperasyonelBayiyeAta(page);
+
+     // operasyonel bayiye boş ata
+  await cihaziOperasyonelBayiyeBoşAta(page);
 
   // Cihaz silme
   await cihazSil(page);
-  await cihazSil(page);
-  await cihazSil(page);
-  await cihazSil(page);
-  await cihazSil(page);
-  await cihazSil(page);
-  await cihazSil(page);
-  await cihazSil(page);
+
 
 
 
