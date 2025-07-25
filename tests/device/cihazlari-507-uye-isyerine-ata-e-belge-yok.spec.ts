@@ -130,17 +130,8 @@ try {
        const modal = page.locator('modal-container[role="dialog"]');
        await modal.waitFor({ state: 'hidden', timeout: 5000 });
        
-       console.log('✅ Modal başarıyla kapatıldı');
      } catch (error) {
        console.log('⚠️ Modal kapatma hatası:', error);
-       // Alternatif kapatma yöntemi
-       try {
-         await page.keyboard.press('Escape');
-         await page.waitForTimeout(1000);
-         console.log('✅ Modal Escape tuşu ile kapatıldı');
-       } catch (escapeError) {
-         console.log('❌ Modal kapatılamadı:', escapeError);
-       }
      }
 
     
@@ -162,7 +153,6 @@ try {
     const modal2 = page.locator('modal-container[role="dialog"]');
     await modal2.waitFor({ state: 'hidden', timeout: 5000 });
     
-    console.log('✅ İkinci modal başarıyla kapatıldı');
   } catch (error) {
     console.log('⚠️ İkinci modal kapatma hatası:', error);
     // Alternatif kapatma yöntemi

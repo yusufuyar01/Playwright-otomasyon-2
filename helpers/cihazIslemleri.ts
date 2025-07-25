@@ -294,10 +294,17 @@ export async function UyeIseyerineAta509(page: Page): Promise<void> {
    await page.getByRole('button', { name: 'İşlemler ' }).click();
    await page.getByRole('button', { name: ' Üye İşyerine Ata' }).click();
  
- 
- 
-   
    await page.waitForTimeout(1000);  
+   // Seçtiğiniz cihazların bayileri farklıdır mesajını kontrol et
+   try {
+    const bayiFarkliMesaji = page.getByText('Seçtiğiniz cihazların bayileri farklıdır. Onaylıyorum.');
+    if (await bayiFarkliMesaji.isVisible()) {
+      console.log("'⚠️  Seçtiğiniz cihazların bayileri farklıdır.' mesajı ekranda görüldü");
+      await page.getByText('Onaylıyorum.').click();
+    }
+  } catch (error) {
+   console.log("❌ '⚠️Seçtiğiniz cihazların bayileri farklıdır.' mesajı ekranda görülmedi"); 
+  }
  
    await page.locator('kendo-searchbar').getByRole('combobox').fill('2365236523');;
    await page.getByRole('option', { name: 'TESTPP-' }).click();
@@ -310,8 +317,9 @@ export async function UyeIseyerineAta509(page: Page): Promise<void> {
    await page.locator('ot-data-entry-template').filter({ hasText: 'Environment' }).getByLabel('Select').click();
    await page.getByRole('option', { name: 'Demo' }).click();
    await page.getByRole('button', { name: 'Ata' }).click();
- 
+
    await page.waitForTimeout(1000);
+
  
  } 
 
@@ -358,7 +366,7 @@ try {
   const pavdenemeRows = page.getByRole('row').filter({ hasText: /PAVDENEME/ });
   const pavDenemeFirstRow = pavdenemeRows.first();
   await pavDenemeFirstRow.getByRole('checkbox').check();
-  console.log(`✅ PAVDENEME cihazı seçildi. (Bayiye atanacak cihaz)`);
+  console.log(`✅ PAVDENEME cihazı seçildi. (Ana Bayiye atanacak cihaz)`);
   } catch (error) {
     console.log('❌ PAVDENEME cihazı seçilemedi:', error);
   } 
@@ -368,7 +376,7 @@ try {
     const pavguncelleRows = page.getByRole('row').filter({ hasText: /PAVGUNCELLE/ });
     const pavguncelleFirstRow = pavguncelleRows.first();
     await pavguncelleFirstRow.getByRole('checkbox').check();
-    console.log(`✅ PAVGUNCELLE cihazı seçildi. (Bayiye atanacak cihaz)`);
+    console.log(`✅ PAVGUNCELLE cihazı seçildi. (Ana Bayiye atanacak cihaz)`);
   } catch (error) {
     console.log('❌ PAVGUNCELLE cihazı seçilemedi:', error);
   } 
@@ -504,7 +512,7 @@ try {
   const pavdenemeRows = page.getByRole('row').filter({ hasText: /PAVDENEME/ });
   const pavDenemeFirstRow = pavdenemeRows.first();
   await pavDenemeFirstRow.getByRole('checkbox').check();
-  console.log(`✅ PAVDENEME cihazı seçildi. (Bayiye atanacak cihaz)`);
+  console.log(`✅ PAVDENEME cihazı seçildi. (Alt Bayiye atanacak cihaz)`);
   } catch (error) {
     console.log('❌ PAVDENEME cihazı seçilemedi:', error);
   } 
@@ -514,7 +522,7 @@ try {
     const pavguncelleRows = page.getByRole('row').filter({ hasText: /PAVGUNCELLE/ });
     const pavguncelleFirstRow = pavguncelleRows.first();
     await pavguncelleFirstRow.getByRole('checkbox').check();
-    console.log(`✅ PAVGUNCELLE cihazı seçildi. (Bayiye atanacak cihaz)`);
+    console.log(`✅ PAVGUNCELLE cihazı seçildi. (Alt Bayiye atanacak cihaz)`);
   } catch (error) {
     console.log('❌ PAVGUNCELLE cihazı seçilemedi:', error);
   } 
@@ -572,7 +580,7 @@ if (await basarisizIslemler.isVisible()) {
 export async function cihaziBayiyeAta(page: Page): Promise<void> {
 
   // PAVDENEME ile başlayan ilk cihazı seç
-try {
+  try {
   const pavdenemeRows = page.getByRole('row').filter({ hasText: /PAVDENEME/ });
   const pavDenemeFirstRow = pavdenemeRows.first();
   await pavDenemeFirstRow.getByRole('checkbox').check();
@@ -588,7 +596,7 @@ await page.getByRole('button', { name: 'İşlemler ' }).click();
 await page.getByRole('button', { name: ' Bayiye Ata' }).click();
 await page.getByRole('combobox').filter({ hasText: /^$/ }).click();
 await page.getByRole('combobox').filter({ hasText: /^$/ }).fill('tes');
-await page.getByRole('option', { name: 'TEST', exact: true }).click();
+await page.getByRole('option', { name: 'Test Bayi Demo', exact: true }).click();
 await page.getByRole('button', { name: 'Ata' }).click();
 
 
@@ -707,8 +715,6 @@ try {
   } catch (error) {
     console.log('❌ PAVDENEME cihazı seçilemedi:', error);
   } 
-  
-  
 
 // işlemler dropdownından bayiye ata butonuna tıkla
 await page.getByRole('button', { name: 'İşlemler ' }).click();
@@ -884,8 +890,6 @@ if (await basarisizIslemler.isVisible()) {
  } 
 
 
-
- 
  // Cihazları operasyonel bayiye atama işlemi yap
  export async function cihazlariOperasyonelBayiyeAta(page: Page): Promise<void> {
 
