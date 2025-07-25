@@ -246,11 +246,21 @@ export async function UyeIseyerineAta507(page: Page): Promise<void> {
    // işlemler dropdownından üye işyerine ata butonuna tıkla
    await page.getByRole('button', { name: 'İşlemler ' }).click();
    await page.getByRole('button', { name: ' Üye İşyerine Ata' }).click();
- 
- 
- 
    
    await page.waitForTimeout(1000);  
+
+    // Seçtiğiniz cihazların bayileri farklıdır mesajını kontrol et
+    try {
+      const bayiFarkliMesaji = page.getByText('Seçtiğiniz cihazların bayileri farklıdır. Onaylıyorum.');
+      if (await bayiFarkliMesaji.isVisible()) {
+        console.log("'⚠️  Seçtiğiniz cihazların bayileri farklıdır.' mesajı ekranda görüldü");
+        await page.getByText('Onaylıyorum.').click();
+      }else{
+        console.log("❌ '⚠️Seçtiğiniz cihazların bayileri farklıdır.' mesajı ekranda görülmedi"); 
+      }
+    } catch (error) {
+    
+    }
  
    await page.locator('kendo-searchbar').getByRole('combobox').fill('er');;
    await page.getByRole('option', { name: 'Erdal Bakkal-' }).click();
@@ -295,15 +305,18 @@ export async function UyeIseyerineAta509(page: Page): Promise<void> {
    await page.getByRole('button', { name: ' Üye İşyerine Ata' }).click();
  
    await page.waitForTimeout(1000);  
+
    // Seçtiğiniz cihazların bayileri farklıdır mesajını kontrol et
    try {
     const bayiFarkliMesaji = page.getByText('Seçtiğiniz cihazların bayileri farklıdır. Onaylıyorum.');
     if (await bayiFarkliMesaji.isVisible()) {
       console.log("'⚠️  Seçtiğiniz cihazların bayileri farklıdır.' mesajı ekranda görüldü");
       await page.getByText('Onaylıyorum.').click();
+    }else{
+      console.log("❌ '⚠️Seçtiğiniz cihazların bayileri farklıdır.' mesajı ekranda görülmedi"); 
     }
   } catch (error) {
-   console.log("❌ '⚠️Seçtiğiniz cihazların bayileri farklıdır.' mesajı ekranda görülmedi"); 
+    
   }
  
    await page.locator('kendo-searchbar').getByRole('combobox').fill('2365236523');;
