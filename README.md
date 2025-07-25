@@ -153,8 +153,11 @@ Yazılan bağlantıyı bir pencerede açar ve otomasyon için gerekli olan locat
 
 25- npx playwright test tests/device/uye-isyerine-atanmis-cihazlari-uye-isyerine-ata.spec.ts --headed
 
-26- npx playwright test tests/device/cihazlari-507-uye-isyerine-ata.spec.ts --headed
+26- npx playwright test tests/device/cihazlari-507-uye-isyerine-ata-e-belge-yok.spec.ts --headed
 
+27- npx playwright test tests/device/cihazlari-507-uye-isyerine-ata-e-belge-var.spec.ts --headed
+
+28- playwright test tests/device/cihazlari-509-uye-isyerine-ata.spec.ts --headed
 
 
 

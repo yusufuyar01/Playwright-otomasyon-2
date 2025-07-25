@@ -27,26 +27,21 @@ test('Deneme', async ({ page }) => {
    await page.waitForTimeout(2000);
 
 
-   // cihaz ekleme
-   await cihazEkle(page);
-
-   // cihazı bayiye ata
-   await cihaziBayiyeAta(page);
-
-   // cihazı bayiye ata2
-   await cihaziBayiyeAta2(page);
-
-  // cihazı bayiye ata3
-  await cihaziBayiyeAta3(page);
-
-   // operasyonel bayiye ata
-   await cihaziOperasyonelBayiyeAta(page);
-
-     // operasyonel bayiye boş ata
-  await cihaziOperasyonelBayiyeBoşAta(page);
 
   // Cihaz silme
   await cihazSil(page);
+  await cihazSil(page);
+  await cihazSil(page);
+  await cihazSil(page);
+  await cihazSil(page);
+  await cihazSil(page);
+  await cihazSil(page);
+  await cihazSil(page);
+  await cihazSil(page);
+  await cihazSil(page);
+  await cihazSil(page);
+  await cihazSil(page);
+
 
 
 

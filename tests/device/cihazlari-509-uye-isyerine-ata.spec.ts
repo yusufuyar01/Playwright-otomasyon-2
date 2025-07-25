@@ -1,9 +1,9 @@
 import { test, expect } from '@playwright/test';
 import { login } from '../../helpers/login';
 import { zoom } from '../../helpers/zoom';
-import { cihazEkle, cihazGuncelle, cihazlariBayidenGeriAl, cihazlariBayiyeAta, cihazlariBayiyeAta2, cihazlariBayiyeAta3, cihazSil, cihazUyeIseyerindenGeriAl, UyeIseyerineAta507 } from '../../helpers/cihazIslemleri';
+import { cihazEkle, cihazGuncelle, cihazlariBayidenGeriAl, cihazlariBayiyeAta, cihazlariBayiyeAta2, cihazlariBayiyeAta3, cihazSil, cihazUyeIseyerindenGeriAl, UyeIseyerineAta509 } from '../../helpers/cihazIslemleri';
 
-test('Cihazları 507 Üye İşyerine Atama', async ({ page }) => {
+test('Cihazları 509 Üye İşyerine Atama', async ({ page }) => {
 
   // Önce sisteme giriş yap
   await login(page);
@@ -33,8 +33,8 @@ test('Cihazları 507 Üye İşyerine Atama', async ({ page }) => {
   await cihazlariBayiyeAta2(page);
   await cihazlariBayiyeAta3(page);
 
-  // 507 üye işyerine cihaz atama işlemi
-  await UyeIseyerineAta507(page);
+  // 509 üye işyerine cihaz atama işlemi
+  await UyeIseyerineAta509(page);
 
   // cihazları üye işyerinden geri al
   await cihazUyeIseyerindenGeriAl(page);

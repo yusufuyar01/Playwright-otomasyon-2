@@ -127,6 +127,13 @@ export async function cihazGuncelle(page: Page): Promise<string> {
 export async function cihazSil(page: Page): Promise<void> {
   await page.waitForTimeout(2000); // Tablo yüklenmesi için daha fazla bekle
   
+  // Modal açık mı kontrol et
+  const modal = page.locator('modal-container[role="dialog"]');
+  if (await modal.isVisible()) {
+    console.log('⚠️ Modal açık, cihaz silme işlemi bekletiliyor...');
+    await modal.waitFor({ state: 'hidden', timeout: 10000 });
+    console.log('✅ Modal kapandı, cihaz silme işlemine devam ediliyor...');
+  }
   
   // PAV ile başlayan cihazları bul
   const pavRows = page.locator('tr').filter({ hasText: /PAV/ });
@@ -222,7 +229,7 @@ export async function UyeIseyerineAta507(page: Page): Promise<void> {
    const pavdenemeRows = page.getByRole('row').filter({ hasText: /PAVDENEME/ });
    const pavDenemeFirstRow = pavdenemeRows.first();
    await pavDenemeFirstRow.getByRole('checkbox').check();
-   console.log(`✅ PAVDENEME cihazı seçildi. (Üye işyerine atanacak cihaz)`);
+   console.log(`✅ PAVDENEME cihazı seçildi. (507 Üye işyerine atanacak cihaz)`);
    } catch (error) {
      console.log('❌ PAVDENEME cihazı seçilemedi:', error);
    } 
@@ -232,7 +239,7 @@ export async function UyeIseyerineAta507(page: Page): Promise<void> {
      const pavguncelleRows = page.getByRole('row').filter({ hasText: /PAVGUNCELLE/ });
      const pavguncelleFirstRow = pavguncelleRows.first();
      await pavguncelleFirstRow.getByRole('checkbox').check();
-     console.log(`✅ PAVGUNCELLE cihazı seçildi. (Üye işyerine atanacak cihaz)`);
+     console.log(`✅ PAVGUNCELLE cihazı seçildi. (507 Üye işyerine atanacak cihaz)`);
    } catch (error) {
      console.log('❌ PAVGUNCELLE cihazı seçilemedi:', error);
    } 
@@ -253,6 +260,53 @@ export async function UyeIseyerineAta507(page: Page): Promise<void> {
    await page.getByRole('option', { name: 'No PF' }).click();
    await page.locator('ot-data-entry-template').filter({ hasText: 'Tebliğ Tipi' }).getByLabel('Select').click();
    await page.getByRole('option', { name: '507' }).click();
+   await page.locator('ot-data-entry-template').filter({ hasText: 'Environment' }).getByLabel('Select').click();
+   await page.getByRole('option', { name: 'Demo' }).click();
+   await page.getByRole('button', { name: 'Ata' }).click();
+ 
+   await page.waitForTimeout(1000);
+ 
+ } 
+
+// Cihazı 509 üye işyerine atama işlemi yap
+export async function UyeIseyerineAta509(page: Page): Promise<void> {
+
+  // PAVDENEME ile başlayan ilk cihazı seç
+  try {
+   const pavdenemeRows = page.getByRole('row').filter({ hasText: /PAVDENEME/ });
+   const pavDenemeFirstRow = pavdenemeRows.first();
+   await pavDenemeFirstRow.getByRole('checkbox').check();
+   console.log(`✅ PAVDENEME cihazı seçildi. (509 Üye işyerine atanacak cihaz)`);
+   } catch (error) {
+     console.log('❌ PAVDENEME cihazı seçilemedi:', error);
+   } 
+   
+   // PAVGUNCELLE ile başlayan ilk cihazı seç  
+   try {
+     const pavguncelleRows = page.getByRole('row').filter({ hasText: /PAVGUNCELLE/ });
+     const pavguncelleFirstRow = pavguncelleRows.first();
+     await pavguncelleFirstRow.getByRole('checkbox').check();
+     console.log(`✅ PAVGUNCELLE cihazı seçildi. (509 Üye işyerine atanacak cihaz)`);
+   } catch (error) {
+     console.log('❌ PAVGUNCELLE cihazı seçilemedi:', error);
+   } 
+   // işlemler dropdownından üye işyerine ata butonuna tıkla
+   await page.getByRole('button', { name: 'İşlemler ' }).click();
+   await page.getByRole('button', { name: ' Üye İşyerine Ata' }).click();
+ 
+ 
+ 
+   
+   await page.waitForTimeout(1000);  
+ 
+   await page.locator('kendo-searchbar').getByRole('combobox').fill('2365236523');;
+   await page.getByRole('option', { name: 'TESTPP-' }).click();
+   await page.locator('ot-data-entry-template').filter({ hasText: 'Şube' }).getByLabel('Select').click();
+   await page.getByRole('option', { name: 'Central Branch' }).click();
+   await page.locator('ot-data-entry-template').filter({ hasText: 'PF' }).getByLabel('Select').click();
+   await page.getByRole('option', { name: 'No PF' }).click();
+   await page.locator('ot-data-entry-template').filter({ hasText: 'Tebliğ Tipi' }).getByLabel('Select').click();
+   await page.getByRole('option', { name: '509' }).click();
    await page.locator('ot-data-entry-template').filter({ hasText: 'Environment' }).getByLabel('Select').click();
    await page.getByRole('option', { name: 'Demo' }).click();
    await page.getByRole('button', { name: 'Ata' }).click();
