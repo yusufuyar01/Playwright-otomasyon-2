@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 import { login } from '../../helpers/login';
-import { cihazEkle, cihaziBayiyeAta, cihazSil, cihaziBayidenGeriAl, cihaziOperasyonelBayiyeAta, cihaziOperasyonelBayiyeBoşAta, cihaziBayiyeAta2, cihaziBayiyeAta3 } from '../../helpers/cihazIslemleri';
+import { cihazEkle, cihaziBayiyeAta, cihazSil, cihaziOperasyonelBayiyeAta, cihaziOperasyonelBayiyeBoşAta, cihaziBayiyeAta2, cihaziBayiyeAta3 } from '../../helpers/cihazIslemleri';
 import { zoom } from '../../helpers/zoom';
 
 test('Tek cihazı operasyonel bayiye atama işlemi', async ({ page }) => {

@@ -28,19 +28,27 @@ test('Deneme', async ({ page }) => {
 
 
 
+   // cihaz ekle
+   await cihazEkle(page);
+   await cihazEkle(page);
+
+
+   
+
+
   // Cihaz silme
-  await cihazSil(page);
-  await cihazSil(page);
-  await cihazSil(page);
-  await cihazSil(page);
-  await cihazSil(page);
-  await cihazSil(page);
-  await cihazSil(page);
-  await cihazSil(page);
-  await cihazSil(page);
-  await cihazSil(page);
-  await cihazSil(page);
-  await cihazSil(page);
+  // await cihazSil(page);
+  // await cihazSil(page);
+  // await cihazSil(page);
+  // await cihazSil(page);
+  // await cihazSil(page);
+  // await cihazSil(page);
+  // await cihazSil(page);
+  // await cihazSil(page);
+  // await cihazSil(page);
+  // await cihazSil(page);
+  // await cihazSil(page);
+  // await cihazSil(page);
 
 
 

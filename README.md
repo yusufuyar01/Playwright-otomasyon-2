@@ -162,6 +162,10 @@ Yazılan bağlantıyı bir pencerede açar ve otomasyon için gerekli olan locat
 29- npx playwright test tests/device/cihazlari-507-uye-isyerine-ata-e-belge-yok.spec.ts --headed
 
 
+
+/techpos
+30-
+
     npx playwright codegen https://overpayresellerdemo.overtech.com.tr/Home/Dashboard/Index
 
 

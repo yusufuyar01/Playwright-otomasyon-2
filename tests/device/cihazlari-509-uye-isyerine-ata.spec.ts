@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
 import { login } from '../../helpers/login';
 import { zoom } from '../../helpers/zoom';
-import { cihazEkle, cihazGuncelle, cihaziBayiyeAta, cihazlariBayidenGeriAl, cihazlariBayiyeAta, cihazlariBayiyeAta2, cihazlariBayiyeAta3, cihazSil, cihazUyeIseyerindenGeriAl, UyeIseyerineAta509 } from '../../helpers/cihazIslemleri';
+import { cihazEkle, cihazGuncelle, cihaziBayiyeAta, cihazSil, cihazUyeIseyerindenGeriAl, UyeIseyerineAta509 } from '../../helpers/cihazIslemleri';
 
 test('Cihazları 509 Üye İşyerine Atama', async ({ page }) => {
 

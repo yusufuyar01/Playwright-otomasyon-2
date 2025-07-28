@@ -1,6 +1,5 @@
 import { test, expect } from '@playwright/test';
 import { login } from '../../helpers/login';
-import { ePostaUret } from '../../helpers/ePostaUret';
 import { telNoUret } from '../../helpers/telNoUret';
 import { rastgeleString } from '../../helpers/stringUret';
 import { zoom } from '../../helpers/zoom';

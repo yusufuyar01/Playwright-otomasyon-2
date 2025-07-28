@@ -1,9 +1,6 @@
 import { test, expect } from '@playwright/test';
 import { login } from '../../helpers/login';
-import { vknUret } from '../../helpers/vknUret';
 import { rastgeleString } from '../../helpers/stringUret';
-import { ePostaUret } from '../../helpers/ePostaUret';
-import { telNoUret } from '../../helpers/telNoUret';
 import { zoom } from '../../helpers/zoom';
 
 test('Detay E-Belge Ayarları', async ({ page }) => {
