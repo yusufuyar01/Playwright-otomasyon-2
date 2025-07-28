@@ -166,6 +166,12 @@ Yazılan bağlantıyı bir pencerede açar ve otomasyon için gerekli olan locat
 /techpos
 30-
 
+/salesTerminal
+
+- npx playwright test tests/sales-terminal/terminal-guncelle.spec.ts --headed
+
+- npx playwright test tests/sales-terminal/detay-mediator-islemleri.spec.ts --headed
+
     npx playwright codegen https://overpayresellerdemo.overtech.com.tr/Home/Dashboard/Index
 
 
