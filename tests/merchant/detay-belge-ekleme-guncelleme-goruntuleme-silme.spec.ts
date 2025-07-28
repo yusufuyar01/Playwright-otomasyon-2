@@ -1,6 +1,5 @@
 import { test, expect } from '@playwright/test';
 import { login } from '../../helpers/login';
-import { rastgeleString } from '../../helpers/stringUret';
 import { zoom } from '../../helpers/zoom';
 
 test('Detay Belge Ekleme, Güncelleme, Görüntüleme ve Silme', async ({ page }) => {
