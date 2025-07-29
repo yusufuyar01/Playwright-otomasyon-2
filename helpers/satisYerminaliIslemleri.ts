@@ -129,4 +129,57 @@ export async function parametreSil(page: Page) {
      await page.waitForTimeout(1000);
 }
 
+export async function dokumanOnEkiEkle(page: Page) {
+     await page.getByRole('button', { name: '+ Yeni' }).click();
+     await page.locator('ot-data-entry-template').filter({ hasText: 'Belge Türü' }).locator('span').first().click();
+     await page.getByRole('option', { name: 'E-Fatura' }).click();
+     await page.getByRole('dialog').getByRole('textbox').click();
+     await page.getByRole('dialog').getByRole('textbox').fill('123');
+     await page.getByRole('button', { name: 'Oluştur' }).click();
+
+     try {
+          const basarılıMesajı = page.getByText('Başarılı Terminal Document');
+          await expect(basarılıMesajı).toBeVisible();
+          await basarılıMesajı.click();
+          console.log('✅ Terminal Doküman Ön Eki başarıyla eklendi');
+     } catch (error) {
+          console.log('❌ Terminal Doküman Ön Eki eklenemedi');
+     }
+     await page.waitForTimeout(1000);
+}
+
+export async function dokumanOnEkiGuncelle(page: Page) {
+     await page.getByLabel('Terminal Doküman Ön Eki').getByRole('button', { name: '' }).click();
+     await page.getByText('E-Fatura').click();
+     await page.getByRole('option', { name: 'E-Arşiv' }).click();
+     await page.getByRole('dialog').getByRole('textbox').click();
+     await page.getByRole('dialog').getByRole('textbox').fill('456');
+     await page.getByRole('button', { name: 'Güncelle' }).click();
+
+  try {
+          const basarılıMesajı = page.getByText('Başarılı Terminal Document');
+          await expect(basarılıMesajı).toBeVisible();
+          await basarılıMesajı.click();
+          console.log('✅ Terminal Doküman Ön Eki başarıyla güncellendi');
+     } catch (error) {
+          console.log('❌ Terminal Doküman Ön Eki güncellenemedi');
+     }
+     await page.waitForTimeout(1000);
+}    
+
+export async function dokumanOnEkiSil(page: Page) {
+     await page.getByLabel('Terminal Doküman Ön Eki').getByRole('button', { name: '' }).click();
+  await page.getByRole('button', { name: 'Sil' }).click();
+  await page.getByRole('button', { name: 'Evet' }).click();
+
+  try {
+          const basarılıMesajı = page.getByText('Başarılı Terminal Document');
+          await expect(basarılıMesajı).toBeVisible();
+          await basarılıMesajı.click();
+          console.log('✅ Terminal Doküman Ön Eki başarıyla silindi');
+     } catch (error) {
+          console.log('❌ Terminal Doküman Ön Eki silinemedi');
+     }
+     await page.waitForTimeout(1000);
+}
 
