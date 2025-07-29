@@ -24,9 +24,6 @@ test('Satışlarım Filtreleme İşlemleri', async ({ page }) => {
         weekday: 'long'
     });
     console.log(`📅 20 gün öncesi: ${yirmiGunOncesiString}`);
-    
-    
-    
 
     // Ay numarasını ay adına çeviren fonksiyon
     const ayAdiGetirTam = (ayNumarasi: number): string => {
@@ -44,12 +41,7 @@ test('Satışlarım Filtreleme İşlemleri', async ({ page }) => {
             'Perşembe', 'Cuma', 'Cumartesi'
         ];
         return gunler[gunNumarasi];
-    };
-    
-   
-    
-
-        
+    };  
 
     // Önce sisteme giriş yap
     await login(page);
@@ -82,9 +74,6 @@ test('Satışlarım Filtreleme İşlemleri', async ({ page }) => {
     
     await page.getByTitle(titleText).locator('span').click();
     await page.waitForTimeout(1000);
-
-   
-   
    
     await page.locator('ot-data-entry-template').filter({ hasText: 'Bitiş Tarihi' }).getByLabel('Takvimden seç').click();
     await page.getByRole('button', { name: 'Bugün' }).click();
@@ -118,12 +107,6 @@ test('Satışlarım Filtreleme İşlemleri', async ({ page }) => {
         await page.pause();
         return;
     }
-
-    
-        
-
-
-
 
     // Belirtilen hücrelerdeki değerleri oku ve kontrol et
     const cells = [
