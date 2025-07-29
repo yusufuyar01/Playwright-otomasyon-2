@@ -1,9 +1,55 @@
 import { test, expect } from '@playwright/test';
 import { login } from '../../helpers/login';
 import { zoom } from '../../helpers/zoom';
-import { terminaliGetir } from '../../helpers/satisYerminaliIslemleri';
 
 test('Satışlarım Filtreleme İşlemleri', async ({ page }) => {
+
+    // Bugünün tarihini konsola yazdır
+    const bugun = new Date();
+    const tarihString = bugun.toLocaleDateString('tr-TR', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+        weekday: 'long'
+    });
+    console.log(`📅 Bugünün tarihi: ${tarihString}`);
+
+    // 20 gün öncesinin tarihini konsola yazdır
+    const yirmiGunOncesi = new Date();
+    yirmiGunOncesi.setDate(bugun.getDate() - 20);
+    const yirmiGunOncesiString = yirmiGunOncesi.toLocaleDateString('tr-TR', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+        weekday: 'long'
+    });
+    console.log(`📅 20 gün öncesi: ${yirmiGunOncesiString}`);
+    
+    
+    
+
+    // Ay numarasını ay adına çeviren fonksiyon
+    const ayAdiGetirTam = (ayNumarasi: number): string => {
+        const aylar = [
+            'Ocak', 'Şubat', 'Mart', 'Nisan', 'Mayıs', 'Haziran',
+            'Temmuz', 'Ağustos', 'Eylül', 'Ekim', 'Kasım', 'Aralık'
+        ];
+        return aylar[ayNumarasi - 1];
+    };
+    
+    // Gün numarasını gün adına çeviren fonksiyon
+    const gunAdiGetir = (gunNumarasi: number): string => {
+        const gunler = [
+            'Pazar', 'Pazartesi', 'Salı', 'Çarşamba', 
+            'Perşembe', 'Cuma', 'Cumartesi'
+        ];
+        return gunler[gunNumarasi];
+    };
+    
+   
+    
+
+        
 
     // Önce sisteme giriş yap
     await login(page);
@@ -13,14 +59,35 @@ test('Satışlarım Filtreleme İşlemleri', async ({ page }) => {
 
     await page.getByText('Satış', { exact: true }).click();
     await page.getByRole('link', { name: ' Satışlarım' }).click();
+    await page.waitForTimeout(1000);
 
-    // Tarih filtreleme
+    // Tarih filtreleme - düzeltilmiş versiyon
     await page.locator('ot-data-entry-template').filter({ hasText: 'Başlangıç Tarihi' }).getByLabel('Takvimden seç').click();
-    await page.getByText('Tem', { exact: true }).first().click();
-    await page.getByTitle('1 Temmuz 2025 Salı').locator('span').click();
+
+    // Takvim açıldıktan sonra elementin yüklenmesini bekle
+    await page.waitForSelector('[role="gridcell"]', { state: 'visible' });
+
+    // Tarih string'ini daha basit formatta oluştur (sadece gün)
+    const gun = yirmiGunOncesi.getDate();
+    const ay = yirmiGunOncesi.getMonth() + 1;
+    
+    // Gün adını al
+    const gunAdi = gunAdiGetir(yirmiGunOncesi.getDay());
+    await page.waitForTimeout(1000);
+
+    // Tarih seçimi
+    const titleText = `${gun} ${ayAdiGetirTam(ay)} ${yirmiGunOncesi.getFullYear()} ${gunAdi}`;
+    console.log(`🔍 Seçilecek tarih: "${titleText}"`);
+
+    
+    await page.getByTitle(titleText).locator('span').click();
+    await page.waitForTimeout(1000);
+
+   
+   
+   
     await page.locator('ot-data-entry-template').filter({ hasText: 'Bitiş Tarihi' }).getByLabel('Takvimden seç').click();
-    await page.getByText('Tem', { exact: true }).first().click();
-    await page.getByTitle('31 Temmuz 2025 Perşembe').locator('span').click();
+    await page.getByRole('button', { name: 'Bugün' }).click();
 
     // Seri numarası ve üye işyeri filtreleme
     await page.locator('ot-data-entry-template').filter({ hasText: 'Seri Numarası' }).getByRole('textbox').click();
@@ -36,12 +103,25 @@ test('Satışlarım Filtreleme İşlemleri', async ({ page }) => {
     // "Kayıt bulunamadı" mesajının görünüp görünmediğini kontrol et
     const kayitBulunamadiElement = page.getByText('Kayıt bulunamadı');
     const isKayitBulunamadiVisible = await kayitBulunamadiElement.isVisible();
-    
-    if (isKayitBulunamadiVisible) {
+
+    // "Seçilecek maksimum gün aralığı:" mesajının görünüp görünmediğini kontrol et
+    const gunUyarisi = page.getByText('Seçilecek maksimum gün aralığı:');
+    const isGunUyarisiVisible = await gunUyarisi.isVisible();
+
+    if (isGunUyarisiVisible) {
+        console.log('❌ Seçilecek maksimum gün aralığı: 30');
+        await page.pause();
+        return;
+    }
+    else if (isKayitBulunamadiVisible) {
         console.log('❌ Kayıt bulunamadı');
         await page.pause();
         return;
     }
+
+    
+        
+
 
 
 
