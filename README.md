@@ -163,19 +163,27 @@ Yazılan bağlantıyı bir pencerede açar ve otomasyon için gerekli olan locat
 
 
 
-/techpos
-30-
-
 /salesTerminal
 
-- npx playwright test tests/sales-terminal/terminal-guncelle.spec.ts --headed
+30- npx playwright test tests/sales-terminal/terminal-guncelle.spec.ts --headed
 
-- npx playwright test tests/sales-terminal/detay-mediator-islemleri.spec.ts --headed
+31- npx playwright test tests/sales-terminal/detay-mediator-islemleri.spec.ts --headed
 
-- npx playwright test tests/sales-terminal/detay-dokuman-on-eki-islemleri.spec.ts --headed
+32- npx playwright test tests/sales-terminal/detay-dokuman-on-eki-islemleri.spec.ts --headed
 
-- npx playwright test tests/sales-terminal/satislarim-filtrele.spec.ts --headed
+33- npx playwright test tests/sales-terminal/satislarim-filtrele.spec.ts --headed
 
+
+
+/techpos
+
+34- npx playwright test tests/techpos/grup-ata-ve-terminal-guncelle.spec.ts --headed
+
+35-
+  
+  
+  
+  
     npx playwright codegen https://overpayresellerdemo.overtech.com.tr/Home/Dashboard/Index
 
 
