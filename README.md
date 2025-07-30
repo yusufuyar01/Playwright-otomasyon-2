@@ -179,7 +179,7 @@ Yazılan bağlantıyı bir pencerede açar ve otomasyon için gerekli olan locat
 
 34- npx playwright test tests/techpos/grup-ata-ve-terminal-guncelle.spec.ts --headed
 
-35-
+35- npx playwright test tests/techpos/techpos-islemleri-ekrani-filtre.spec.ts --headed
   
   
   
