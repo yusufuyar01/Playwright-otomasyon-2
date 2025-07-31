@@ -186,6 +186,8 @@ Yazılan bağlantıyı bir pencerede açar ve otomasyon için gerekli olan locat
 37- npx playwright test tests/techpos/batch-ozet-ve-islemler.spec.ts --headed
 
 38- npx playwright test tests/techpos/techpos-grup-ekrani-crud.spec.ts --headed
+
+30- npx playwright test tests/techpos/techpos-terminalde-tanimli-banka-listesi.spec.ts --headed
   
   
   

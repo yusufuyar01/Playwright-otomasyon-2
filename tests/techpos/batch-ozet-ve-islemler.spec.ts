@@ -147,6 +147,7 @@ test('TechPOS - Batch Ekranı Filtre', async ({ page }) => {
     }else{
         await page.locator(`tr:nth-child(${doluSatirNumarasi}) > .k-hierarchy-cell`).click();
     }
+    await page.waitForTimeout(1000);
 
     // Özet tablosundaki belirli hücrenin değerini oku
     try {
