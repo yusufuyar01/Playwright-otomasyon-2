@@ -2,6 +2,7 @@ import { test, expect } from '@playwright/test';
 import { login } from '../../helpers/login';
 import { zoom } from '../../helpers/zoom';
 import { rastgeleString } from '../../helpers/stringUret';
+import { cihazEkle, cihazSil } from '../../helpers/cihazIslemleri';
 
 test('Cihaz Güncelleme', async ({ page }) => {
 
@@ -20,6 +21,9 @@ test('Cihaz Güncelleme', async ({ page }) => {
   // Cihaz İşlemleri menü linkini bul ve tıkla
   const cihazIslemleri = page.getByRole('link', { name: ' Cihaz İşlemleri' });
   await cihazIslemleri.click();
+
+  // Cihaz oluştur
+  await cihazEkle(page);
 
   // ===== ADIM 3: Mevcut Cihazı Bulma ve Seçme =====
   // PAVDENEME ile başlayan cihazları bul ve ana bayi değeri boş olan birini seç
@@ -85,6 +89,9 @@ test('Cihaz Güncelleme', async ({ page }) => {
   } catch (error) {
     console.log('⚠️ Başarı mesajı görünmedi, cihaz güncellenmiş olabilir');
   }
+
+  // cihaz silme
+  await cihazSil(page);
 
   // Test sonunda ekranın kapanmasını engellemek için pause
   await page.pause();

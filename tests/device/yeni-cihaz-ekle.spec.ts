@@ -2,6 +2,7 @@ import { test, expect } from '@playwright/test';
 import { login } from '../../helpers/login';
 import { zoom } from '../../helpers/zoom';
 import { rastgeleString } from '../../helpers/stringUret';
+import { cihazSil } from '../../helpers/cihazIslemleri';
 
 test('Yeni Cihaz Ekleme', async ({ page }) => {
 
@@ -67,6 +68,9 @@ test('Yeni Cihaz Ekleme', async ({ page }) => {
   } catch (error) {
     console.log('⚠️ Başarı mesajı görünmedi, cihaz eklenmiş olabilir');
   }
+
+  // cihaz silme
+  await cihazSil(page);
 
   // Test sonunda ekranın kapanmasını engellemek için pause
   await page.pause();
