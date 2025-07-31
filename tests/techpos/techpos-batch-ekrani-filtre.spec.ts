@@ -2,9 +2,8 @@ import { test, expect } from '@playwright/test';
 import { login } from '../../helpers/login';
 import { zoom } from '../../helpers/zoom';
 
-test('TechPOS - İşlemleri Ekranı Filtre', async ({ page }) => {
+test('TechPOS - Batch Ekranı Filtre', async ({ page }) => {
   
-
     // Bugünün tarihini konsola yazdır
     const bugun = new Date();
     const tarihString = bugun.toLocaleDateString('tr-TR', {
@@ -44,16 +43,15 @@ test('TechPOS - İşlemleri Ekranı Filtre', async ({ page }) => {
         return gunler[gunNumarasi];
     };  
 
-
     await login(page);
     
     await zoom(page);
 
-    // Techpos işlemleri sayfasına git
+    // Techpos yönetimi ve batch sayfasına git
     await page.getByText('Techpos Yönetimi').click();
-    await page.getByRole('link', { name: ' Techpos İşlemleri' }).click();
+    await page.getByRole('link', { name: 'Techpos Batch' }).click();
 
-    // Tarih filtreleme - düzeltilmiş versiyon
+    // Tarih filtreleme - başlangıç tarihi
     await page.locator('ot-data-entry-template').filter({ hasText: 'Oluşturulma Tarihi' }).getByLabel('Takvimden seç').click();
 
     // Takvim açıldıktan sonra elementin yüklenmesini bekle
@@ -69,32 +67,46 @@ test('TechPOS - İşlemleri Ekranı Filtre', async ({ page }) => {
 
     // Tarih seçimi
     const titleText = `${gun} ${ayAdiGetirTam(ay)} ${yirmiGunOncesi.getFullYear()} ${gunAdi}`;
-    console.log(`🔍 Seçilecek tarih: "${titleText}"`);
+    console.log(`🔍 Seçilecek başlangıç tarihi: "${titleText}"`);
 
-    
     await page.getByTitle(titleText).locator('span').click();
     await page.waitForTimeout(1000);
    
+    // Bitiş tarihi seçimi
     await page.locator('ot-data-entry-template').filter({ hasText: 'Bitiş Tarihi' }).getByLabel('Takvimden seç').click();
     await page.getByRole('button', { name: 'Bugün' }).click();
 
     // Terminal id doldur
-    await page.locator('ot-data-entry-template').filter({ hasText: 'Terminal' }).getByRole('textbox').fill('77301');
+    await page.locator('ot-data-entry-template').filter({ hasText: 'Terminal' }).getByRole('combobox').click();
+    await page.waitForTimeout(3000);
+    await page.locator('ot-data-entry-template').filter({ hasText: 'Terminal' }).getByRole('combobox').fill('77301');
+    await page.locator('ot-data-entry-template').filter({ hasText: 'Terminal' }).getByRole('combobox').fill('7730');
+    await page.getByRole('option', { name: '77301' }).click();
+    
 
     // BKM Seri No doldur
-    await page.locator('ot-data-entry-template').filter({ hasText: 'BKM Seri No' }).getByRole('textbox').click();
-    await page.locator('ot-data-entry-template').filter({ hasText: 'BKM Seri No' }).getByRole('textbox').fill('PAV860066571');
+    await page.locator('ot-data-entry-template').filter({ hasText: 'BKM Seri No' }).getByRole('combobox').click();
+    await page.waitForTimeout(10000);
 
+    await page.locator('ot-data-entry-template').filter({ hasText: 'BKM Seri No' }).getByRole('combobox').fill('PAV860066571');
+    await page.waitForTimeout(3000);
+    await page.locator('ot-data-entry-template').filter({ hasText: 'BKM Seri No' }).getByRole('combobox').fill('PAV86006657');
+    await page.waitForTimeout(1000);
+    await page.locator('ot-data-entry-template').filter({ hasText: 'BKM Seri No' }).getByRole('combobox').fill('PAV8600665');
+    await page.waitForTimeout(1000);
+    await page.locator('ot-data-entry-template').filter({ hasText: 'BKM Seri No' }).getByRole('combobox').fill('PAV86006657');
+    // await page.waitForTimeout(1000);
+    await page.waitForTimeout(1000);
+    await page.getByRole('option', { name: 'PAV860066571' }).click();
+    
     // Üye işyeri doldur
-    await page.locator('ot-data-entry-template').filter({ hasText: 'Üye İşyeri' }).getByRole('combobox').click();
-    await page.locator('ot-data-entry-template').filter({ hasText: 'Üye İşyeri' }).getByRole('combobox').fill('erdal');
-    await page.getByText('Erdal Bakkal-').click();
-
+    await page.locator('kendo-combobox').getByRole('combobox').click();
+    await page.locator('kendo-combobox').getByRole('combobox').fill('erda');
+    await page.getByRole('option', { name: 'Erdal Bakkal-' }).click();
 
     // Filtrele butonuna tıkla
     await page.getByRole('button', { name: 'Filtrele' }).click();
     await page.waitForTimeout(4000);
-
 
     // "Kayıt bulunamadı" mesajının görünüp görünmediğini kontrol et
     const kayitBulunamadiElement = page.getByText('Kayıt bulunamadı');
@@ -117,37 +129,38 @@ test('TechPOS - İşlemleri Ekranı Filtre', async ({ page }) => {
 
     // Belirtilen hücrelerdeki değerleri oku ve kontrol et
     const cellsTerminalId = [
-        await page.locator('td:nth-child(3)').first(),
-        await page.locator('.k-master-row.k-alt > td:nth-child(3)').first(),
-        await page.locator('tr:nth-child(3) > td:nth-child(3)'),
-        await page.locator('tr:nth-child(4) > td:nth-child(3)'),
-        await page.locator('tr:nth-child(5) > td:nth-child(3)'),
-        await page.locator('tr:nth-child(6) > td:nth-child(3)')
+        await page.locator('td:nth-child(7)').first(),
+        await page.locator('.k-master-row.k-alt > td:nth-child(7)').first(),
+        await page.locator('tr:nth-child(3) > td:nth-child(7)'),
+        await page.locator('tr:nth-child(4) > td:nth-child(7)'),
+        await page.locator('tr:nth-child(5) > td:nth-child(7)'),
+        await page.locator('tr:nth-child(6) > td:nth-child(7)')
     ];
 
     const cellsBkmSeriNo = [
-        await page.locator('td:nth-child(5)').first(),
-        await page.locator('.k-master-row.k-alt > td:nth-child(5)').first(),
-        await page.locator('tr:nth-child(3) > td:nth-child(5)'),
-        await page.locator('tr:nth-child(4) > td:nth-child(5)'),
-        await page.locator('tr:nth-child(5) > td:nth-child(5)'),
-        await page.locator('tr:nth-child(6) > td:nth-child(5)')
+        await page.locator('td:nth-child(8)').first(),
+        await page.locator('.k-master-row.k-alt > td:nth-child(8)').first(),
+        await page.locator('tr:nth-child(3) > td:nth-child(8)'),
+        await page.locator('tr:nth-child(4) > td:nth-child(8)'),
+        await page.locator('tr:nth-child(5) > td:nth-child(8)'),
+        await page.locator('tr:nth-child(6) > td:nth-child(8)')
     ];
-
 
     const cellsUyeIsyeri = [
-        await page.locator('td:nth-child(14)').first(),
-        await page.locator('.k-master-row.k-alt > td:nth-child(14)').first(),
-        await page.locator('tr:nth-child(3) > td:nth-child(14)'),
-        await page.locator('tr:nth-child(4) > td:nth-child(14)'),
-        await page.locator('tr:nth-child(5) > td:nth-child(14)'),
-        await page.locator('tr:nth-child(6) > td:nth-child(14)')
+        await page.locator('td:nth-child(10)').first(),
+        await page.locator('.k-master-row.k-alt > td:nth-child(10)').first(),
+        await page.locator('tr:nth-child(3) > td:nth-child(10)'),
+        await page.locator('tr:nth-child(4) > td:nth-child(10)'),
+        await page.locator('tr:nth-child(5) > td:nth-child(10)'),
+        await page.locator('tr:nth-child(6) > td:nth-child(10)')
     ];
 
+   
 
     let allMatchTerminalId = true;
     let allMatchBkmSeriNo = true;
     let allMatchUyeIsyeri = true;
+    let allMatchBatchDurumu = true;
 
     const expectedValueTerminalId = '77301';
 
@@ -166,8 +179,6 @@ test('TechPOS - İşlemleri Ekranı Filtre', async ({ page }) => {
         console.log('❌ Filtreleme sonucu terminal id eşleşmedi');
     }
 
-
-
     const expectedValueBkmSeriNo = 'PAV860066571';
 
     for (let i = 0; i < cellsBkmSeriNo.length; i++) {
@@ -185,12 +196,7 @@ test('TechPOS - İşlemleri Ekranı Filtre', async ({ page }) => {
         console.log('❌ Filtreleme sonucu bkm seri no eşleşmedi');
     }
 
-
-
-
-
-
-    const expectedValueUyeIsyeri = 'Erdal Bakkal';
+    const expectedValueUyeIsyeri = 'ERDAL BAKKAL';
 
     for (let i = 0; i < cellsUyeIsyeri.length; i++) {
         const cellText = await cellsUyeIsyeri[i].textContent();
@@ -206,7 +212,6 @@ test('TechPOS - İşlemleri Ekranı Filtre', async ({ page }) => {
     } else {
         console.log('❌ Filtreleme sonucu üye işyeri eşleşmedi');
     }
-
 
     
     await page.pause();
