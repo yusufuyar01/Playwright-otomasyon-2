@@ -4,16 +4,6 @@ import { zoom } from '../../helpers/zoom';
 import { rastgeleString } from '../../helpers/stringUret';
 
 test('TechPOS Grup Ekranı CRUD İşlemleri', async ({ page }) => {
-  
-    // Bugünün tarihini konsola yazdır
-    const bugun = new Date();
-    const tarihString = bugun.toLocaleDateString('tr-TR', {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric',
-        weekday: 'long'
-    });
-    console.log(`📅 Bugünün tarihi: ${tarihString}`);
 
     await login(page);
     await zoom(page);
