@@ -207,7 +207,8 @@ test('509 Gerçek Mükellef Ekleme', async ({ page }) => {
            // sayfayı yenile
            await page.reload();
 
-
+          // Zoom işlemi
+          await zoom(page);
 
            // ===== ADIM 6: Üye İşyeri Silme =====
            try {

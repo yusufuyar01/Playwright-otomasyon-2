@@ -276,10 +276,11 @@ test('507 Gerçek Mükellef Ekleme', async ({ page }) => {
      const tamamButton = page.getByRole('button', { name: 'Tamam' });
      await tamamButton.click(); 
 
-           // sayfayı yenile
+       // sayfayı yenile
       await page.reload();
 
-
+      // Zoom işlemi
+      await zoom(page);
 
      // ===== ADIM 6: Üye İşyeri Silme =====
      try {

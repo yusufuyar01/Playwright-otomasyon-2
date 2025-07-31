@@ -279,6 +279,9 @@ test('507 Tüzel Mükellef Ekleme', async ({ page }) => {
 
      await page.reload();
 
+     // Zoom işlemi
+     await zoom(page);
+
      // ===== ADIM 6: Üye İşyeri Silme =====
      try {
 

@@ -143,6 +143,9 @@ test('Gerçek Kişi Bayi Ekleme', async ({ page }) => {
 
   await page.reload();
 
+  // Zoom işlemi
+  await zoom(page);
+
   // ===== ADIM 6: Bayi Silme =====
   try {
 
