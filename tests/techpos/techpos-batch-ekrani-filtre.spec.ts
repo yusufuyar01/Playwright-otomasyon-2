@@ -160,8 +160,6 @@ test('TechPOS - Batch Ekranı Filtre', async ({ page }) => {
     let allMatchTerminalId = true;
     let allMatchBkmSeriNo = true;
     let allMatchUyeIsyeri = true;
-    let allMatchBatchDurumu = true;
-
     const expectedValueTerminalId = '77301';
 
     for (let i = 0; i < cellsTerminalId.length; i++) {

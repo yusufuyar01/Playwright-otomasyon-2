@@ -182,6 +182,8 @@ Yazılan bağlantıyı bir pencerede açar ve otomasyon için gerekli olan locat
 35- npx playwright test tests/techpos/techpos-islemleri-ekrani-filtre.spec.ts --headed
 
 36- npx playwright test tests/techpos/techpos-batch-ekrani-filtre.spec.ts --headed
+
+37- npx playwright test tests/techpos/batch-ozet-ve-islemler.spec.ts --headed
   
   
   
