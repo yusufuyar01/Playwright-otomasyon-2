@@ -191,7 +191,12 @@ Yazılan bağlantıyı bir pencerede açar ve otomasyon için gerekli olan locat
   
 40- npx playwright test tests/techpos/techpos-seri-no.spec.ts --headed
   
-  
+41- npx playwright test tests/techpos/BKM-techpos-banka-pf-islem-listesi.spec.ts --headed
+
+
+
+
+
     npx playwright codegen https://overpayresellerdemo.overtech.com.tr/Home/Dashboard/Index
 
 

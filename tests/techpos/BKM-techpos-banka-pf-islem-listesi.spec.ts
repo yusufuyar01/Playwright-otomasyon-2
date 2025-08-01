@@ -4,6 +4,7 @@ import { zoom } from '../../helpers/zoom';
 
 test('BKM TechPOS - Banka PF İşlem Listesi', async ({ page }) => {
   
+
     // Bugünün tarihini konsola yazdır
     const bugun = new Date();
     const tarihString = bugun.toLocaleDateString('tr-TR', {
@@ -15,33 +16,15 @@ test('BKM TechPOS - Banka PF İşlem Listesi', async ({ page }) => {
     console.log(`📅 Bugünün tarihi: ${tarihString}`);
 
     // 15 gün öncesinin tarihini konsola yazdır
-    const onbesGunOncesi = new Date();
-    onbesGunOncesi.setDate(bugun.getDate() - 15);
-    const onbesGunOncesiString = onbesGunOncesi.toLocaleDateString('tr-TR', {
+    const altmısırgunOncesi = new Date();
+    altmısırgunOncesi.setDate(bugun.getDate() - 60);
+    const altmısırgunOncesiString = altmısırgunOncesi.toLocaleDateString('tr-TR', {
         year: 'numeric',
         month: 'long',
         day: 'numeric',
         weekday: 'long'
     });
-    console.log(`📅 15 gün öncesi: ${onbesGunOncesiString}`);
-
-    // Ay numarasını ay adına çeviren fonksiyon
-    const ayAdiGetirTam = (ayNumarasi: number): string => {
-        const aylar = [
-            'Ocak', 'Şubat', 'Mart', 'Nisan', 'Mayıs', 'Haziran',
-            'Temmuz', 'Ağustos', 'Eylül', 'Ekim', 'Kasım', 'Aralık'
-        ];
-        return aylar[ayNumarasi - 1];
-    };
-    
-    // Gün numarasını gün adına çeviren fonksiyon
-    const gunAdiGetir = (gunNumarasi: number): string => {
-        const gunler = [
-            'Pazar', 'Pazartesi', 'Salı', 'Çarşamba', 
-            'Perşembe', 'Cuma', 'Cumartesi'
-        ];
-        return gunler[gunNumarasi];
-    };
+    console.log(`📅 60 gün öncesi: ${altmısırgunOncesiString}`);
 
     await login(page);
     
@@ -49,32 +32,37 @@ test('BKM TechPOS - Banka PF İşlem Listesi', async ({ page }) => {
 
     // Techpos yönetimi ve BKM banka PF işlem listesi sayfasına git
     await page.getByText('Techpos Yönetimi').click();
-    await page.getByRole('link', { name: 'BKM Banka PF İşlem Listesi' }).click();
+    await page.getByRole('link', { name: 'BKM Techpos Banka / PF İşlem Listesi' }).click();
 
-    // Tarih filtreleme - başlangıç tarihi
-    await page.locator('ot-data-entry-template').filter({ hasText: 'Başlangıç Tarihi' }).getByLabel('Takvimden seç').click();
+    await page.getByText('Seçiniz...').first().click();
+    await page.getByRole('option', { name: 'SİPAY', exact: true }).click();
+    await page.getByText('Seçiniz...').click();
+    await page.getByRole('option', { name: 'AKTİF YATIRIM BANKASI A.Ş' }).click();
 
-    // Takvim açıldıktan sonra elementin yüklenmesini bekle
-    await page.waitForSelector('[role="gridcell"]', { state: 'visible' });
+    // Başlangıç ve Bitiş Tarihi
 
+    await page.locator('#datepicker-1').click();
+    await page.waitForTimeout(1000);
+    await page.locator('#datepicker-1').press('ArrowLeft');
+    await page.locator('#datepicker-1').press('ArrowLeft');
+    await page.waitForTimeout(1000);
+    
     // Tarih string'ini oluştur
-    const gun = onbesGunOncesi.getDate();
-    const ay = onbesGunOncesi.getMonth() + 1;
+    const gun = altmısırgunOncesi.getDate();
+    const ay = altmısırgunOncesi.getMonth() + 1;
+    const yıl = altmısırgunOncesi.getFullYear();
     
     // Gün adını al
-    const gunAdi = gunAdiGetir(onbesGunOncesi.getDay());
     await page.waitForTimeout(1000);
 
-    // Tarih seçimi
-    const titleText = `${gun} ${ayAdiGetirTam(ay)} ${onbesGunOncesi.getFullYear()} ${gunAdi}`;
-    console.log(`🔍 Seçilecek başlangıç tarihi: "${titleText}"`);
+    // Tarih seçimi - GG.AA.YYYY formatında (numara olarak)
+    console.log(`🔍  2 Ay Çncesi Seçildi`);
 
-    await page.getByTitle(titleText).locator('span').click();
+    await page.locator('#datepicker-1').fill(gun.toString());
+    await page.locator('#datepicker-1').fill(ay.toString());
+    await page.locator('#datepicker-1').fill(altmısırgunOncesi.getFullYear().toString());
+
     await page.waitForTimeout(1000);
-   
-    // Bitiş tarihi seçimi
-    await page.locator('ot-data-entry-template').filter({ hasText: 'Bitiş Tarihi' }).getByLabel('Takvimden seç').click();
-    await page.getByRole('button', { name: 'Bugün' }).click();
 
     // Filtrele butonuna tıkla
     await page.getByRole('button', { name: 'Filtrele' }).click();
@@ -88,47 +76,61 @@ test('BKM TechPOS - Banka PF İşlem Listesi', async ({ page }) => {
         console.log('❌ Kayıt bulunamadı');
         await page.pause();
     } else {
-        console.log('✅ Kayıt bulundu');
+        console.log('✅ Kayıtlar bulundu');
 
-        // Grid'deki kayıtları listele
-        let i = 2;
-        let kayitSayisi = 0;
         
-        while (await page.getByRole('gridcell').nth(i).isVisible()) {
-            const islemTarihi = await page.getByRole('gridcell').nth(i).textContent();
-            const islemTutari = await page.getByRole('gridcell').nth(i+1).textContent();
-            const islemTipi = await page.getByRole('gridcell').nth(i+2).textContent();
-            const bankaAdi = await page.getByRole('gridcell').nth(i+3).textContent();
+        console.log('➤ İlk Ödeme Tarihi', gun, ay, yıl);
+        console.log('➤ Bugün', bugun.getDate(), bugun.getMonth() + 1, bugun.getFullYear());
 
-            console.log(`➤ İşlem Tarihi: ${islemTarihi} | Tutar: ${islemTutari} | Tip: ${islemTipi} | Banka: ${bankaAdi}`);
-            console.log('--------------------------------');
+        console.log('--------------------------------');
+        console.log('Aktif Yatırım ilk 3 satır Tarihleri');
+        let i = 16;
+        let j = 3;
 
-            i = i + 8; // Grid sütun sayısına göre artır
-            kayitSayisi++;
+        while (await page.getByRole('gridcell').nth(i).isVisible() && j > 0) {
+        const tarih = await page.getByRole('gridcell').nth(i).textContent();
+        console.log('➤ Tarih', tarih);
 
-            // Maksimum 20 kayıt göster
-            if (kayitSayisi >= 20) {
-                console.log('📊 Maksimum 20 kayıt gösterildi');
-                break;
-            }
-        }
-
-        console.log(`📊 Toplam ${kayitSayisi} kayıt listelendi`);
-
-        // Grid filtreleme testi
-        const ilkIslemTarihi = await page.getByRole('gridcell').nth(2).textContent();
-        
-        await page.getByRole('button', { name: '🔍' }).click();
-        await page.getByRole('textbox', { name: 'İşlem Tarihi Filter' }).click();
-        await page.getByRole('textbox', { name: 'İşlem Tarihi Filter' }).fill(ilkIslemTarihi || '');
-
-        if (await page.getByText('Kayıt bulunamadı').isVisible()) {
-            console.log('❌ Grid filtre ile kayıt bulunamadı');
-            await page.pause();
-        } else {
-            console.log('✅ Grid filtre ile kayıt bulundu');
+        i = i + 22;
+        j = j - 1;
         }
     }
+
+    console.log('HHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH');
+
+    await page.getByLabel('Hepsi').getByText('AKTİF YATIRIM BANKASI A.Ş').click();
+    await page.getByRole('option', { name: 'T.C MERKEZ BANKASI' }).click();
+
+    // filtrele butonuna tıkla
+    await page.getByRole('button', { name: 'Filtrele' }).click();
+    await page.waitForTimeout(3000);
+
+
+
+    if (isKayitBulunamadiVisible) {
+        console.log('❌ Kayıt bulunamadı');
+        await page.pause();
+    } else {
+        console.log('✅ Kayıtlar bulundu');
+
+    
+    console.log('➤ İlk Ödeme Tarihi', gun, ay, yıl);
+    console.log('➤ Bugün', bugun.getDate(), bugun.getMonth() + 1, bugun.getFullYear());
+
+    console.log('--------------------------------');    
+    console.log('Merkez Bankası ilk 3 satır Tarihleri');
+    let i = 16;
+    let j = 3;
+
+    while (await page.getByRole('gridcell').nth(i).isVisible() && j > 0) {
+    const tarih = await page.getByRole('gridcell').nth(i).textContent();
+    console.log('➤ Tarih', tarih);
+
+    i = i + 22;
+    j = j - 1;
+    }
+}
+
 
     await page.pause();
 }); 
