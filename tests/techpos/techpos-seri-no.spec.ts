@@ -2,7 +2,7 @@ import { test, expect } from '@playwright/test';
 import { login } from '../../helpers/login';
 import { zoom } from '../../helpers/zoom';
 
-test('TechPOS - Seri No Frif Filtre', async ({ page }) => {
+test('TechPOS - Seri No Grid Filtre', async ({ page }) => {
   
 
     await login(page);
@@ -43,12 +43,37 @@ test('TechPOS - Seri No Frif Filtre', async ({ page }) => {
 
         console.log('➤ Oluşturulma tarihi', olusturulmaTarihi, ' olan ve Seri Numarası', seriNo, ' olan cihaz bulundu');
 
-
         console.log('--------------------------------');
 
         i = i + 16;
 
         }
+
+        const seriNo = await page.getByRole('gridcell').nth(4).textContent();
+
+        await page.getByRole('button', { name: '' }).click();
+        await page.getByRole('textbox', { name: 'Seri Numarası Filter' }).click();
+        await page.getByRole('textbox', { name: 'Seri Numarası Filter' }).fill(seriNo);
+
+        if (await page.getByText('Kayıt bulunamadı').isVisible()) {
+            console.log(' ❌ Kayıt bulunamadı');
+            await page.pause();
+        } else {
+            console.log(' ✅ Grid filtre ile Kayıt bulundu');
+    
+            let i = 18;
+            while (await page.getByRole('gridcell').nth(i).isVisible()) {
+            const olusturulmaTarihi = await page.getByRole('gridcell').nth(i).textContent();
+            const seriNo = await page.getByRole('gridcell').nth(i+2).textContent();
+    
+            console.log('➤ Oluşturulma tarihi', olusturulmaTarihi, ' olan ve Seri Numarası', seriNo, ' olan cihaz bulundu');
+    
+            console.log('--------------------------------');
+    
+            i = i + 16;
+    
+            }
+        }   
     }
 
     
