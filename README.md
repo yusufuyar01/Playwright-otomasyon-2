@@ -189,7 +189,7 @@ Yazılan bağlantıyı bir pencerede açar ve otomasyon için gerekli olan locat
 
 30- npx playwright test tests/techpos/techpos-terminalde-tanimli-banka-listesi.spec.ts --headed
   
-  
+40- npx playwright test tests/techpos/techpos-seri-no.spec.ts --headed
   
   
     npx playwright codegen https://overpayresellerdemo.overtech.com.tr/Home/Dashboard/Index
