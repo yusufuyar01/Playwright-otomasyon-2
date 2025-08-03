@@ -127,14 +127,6 @@ export async function cihazGuncelle(page: Page): Promise<string> {
 export async function cihazSil(page: Page): Promise<void> {
   await page.waitForTimeout(2000); // Tablo yüklenmesi için daha fazla bekle
   
-  // Modal açık mı kontrol et
-  const modal = page.locator('modal-container[role="dialog"]');
-  if (await modal.isVisible()) {
-    console.log('⚠️ Modal açık, cihaz silme işlemi bekletiliyor...');
-    await modal.waitFor({ state: 'hidden', timeout: 10000 });
-    console.log('✅ Modal kapandı, cihaz silme işlemine devam ediliyor...');
-  }
-  
   // PAV ile başlayan cihazları bul
   const pavRows = page.locator('tr').filter({ hasText: /PAV/ });
   const pavCount = await pavRows.count();
