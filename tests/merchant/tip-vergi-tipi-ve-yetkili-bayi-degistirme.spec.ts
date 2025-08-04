@@ -32,7 +32,7 @@ test('Tip, Vergi Tipi ve Yetkili bayi Değiştirme', async ({ page }) => {
   const firstRowExpand = page.getByRole('row', { name: /Expand Details/ }).getByRole('button').nth(randomRowNumber);
 
 
-  // const firstRowExpand = page.getByRole('row', { name: /Expand Details/ }).getByRole('button').nth(1);
+  // const firstRowExpand = page.getByRole('row', { name: /Expand Details/ }).getByRole('button').nth(3);
   await firstRowExpand.click();
   await page.waitForTimeout(1000);
 
@@ -91,7 +91,7 @@ test('Tip, Vergi Tipi ve Yetkili bayi Değiştirme', async ({ page }) => {
     await page.getByRole('dialog').getByText('-Mükellefi').click();
     await page.getByRole('option').nth(0).click();
   } else if (await page.locator('ot-dropdown-entry').filter({ hasText: 'Tip507/509-Mükellefi' }).isVisible()) {
-    await page.getByText('/509-Mükellefi').click();
+    await page.getByRole('dialog').getByText('/509-Mükellefi').click();
     await page.getByRole('option').getByText('507-Mükellefi').click();
   }
 
