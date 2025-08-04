@@ -52,10 +52,12 @@ test('TechPOS - Batch Ekranı Filtre', async ({ page }) => {
     await page.getByRole('link', { name: 'Techpos Batch' }).click();
 
     // Tarih filtreleme - başlangıç tarihi
-    await page.locator('ot-data-entry-template').filter({ hasText: 'Oluşturulma Tarihi' }).getByLabel('Takvimden seç').click();
+    await page.locator('#datepicker-1').click();
+    await page.waitForTimeout(1000);
+    await page.locator('#datepicker-1').press('ArrowLeft');
+    await page.locator('#datepicker-1').press('ArrowLeft');
+    await page.waitForTimeout(1000);
 
-    // Takvim açıldıktan sonra elementin yüklenmesini bekle
-    await page.waitForSelector('[role="gridcell"]', { state: 'visible' });
 
     // Tarih string'ini daha basit formatta oluştur (sadece gün)
     const gun = yirmiGunOncesi.getDate();
@@ -69,7 +71,12 @@ test('TechPOS - Batch Ekranı Filtre', async ({ page }) => {
     const titleText = `${gun} ${ayAdiGetirTam(ay)} ${yirmiGunOncesi.getFullYear()} ${gunAdi}`;
     console.log(`🔍 Seçilecek başlangıç tarihi: "${titleText}"`);
 
-    await page.getByTitle(titleText).locator('span').click();
+    await page.locator('#datepicker-1').fill(gun.toString());
+    await page.locator('#datepicker-1').fill(ay.toString());
+    await page.locator('#datepicker-1').fill(yirmiGunOncesi.getFullYear().toString());
+
+
+    // await page.getByTitle(titleText).locator('span').click();
     await page.waitForTimeout(1000);
    
     // Bitiş tarihi seçimi
