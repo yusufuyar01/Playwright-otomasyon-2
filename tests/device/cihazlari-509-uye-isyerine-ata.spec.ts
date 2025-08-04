@@ -61,17 +61,6 @@ test('Cihazları 509 Üye İşyerine Atama', async ({ page }) => {
     if (await basarisizIslemler.isVisible()) {
       console.log('❌ Başarısız işlemler görüntülendi');
       
-      // Tablo başlıklarını yazdır
-      const headers = [
-        'Seri Numarası',
-        'Cihaz Adı', 
-        'Cihaz Modeli',
-        'Cihaz Tipi',
-        'Marka',
-        'Error Message'
-      ];
-      console.log('-'.repeat(100));
-      
       // Tablodaki tüm satırları oku
       const rows = page.locator('.k-grid-content .k-master-row');
       const rowCount = await rows.count();
