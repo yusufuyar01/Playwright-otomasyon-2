@@ -60,10 +60,10 @@ test('Cihazları 507 Üye İşyerine Atama (E-Belge Var)', async ({ page }) => {
     await page.waitForTimeout(1000);  
   
     // E-Belge ayarları olan üye işyeri seçimi
-    await page.locator('kendo-searchbar').getByRole('combobox').fill('9449865023');
+    await page.locator('kendo-searchbar').getByRole('combobox').fill('4548992552');
     await page.getByRole('option').first().click();
     await page.locator('ot-data-entry-template').filter({ hasText: 'Şube' }).getByLabel('Select').click();
-    await page.getByRole('option').click();
+    await page.getByRole('option', { name: 'Central Branch' }).click();
     await page.locator('ot-data-entry-template').filter({ hasText: 'PF' }).getByLabel('Select').click();
     await page.getByRole('option', { name: 'No PF'}).click(); // E-Belge ayarları için PF seçimi
     await page.locator('ot-data-entry-template').filter({ hasText: 'Tebliğ Tipi' }).getByLabel('Select').click();
