@@ -5,6 +5,8 @@ import { zoom } from '../../helpers/zoom';
 
 test('Tek cihazı operasyonel bayiye atama işlemi', async ({ page }) => {
 
+  console.log('===>  Tek cihazı operasyonel bayiye atama işlemi  <===');
+
   // Önce sisteme giriş yap
   await login(page);
 

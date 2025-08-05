@@ -4,7 +4,10 @@ import { cihazEkle, cihazGuncelle, cihazlariBayidenGeriAl, cihazlariBayiyeAta, c
 import { zoom } from '../../helpers/zoom';
 
 test('Birden fazla cihaza operasyonel bayi atama işlemi', async ({ page }) => {
-      // Önce sisteme giriş yap
+
+  console.log('===>  Birden fazla cihaza operasyonel bayi atama işlemi  <===');
+
+  // Önce sisteme giriş yap
   await login(page);
 
   // Zoom işlemi

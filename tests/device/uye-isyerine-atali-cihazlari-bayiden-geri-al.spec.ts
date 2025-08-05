@@ -5,6 +5,8 @@ import { cihazEkle, cihazGuncelle, cihazlariBayidenGeriAl, cihazSil, cihazUyeIse
 
 test('Üye İşyerine Atalı Cihazları Bayiden Geri Alma', async ({ page }) => {
 
+  console.log('===>  Üye İşyerine Atalı Cihazları Bayiden Geri Alma  <===');
+
   // Önce sisteme giriş yap
   await login(page);
 

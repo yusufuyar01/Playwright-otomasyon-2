@@ -6,6 +6,8 @@ import { cihazSil } from '../../helpers/cihazIslemleri';
 
 test('Yeni Cihaz Ekleme', async ({ page }) => {
 
+  console.log('===>  Yeni Cihaz Ekleme  <===');
+
   // Önce sisteme giriş yap
   await login(page);
 

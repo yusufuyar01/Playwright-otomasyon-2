@@ -5,6 +5,8 @@ import { cihazEkle, cihazGuncelle, cihazSil, cihazUyeIseyerindenGeriAl, cihazUye
 
 test('Üye İşyeri Olan Cihazları Bayiye Atama', async ({ page }) => {
 
+  console.log('===>  Üye İşyeri Olan Cihazları Bayiye Atama  <===');
+
   // Önce sisteme giriş yap
   await login(page);
 

@@ -5,6 +5,8 @@ import { cihazEkle, cihazGuncelle, cihazSil } from '../../helpers/cihazIslemleri
 
 test('Cihazları Bayiye Atama (checkbox işaretli)', async ({ page }) => {
 
+  console.log('===>  Cihazları Bayiye Atama (checkbox işaretli)  <===');
+
   // Önce sisteme giriş yap
   await login(page);
 

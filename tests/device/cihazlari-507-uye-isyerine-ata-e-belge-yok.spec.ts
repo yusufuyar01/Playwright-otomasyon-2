@@ -5,6 +5,8 @@ import { cihazEkle, cihazGuncelle, cihazlariBayiyeAta, cihazlariBayiyeAta2, ciha
 
 test('Cihazları 507 Üye İşyerine Atama', async ({ page }) => {
 
+  console.log('===>  Cihazları 507 Üye İşyerine Atama (E-Belge Yok)  <===');
+
   // Önce sisteme giriş yap
   await login(page);
 
