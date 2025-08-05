@@ -6,6 +6,8 @@ import { dokumanOnEkiEkle, dokumanOnEkiGuncelle, dokumanOnEkiSil, terminaliGetir
 
 test('Doküman Ön Eki İşlemleri - Ekleme, Güncelleme ve Silme', async ({ page }) => {
 
+    console.log('===>  Doküman Ön Eki İşlemleri - Ekleme, Güncelleme ve Silme  <===');
+
     // Önce sisteme giriş yap
     await login(page);
 

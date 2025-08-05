@@ -6,6 +6,8 @@ import { mediatorEkle, mediatorGuncelle, mediatorSil, parametreEkle, parametreGu
 
 test('Mediator İşlemleri - Ekleme, Güncelleme ve Silme', async ({ page }) => {
 
+    console.log('===>  Mediator İşlemleri - Ekleme, Güncelleme ve Silme  <===');
+
     // Önce sisteme giriş yap
     await login(page);
 

@@ -4,6 +4,8 @@ import { zoom } from '../../helpers/zoom';
 
 test('Satışlarım Filtreleme İşlemleri', async ({ page }) => {
 
+    console.log('===>  Satışlarım Filtreleme İşlemleri  <===');
+
     // Bugünün tarihini konsola yazdır
     const bugun = new Date();
     const tarihString = bugun.toLocaleDateString('tr-TR', {

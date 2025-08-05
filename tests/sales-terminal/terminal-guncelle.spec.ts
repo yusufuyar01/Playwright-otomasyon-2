@@ -6,6 +6,8 @@ import { terminaliGetir } from '../../helpers/satisYerminaliIslemleri';
 
 test('Terminal bilgilerini güncelleme', async ({ page }) => {
 
+    console.log('===>  Terminal Bilgilerini Güncelleme  <===');
+
     // Önce sisteme giriş yap
     await login(page);
 
