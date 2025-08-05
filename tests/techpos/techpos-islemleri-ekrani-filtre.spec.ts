@@ -53,15 +53,30 @@ test('TechPOS - İşlemleri Ekranı Filtre', async ({ page }) => {
     await page.getByText('Techpos Yönetimi').click();
     await page.getByRole('link', { name: ' Techpos İşlemleri' }).click();
 
-    // Tarih filtreleme - düzeltilmiş versiyon
-    await page.locator('ot-data-entry-template').filter({ hasText: 'Oluşturulma Tarihi' }).getByLabel('Takvimden seç').click();
+    // Tarih filtreleme - başlangıç tarihi
+    await page.locator('#datepicker-1').click();
+    await page.waitForTimeout(1000);
+    await page.locator('#datepicker-1').press('ArrowLeft');
+    await page.locator('#datepicker-1').press('ArrowLeft');
+    await page.waitForTimeout(1000);
 
-    // Takvim açıldıktan sonra elementin yüklenmesini bekle
-    await page.waitForSelector('[role="gridcell"]', { state: 'visible' });
-
-    // Tarih string'ini daha basit formatta oluştur (sadece gün)
+    // Tarih string'ini oluştur
     const gun = yirmiGunOncesi.getDate();
     const ay = yirmiGunOncesi.getMonth() + 1;
+    const yıl = yirmiGunOncesi.getFullYear();
+    
+    // Gün adını al
+    await page.waitForTimeout(1000);
+
+    // Tarih seçimi - GG.AA.YYYY formatında (numara olarak)
+    console.log(`🔍  20 Gün Öncesi Seçildi`);
+    const tarih = gun.toString() + ay.toString() + yıl.toString();
+    
+    // Tarih string'ini karakterlerine ayır ve her birini ayrı ayrı bas
+    for (let i = 0; i < tarih.length; i++) {
+        await page.locator('#datepicker-1').press(tarih[i]);
+        await page.waitForTimeout(300); // Her karakter arasında kısa bekleme
+    }
     
     // Gün adını al
     const gunAdi = gunAdiGetir(yirmiGunOncesi.getDay());
@@ -69,12 +84,11 @@ test('TechPOS - İşlemleri Ekranı Filtre', async ({ page }) => {
 
     // Tarih seçimi
     const titleText = `${gun} ${ayAdiGetirTam(ay)} ${yirmiGunOncesi.getFullYear()} ${gunAdi}`;
-    console.log(`🔍 Seçilecek tarih: "${titleText}"`);
+    console.log(`🔍 Seçilecek başlangıç tarihi: "${titleText}"`);
 
-    
-    await page.getByTitle(titleText).locator('span').click();
+    // await page.getByTitle(titleText).locator('span').click();
     await page.waitForTimeout(1000);
-   
+
     await page.locator('ot-data-entry-template').filter({ hasText: 'Bitiş Tarihi' }).getByLabel('Takvimden seç').click();
     await page.getByRole('button', { name: 'Bugün' }).click();
 
@@ -167,7 +181,6 @@ test('TechPOS - İşlemleri Ekranı Filtre', async ({ page }) => {
     }
 
 
-
     const expectedValueBkmSeriNo = 'PAV860066571';
 
     for (let i = 0; i < cellsBkmSeriNo.length; i++) {
@@ -184,11 +197,6 @@ test('TechPOS - İşlemleri Ekranı Filtre', async ({ page }) => {
     } else {
         console.log('❌ Filtreleme sonucu bkm seri no eşleşmedi');
     }
-
-
-
-
-
 
     const expectedValueUyeIsyeri = 'Erdal Bakkal';
 
@@ -208,6 +216,5 @@ test('TechPOS - İşlemleri Ekranı Filtre', async ({ page }) => {
     }
 
 
-    
     await page.pause();
 }); 
