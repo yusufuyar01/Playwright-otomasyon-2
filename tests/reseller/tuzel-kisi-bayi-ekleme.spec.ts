@@ -8,6 +8,8 @@ import { zoom } from '../../helpers/zoom';
 
 test('Tüzel Kişi Bayi Ekleme', async ({ page }) => {
   
+  console.log('===>  Tüzel Kişi Bayi Ekleme  <===');
+
   // Önce sisteme giriş yap
   await login(page);
 

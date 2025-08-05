@@ -6,6 +6,8 @@ import { zoom } from '../../helpers/zoom';
 
 test('Detay İletişim Bilgileri Ekleme ve Güncelleme', async ({ page }) => {
   
+  console.log('===>  Detay İletişim Bilgileri Ekleme ve Güncelleme  <===');
+
   // Önce sisteme giriş yap
   await login(page);
 

@@ -9,6 +9,8 @@ import { zoom } from '../../helpers/zoom';
 
 test('Bayi Güncelleme', async ({ page }) => {
 
+  console.log('===>  Bayi Güncelleme  <===');
+
   // Önce sisteme giriş yap
   await login(page);
 
