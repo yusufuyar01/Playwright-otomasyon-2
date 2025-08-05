@@ -5,6 +5,8 @@ import { rastgeleString } from '../../helpers/stringUret';
 
 test('TechPOS Grup Ekranı CRUD İşlemleri', async ({ page }) => {
 
+    console.log('===>  Techpos Grup Ekranı CRUD İşlemleri  <===');
+
     await login(page);
     await zoom(page);
 

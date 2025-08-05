@@ -4,6 +4,8 @@ import { zoom } from '../../helpers/zoom';
 
 test('TechPOS - Grup Ata ve Terminal Güncelle', async ({ page }) => {
   
+    console.log('===>  Techpos Grup Ata ve Terminal Güncelle  <===');
+
     await login(page);
     
     await zoom(page);

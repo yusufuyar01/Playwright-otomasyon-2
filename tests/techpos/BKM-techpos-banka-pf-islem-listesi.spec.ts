@@ -4,6 +4,7 @@ import { zoom } from '../../helpers/zoom';
 
 test('BKM TechPOS - Banka PF İşlem Listesi', async ({ page }) => {
   
+    console.log('===>  BKM Techpos Banka PF İşlem Listesi  <===');
 
     // Bugünün tarihini konsola yazdır
     const bugun = new Date();

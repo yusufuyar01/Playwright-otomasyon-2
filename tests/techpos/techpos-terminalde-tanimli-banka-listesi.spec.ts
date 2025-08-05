@@ -4,6 +4,8 @@ import { zoom } from '../../helpers/zoom';
 
 test('TechPOS Terminalde Tanımlı Banka Listesi', async ({ page }) => {
 
+    console.log('===>  Techpos Terminalde Tanımlı Banka Listesi  <===');
+
     await login(page);
     await zoom(page);
 

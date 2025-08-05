@@ -4,6 +4,8 @@ import { zoom } from '../../helpers/zoom';
 
 test('TechPOS - Batch Ekranı Filtre', async ({ page }) => {
   
+    console.log('===>  Techpos Batch Ekranı Filtreleme  <===');
+
     // Bugünün tarihini konsola yazdır
     const bugun = new Date();
     const tarihString = bugun.toLocaleDateString('tr-TR', {
