@@ -4,6 +4,8 @@ import { zoom } from '../../helpers/zoom';
 
 test('Detay Payment type Ekleme', async ({ page }) => {
 
+  console.log('===>  Detay Payment Type Ekleme  <===');
+
   // Önce sisteme giriş yap
   await login(page);
 

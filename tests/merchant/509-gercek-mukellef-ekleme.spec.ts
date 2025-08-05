@@ -7,6 +7,9 @@ import { telNoUret } from '../../helpers/telNoUret';
 import { zoom } from '../../helpers/zoom';
 
 test('509 Gerçek Mükellef Ekleme', async ({ page }) => {
+
+  console.log('===>  509 Gerçek Mükellef Ekleme  <===');
+
   
   // Önce sisteme giriş yap
   await login(page);

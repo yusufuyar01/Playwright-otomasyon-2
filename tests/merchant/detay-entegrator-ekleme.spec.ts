@@ -3,6 +3,8 @@ import { login } from '../../helpers/login';
 import { zoom } from '../../helpers/zoom';
 
 test('Entegratör Ekleme', async ({ page }) => {
+
+  console.log('===>  Entegratör Ekleme  <===');
   
   // Önce sisteme giriş yap
   await login(page);

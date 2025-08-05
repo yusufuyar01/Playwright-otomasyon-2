@@ -7,6 +7,9 @@ import { telNoUret } from '../../helpers/telNoUret';
 import { zoom } from '../../helpers/zoom';
 
 test('507 Tüzel Mükellef Ekleme', async ({ page }) => {
+
+  console.log('===>  507 Tüzel Mükellef Ekleme  <===');
+
   
   // Önce sisteme giriş yap
   await login(page);

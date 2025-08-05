@@ -5,6 +5,8 @@ import { zoom } from '../../helpers/zoom';
 
 test('Detay E-Belge Ayarları', async ({ page }) => {
 
+  console.log('===>  Detay E-Belge Ayarları  <===');
+
   // Önce sisteme giriş yap
   await login(page);
 

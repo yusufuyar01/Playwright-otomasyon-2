@@ -8,6 +8,9 @@ import { zoom } from '../../helpers/zoom';
 
 // 509 Tüzel Mükellef Ekleme Testi
 test('509 Tüzel Mükellef Ekleme Testleri', async ({ page }) => {
+
+  console.log('===>  509 Tüzel Mükellef Ekleme  <===');
+
   
   // Önce sisteme giriş yap
   await login(page);

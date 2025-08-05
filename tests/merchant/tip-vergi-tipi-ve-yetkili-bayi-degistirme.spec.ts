@@ -7,6 +7,8 @@ import { zoom } from '../../helpers/zoom';
 
 test('Tip, Vergi Tipi ve Yetkili bayi Değiştirme', async ({ page }) => {
 
+  console.log('===>  Tip, Vergi Tipi ve Yetkili bayi Değiştirme  <===');
+
   // Önce sisteme giriş yap
   await login(page);
 

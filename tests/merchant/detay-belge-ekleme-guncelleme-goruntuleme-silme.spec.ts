@@ -8,6 +8,8 @@ import { telNoUret } from '../../helpers/telNoUret';
 
 test('Detay Belge Ekleme, Güncelleme, Görüntüleme ve Silme', async ({ page }) => {
 
+  console.log('===>  Detay Belge Ekleme, Güncelleme, Görüntüleme ve Silme  <===');
+
   // Önce sisteme giriş yap
   await login(page);
 
