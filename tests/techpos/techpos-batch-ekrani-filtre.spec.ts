@@ -74,9 +74,8 @@ test('TechPOS - Batch Ekranı Filtre', async ({ page }) => {
     // Tarih string'ini karakterlerine ayır ve her birini ayrı ayrı bas
     for (let i = 0; i < tarih.length; i++) {
         await page.locator('#datepicker-1').press(tarih[i]);
-        await page.waitForTimeout(3000); // Her karakter arasında kısa bekleme
+        await page.waitForTimeout(300); // Her karakter arasında kısa bekleme
     }
-    await page.waitForTimeout(3000);
     
     // Gün adını al
     const gunAdi = gunAdiGetir(otuzGunOncesi.getDay());
@@ -112,7 +111,6 @@ test('TechPOS - Batch Ekranı Filtre', async ({ page }) => {
     await page.locator('ot-data-entry-template').filter({ hasText: 'BKM Seri No' }).getByRole('combobox').fill('PAV8600665');
     await page.waitForTimeout(1000);
     await page.locator('ot-data-entry-template').filter({ hasText: 'BKM Seri No' }).getByRole('combobox').fill('PAV86006657');
-    // await page.waitForTimeout(1000);
     await page.waitForTimeout(1000);
     await page.getByRole('option', { name: 'PAV860066571' }).click();
     
