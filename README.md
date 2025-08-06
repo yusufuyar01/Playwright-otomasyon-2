@@ -206,10 +206,20 @@ ilk 41 test admin login ile yapılmaktadır
 41- npx playwright test tests/admin-login/techpos/BKM-techpos-banka-pf-islem-listesi.spec.ts --headed
 
 
+
+
+
 ilk 41 testten sonrası reseller login ile yapılmaktadır
 
-42- 
+42- npx playwright test tests/reseller-login/merchant/507-tuzel-mukellef-ekleme.spec.ts --headed
 
+43- npx playwright test tests/reseller-login/merchant/507-gercek-mukellef-ekleme.spec.ts --headed
+
+44- npx playwright test tests/reseller-login/merchant/509-tuzel-mukellef-ekleme.spec.ts --headed
+
+45- npx playwright test tests/reseller-login/merchant/509-gercek-mukellef-ekleme.spec.ts --headed
+
+46-npx playwright test tests/reseller-login/merchant/detay-iletisim-bilgisi-ekle-guncelle.spec.ts --headed
 
 
 

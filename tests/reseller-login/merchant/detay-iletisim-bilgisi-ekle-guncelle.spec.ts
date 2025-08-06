@@ -1,17 +1,17 @@
 import { test, expect } from '@playwright/test';
-import { login } from '../../../helpers/login';
+import { login2 } from '../../../helpers/login2';
 import { zoom } from '../../../helpers/zoom';
 import { vknUret } from '../../../helpers/vknUret';
 import { rastgeleString } from '../../../helpers/stringUret';
 import { ePostaUret } from '../../../helpers/ePostaUret';
 import { telNoUret } from '../../../helpers/telNoUret';
 
-test('Detay Belge Ekleme, Güncelleme, Görüntüleme ve Silme', async ({ page }) => {
+test('Detay iletişim bilgisi ekleme ve güncelleme (reseller-login)', async ({ page }) => {
 
-  console.log('===>  Detay Belge Ekleme, Güncelleme, Görüntüleme ve Silme  <===');
+  console.log('===>  Detay iletişim bilgisi ekleme ve güncelleme (reseller-login)  <===');
 
   // Önce sisteme giriş yap
-  await login(page);
+  await login2(page);
 
   // Zoom işlemi
   await zoom(page);
@@ -97,32 +97,6 @@ test('Detay Belge Ekleme, Güncelleme, Görüntüleme ve Silme', async ({ page }
    await mukellefOption.click();
 
 
-   // "Durum" dropdown'ına tıkla
-   const durumDropdown = page.locator('ot-data-entry-template').filter({ hasText: 'Durum' }).locator('span').first();
-   await durumDropdown.click();
-
-   // "Başlangıç" seçeneğini seç
-   const onaylandiOption = page.getByRole('option', { name: 'Onaylandı' });
-   await onaylandiOption.click();
-
-   // "Tercih Edilen Dil" dropdown'ına tıkla
-   const tercihEdilenDil = page.locator('ot-data-entry-template').filter({ hasText: 'Tercih Edilen Dil' }).locator('span').nth(1);
-   await tercihEdilenDil.click();
-
-   // "Türkçe" seçeneğini seç
-   const turkceOption = page.getByRole('option', { name: 'Türkçe' });
-   await turkceOption.click();
-
-   // "Entegratör" dropdown'ına tıkla
-   const entegratorDropdown = page.locator('ot-data-entry-template').filter({ hasText: 'Entegratör' }).locator('span').nth(1);
-   await entegratorDropdown.click();
-   await page.waitForTimeout(500);
-
-   // "Pavo Finansal Teknoloji Çözümleri A.Ş." seçeneğini seç
-   const pavoFinansalTeknolojiOption = page.getByRole('option', { name: 'Pavo Finansal Teknoloji Çözümleri A.Ş.' });
-   await pavoFinansalTeknolojiOption.click();
-   await page.waitForTimeout(500);
-
    // "Şehir" dropdown'ına tıkla
    const sehirDropdown = page.locator('ot-data-entry-template').filter({ hasText: 'Şehir' }).locator('span').first();
    await sehirDropdown.click();
@@ -168,19 +142,6 @@ test('Detay Belge Ekleme, Güncelleme, Görüntüleme ve Silme', async ({ page }
     // Telefon Numarası alanını yaz
     const telNoInput1 = page.locator('ot-data-entry-template').filter({ hasText: 'Fatura Cep Telefonu' }).getByRole('textbox');
     await telNoInput1.fill(uretilenTelNo);
-
-
-    // Çevrim Dışı İşlem Limiti alanına 1000 yaz
-    const cevrimDisiIşlemLimiti = page.locator('ot-data-entry-template').filter({ hasText: 'Çevrim Dışı İşlem Limiti' }).getByRole('spinbutton');
-    await cevrimDisiIşlemLimiti.fill('1000');
-
-    // Çevrim Dışı Satış Limiti alanına 1000 yaz
-    const cevrimDisiSatisLimiti = page.locator('ot-data-entry-template').filter({ hasText: 'Çevrim Dışı Satış Limiti' }).getByRole('spinbutton');
-    await cevrimDisiSatisLimiti.fill('1000');
-
-    // Çevrim Dışı Gün Limiti alanına 1000 yaz
-    const cevrimDisiGunLimiti = page.locator('ot-data-entry-template').filter({ hasText: 'Çevrim Dışı Gün Limiti' }).getByRole('spinbutton');
-    await cevrimDisiGunLimiti.fill('1000');
     
 
     // Ürün ekleme
@@ -298,95 +259,151 @@ test('Detay Belge Ekleme, Güncelleme, Görüntüleme ve Silme', async ({ page }
   // const firstRowExpand = page.locator('tr:nth-child(3) > .k-hierarchy-cell');
   // await firstRowExpand.click();
 
-  // "Belgeler" tıklama 
-  const belgelerMenu = page.getByText('Belgeler');
-  await belgelerMenu.click();
+// yeni butonuna tıkla
+await page.getByRole('button', { name: '+ Yeni' }).click();
 
-    // Koşullu işlemler
-    if (await page.getByRole('button', { name: '+ Yeni' }).isVisible()) {
-        console.log('✅ "+ Yeni" butonu görünüyor, belge ekleme yapılıyor...');
-
-        // "Yeni" butonu
-        const yeniButton = page.getByRole('button', { name: '+ Yeni' });
-        await yeniButton.click();
-
-        // Belge/belgeler seçimi
-        const dosyalariSec = page.getByRole('button', { name: 'Dosya(ları) seç... Browse' })
-        
-        await dosyalariSec.click();
-        await page.getByRole('button', { name: 'Dosya(ları) seç... Browse' }).setInputFiles('helpers/ornek/ornek-png.png');
-        await page.waitForTimeout(2000);
+// Ana iletişim seç
+await page.getByText('Adres Tipi seçiniz...').click();
 
 
-        await dosyalariSec.click();
-        await page.getByRole('button', { name: 'Dosya(ları) seç... Browse' }).setInputFiles('helpers/ornek/ornek-jpeg.jpeg');
-        await page.waitForTimeout(2000);
+// 3 elemanlı veri kümesi
+const dataSet = ['Adres', 'Telefon', 'Web'];
 
-        // Oluştur butonuna tıkla
-        await page.getByRole('button', { name: 'Oluştur' }).click();
+// Veri kümesinden rastgele seç
+const randomIndex = Math.floor(Math.random() * dataSet.length);
+const selectedOption = dataSet[randomIndex];
+console.log(`🎯 Ana iletişim seçilen: ${selectedOption}`);
 
-        // oluşturma sonucu çıkan başarı mesajını kontrol et
-        try {
-        const basariMesaji = page.getByText('Başarılı');
-        await basariMesaji.waitFor({ timeout: 5000 });
-        console.log('✅ Belge başarıyla eklendi');
-        } catch (error) {
-            console.log('⚠️ Belge ekleme işlemi tamamlanamadı olabilir.');
-        }
-        await page.waitForTimeout(2000);
-        
-      } 
-        console.log('✅ "Güncelle" butonu görünüyor, belge güncelleme, goruntuleme, silme yapılıyor...');
-        
-        // Tabpanel içindeki ilk hücreyi seç
-        const ilkGridcell = page.getByRole('tabpanel', { name: 'Belgeler' }).getByRole('gridcell').nth(1);
+// Seçilen Seçeneğe Tıkla
+if (selectedOption) {
+  await page.getByRole('option', { name: selectedOption }).click();
+} else {
+  console.log('❌ Seçenek metni bulunamadı');
+  return;
+}
+await page.waitForTimeout(1000);
 
-        // Hücredeki metni al ve değişkene ata
-        const ilkDeger = await ilkGridcell.textContent();
-        console.log('📄 İlk hücredeki değer:', ilkDeger);
-        
-        // İlk satırdaki güncelleme butonuna tıkla
-        await page.getByRole('row', { name: ` ${ilkDeger}`, exact: true }).getByRole('gridcell').first().click();
+  if (selectedOption == 'Adres') {
+      // Adrese özel işlemler
+      // Alt kontak tipi
+      await page.locator('ot-data-entry-template').filter({ hasText: 'Alt Kontak Tipi' }).locator('span').nth(1).click();
+      await page.getByRole('option', { name: 'Posta Adresi' }).click();
 
-        // Güncelleme butonuna tıkla
-        await page.getByRole('button', { name: 'Güncelle' }).click();
+      // Ülke
+      await page.locator('ot-data-entry-template').filter({ hasText: 'Ülke' }).locator('span').nth(1).click();
+      await page.getByRole('searchbox', { name: 'Filter' }).fill('tü');
+      await page.getByRole('option', { name: 'Türkiye' }).click();
 
-        const dosyalariSec =await page.getByRole('button', { name: 'Dosya(ları) seç... Browse' });
-        await dosyalariSec.click();
-        await page.getByRole('button', { name: 'Dosya(ları) seç... Browse' }).setInputFiles('helpers/ornek/ornek-png.png');
+      // şehir
+      await page.locator('ot-data-entry-template').filter({ hasText: 'Şehir' }).locator('span').nth(1).click();
+      await page.getByRole('option', { name: 'ADANA' }).click();
 
-        // Güncelleme butonuna tıkla
-        await page.getByRole('button', { name: 'Güncelle' }).click();
+      // ilçe
+      await page.locator('ot-data-entry-template').filter({ hasText: 'İlçe/Semt/Bölge' }).locator('span').nth(1).click();
+      await page.getByRole('option', { name: 'KOZAN' }).click();
 
-        try {
-        const basariMesaji1 = await page.getByText('Başarılı Merchant folder');
-        await basariMesaji1.waitFor({ timeout: 5000 });
-        console.log('✅ Belge Güncelleme yapıldı');
-        } catch (error) {
-            console.log('⚠️ Belge Güncelleme yapılamadı');
-        }
+      // mahalle
+      await page.locator('ot-data-entry-template').filter({ hasText: 'Mahalle' }).locator('span').nth(1).click();
+      await page.getByRole('option', { name: 'AKKAYA MAH.' }).click();
 
-        // Görüntüleme butonuna tıkla
-        await page.getByRole('row', { name: ` ${ilkDeger}`, exact: true }).getByRole('gridcell').first().click();
+      // Adres metni
+      const adresMetni = rastgeleString(10);
+      await page.getByRole('textbox').fill(adresMetni);
 
-        // preview butonuna tıkla
-        await page.getByRole('button', { name: '' }).first().click();
+  } else if (selectedOption == 'Telefon') {
+      // Telefon özel işlemler
+       // Alt kontak tipi
+       await page.locator('ot-phone-contact-entry span').nth(1).click();
+       await page.getByRole('option', { name: 'Telefon', exact: true }).click();
+      
+       // telefon No
+       const telefonNo = telNoUret();
+       await page.getByRole('textbox').fill(telefonNo);
+
+  } else if (selectedOption == 'Web') {
+      // Web özel işlemler
+      // Alt kontak tipi
+      await page.locator('ot-web-contact-entry span').nth(1).click();
+      await page.getByRole('option', { name: 'Web Sitesi' }).click();
+
+      // adres
+      const adres = rastgeleString(10);
+      await page.locator('ot-data-entry-template').filter({ hasText: 'Adres' }).getByRole('textbox').fill(adres);
+
+  } else {
+    console.log('Bilinmeyen adres tipi:', selectedOption);
+  }
+
+  // Oluştur butonuna tıkla
+  await page.getByRole('button', { name: 'Oluştur' }).click();
+  await page.waitForTimeout(1000);
+
+  try {
+    const basariMesaji = page.getByText('Başarılı Üye İşyeri İletişim');
+    await basariMesaji.click();
+    await basariMesaji.waitFor({ timeout: 5000 });
+    console.log('✅ Başarılı: İletişim bilgisi başarıyla eklendi!');
+  } catch (error) {
+    console.log('❌ İletişim bilgisi ekleme başarı mesajı kontrol edilirken hata oluştu:', error.message);
+  }
 
 
-        await page.waitForTimeout(5000);
-        console.log('✅ Belge Görüntüleme yapıldı');
-        await page.waitForTimeout(3000);
+  // ===== ADIM 5: Güncelleme İşlemi =====
+    // const firstRowExpand = page.getByRole('row', { name: /Expand Details/ }).getByRole('button').nth(randomRowNumber);
+    
+    // eklenen iletişim bilgisi listenin en üstüne geldiğinden 0 indexli güncelle butonuna tıkla
+    const iletisimSatiri = page.getByRole('row', { name: '' }).getByRole('button').nth(1);
+                       
+    await iletisimSatiri.click();
+    await page.waitForTimeout(1000);
 
-        // Görüntülemeyi kapat
-        await page.getByRole('button', { name: 'Kapat' }).click();
+    if (await page.locator('ot-dropdown-entry').filter({ hasText: 'Ana İletişimAdres' }).isVisible()) {
+      // Adrese güncelleme özel işlemler
+      // Adres metni
+      const adresMetni = rastgeleString(10);
+      await page.locator('ot-data-entry-template').filter({ hasText: 'Adres' }).getByRole('textbox').fill(adresMetni);
+      console.log('Yeni adres:', adresMetni);
 
-        // Silme işlemleri
-        await page.getByRole('button', { name: '' }).first().click();
-        await page.getByRole('button', { name: 'Sil' }).click();
-        // Güncelleme butonuna tıkla
-        await page.getByRole('button', { name: 'Güncelle' }).click();
+  } else if (await page.locator('ot-data-entry-template').filter({ hasText: 'Ana İletişimTelefon' }).isVisible()) {
+      // Telefon güncelleme özel işlemler
+      // telefon no
+       const telefonNo = telNoUret();
+       await page.getByRole('textbox').fill(telefonNo);
+       console.log('Yeni telefon:', telefonNo);
 
-        console.log('✅ Belge Silme işlemi yapıldı');
+  } else if (await page.locator('ot-dropdown-entry').filter({ hasText: 'Ana İletişimWeb' }).isVisible()) {
+      // Web güncelleme özel işlemler
+      // adres
+      const adres = rastgeleString(10);
+      await page.locator('ot-data-entry-template').filter({ hasText: 'Adres' }).getByRole('textbox').fill(adres);
+      console.log('Yeni web adresi:', adres);
+  } 
+
+
+    // güncelle butonuna tıkla
+    await page.getByRole('button', { name: 'Güncelle' }).click();
+    await page.waitForTimeout(1000);
+
+
+    try {
+      const basariMesaji = page.getByText('Başarılı Üye İşyeri İletişim');
+      await basariMesaji.click();
+      await basariMesaji.waitFor({ timeout: 5000 });
+      console.log('✅ Başarılı: İletişim bilgisi başarıyla güncellendi!');
+    } catch (error) {
+      console.log('❌ İletişim bilgisi güncelleme başarı mesajı kontrol edilirken hata oluştu:', error.message);
+    }
+  
+
+  
+
+
+
+
+
+
+
+
 
       // ===== ADIM 7: Üye İşyeri Silme =====
       try {

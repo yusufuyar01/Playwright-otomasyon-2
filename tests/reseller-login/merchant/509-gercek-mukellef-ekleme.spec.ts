@@ -1,18 +1,18 @@
 import { test, expect } from '@playwright/test';
-import { login } from '../../../helpers/login';
+import { login2 } from '../../../helpers/login2';
 import { tcknUret } from '../../../helpers/tcknUret';
 import { rastgeleString } from '../../../helpers/stringUret';
 import { ePostaUret } from '../../../helpers/ePostaUret';
 import { telNoUret } from '../../../helpers/telNoUret';
 import { zoom } from '../../../helpers/zoom';
 
-test('509 Gerçek Mükellef Ekleme', async ({ page }) => {
+test('509 Gerçek Mükellef Ekleme (reseller-login)', async ({ page }) => {
 
-  console.log('===>  509 Gerçek Mükellef Ekleme  <===');
+  console.log('===>  509 Gerçek Mükellef Ekleme (reseller-login)  <===');
 
   
   // Önce sisteme giriş yap
-  await login(page);
+  await login2(page);
 
   // Zoom işlemi
   await zoom(page);
@@ -104,22 +104,6 @@ test('509 Gerçek Mükellef Ekleme', async ({ page }) => {
    await mukellefOption.click();
 
 
-   // "Durum" dropdown'ına tıkla
-   const durumDropdown = page.locator('ot-data-entry-template').filter({ hasText: 'Durum' }).locator('span').first();
-   await durumDropdown.click();
-
-   // "Başlangıç" seçeneğini seç
-   const baslangicOption = page.getByRole('option', { name: 'Başlangıç' });
-   await baslangicOption.click();
-
-   // "Tercih Edilen Dil" dropdown'ına tıkla
-   const tercihEdilenDil = page.locator('ot-data-entry-template').filter({ hasText: 'Tercih Edilen Dil' }).locator('span').nth(1);
-   await tercihEdilenDil.click();
-
-   // "Türkçe" seçeneğini seç
-   const turkceOption = page.getByRole('option', { name: 'Türkçe' });
-   await turkceOption.click();
-
  // "Şehir" dropdown'ına tıkla
  const sehirDropdown = page.locator('ot-data-entry-template').filter({ hasText: 'Şehir' }).locator('span').first();
  await sehirDropdown.click();
@@ -166,18 +150,6 @@ test('509 Gerçek Mükellef Ekleme', async ({ page }) => {
   const telNoInput1 = page.locator('ot-data-entry-template').filter({ hasText: 'Fatura Cep Telefonu' }).getByRole('textbox');
   await telNoInput1.fill(uretilenTelNo);
 
-    // Çevrim Dışı İşlem Limiti alanına 1000 yaz
-    const cevrimDisiIşlemLimiti = page.locator('ot-data-entry-template').filter({ hasText: 'Çevrim Dışı İşlem Limiti' }).getByRole('spinbutton');
-    await cevrimDisiIşlemLimiti.fill('1000');
-
-    // Çevrim Dışı Satış Limiti alanına 1000 yaz
-    const cevrimDisiSatisLimiti = page.locator('ot-data-entry-template').filter({ hasText: 'Çevrim Dışı Satış Limiti' }).getByRole('spinbutton');
-    await cevrimDisiSatisLimiti.fill('1000');
-
-    // Çevrim Dışı Gün Limiti alanına 1000 yaz
-    const cevrimDisiGunLimiti = page.locator('ot-data-entry-template').filter({ hasText: 'Çevrim Dışı Gün Limiti' }).getByRole('spinbutton');
-    await cevrimDisiGunLimiti.fill('1000');
-
      // üye işyeri admin kullanıcısı (işyeri adı ile aynı değeri verdik)
     const adSoyadInput = page.locator('ot-data-entry-template').filter({ hasText: 'Adı Soyadı'}).getByRole('textbox');
     await adSoyadInput.fill(ad);
@@ -213,35 +185,127 @@ test('509 Gerçek Mükellef Ekleme', async ({ page }) => {
           // Zoom işlemi
           await zoom(page);
 
-           // ===== ADIM 6: Üye İşyeri Silme =====
-           try {
+          
+    // ===== ADIM 6: Detay Menü =====
+    console.log(`🎯 Seçilen üye işyeri: ${ad}`);
+
+    try {
+      await page.getByRole('row', { name: 'Expand Details  ' + ad }).getByLabel('Expand Details').click();
+
+    } catch (error) {
+      console.log(`❌ ${ad} ile başlayan üye işyeri bulunamadı:`, error.message);
+    }
+  
+     // bu satır özellikle bir detay satırını incelemek için konulmuştur. hemen yukarıdaki 3 satırı yorum satırına alarak kullanabilirsiniz.
+     // const firstRowExpand = page.locator('tr:nth-child(3) > .k-hierarchy-cell');
+     // await firstRowExpand.click();
+
+
+     // ===== ADIM 7: Detay menüde  Sale Applications,PAyment Types,Payment Mediators,Integrators, E-Document Settings butonlarının görünmeme kontrolü===== 
+     console.log('🎯 Detay menüde  Sale Applications,PAyment Types,Payment Mediators,Integrators, E-Document Settings butonlarının görünmeme kontrolü');
+
+     // Sale Applications kontrolü
+     try {
+      await page.getByText('Satış Uygulamaları').click();
+      const kontrol1 = await page.getByRole('button', { name: '+ Yeni' }).isVisible();
+      if (kontrol1) {
+        console.log('✅ Satış Uygulamalarında "+ Yeni" butonu bulundu');
+      } else {
+        console.log('❌ Satış Uygulamalarında buton bulunamadı');
+      }
+     } catch (error) {
+      console.log('❌ Satış Uygulamalarında buton kontrolünde bir hata oldu:', error.message);
+     }
+     await page.waitForTimeout(3000);
+
+
+     // Payment Types kontrolü
+     try {
+      await page.getByText('Ödeme Tipleri').click();
+      const kontrol2 = await page.getByRole('button', { name: '+ Yeni' }).isVisible();
+      if (kontrol2) {
+        console.log('✅ Ödeme Tiplerinde "+ Yeni" butonu bulundu');
+      } else {
+        console.log('❌ Ödeme Tiplerinde buton bulunamadı');
+      }
+     } catch (error) {
+      console.log('❌ Ödeme Tiplerinde buton kontrolünde bir hata oldu:', error.message);
+     }
+     await page.waitForTimeout(3000);
+
+
+     // Payment Mediators kontrolü
+     try {
+      await page.getByText('Ödeme Aracıları').click();
+      const kontrol3 = await page.getByRole('button', { name: '+ Yeni' }).isVisible();
+      if (kontrol3) {
+        console.log('✅ Ödeme Aracılarında "+ Yeni" butonu bulundu');
+      } else {
+        console.log('❌ Ödeme Aracılarında buton bulunamadı');
+      }
+     } catch (error) {
+      console.log('❌ Ödeme Aracılarında buton kontrolünde bir hata oldu:', error.message);
+     }  
+     await page.waitForTimeout(3000);
+
+
+     // Integrators kontrolü
+     try {
+      await page.getByText('Entegratörler').click();
+      const kontrol4 = await page.getByRole('button', { name: '+ Yeni' }).isVisible();
+      if (kontrol4) {
+        console.log('✅ Entegratörlerinde "+ Yeni" butonu bulundu');
+      } else {
+        console.log('❌ Entegratörlerinde buton bulunamadı');
+      }
+     } catch (error) {
+      console.log('❌ Entegratörlerinde buton kontrolünde bir hata oldu:', error.message);
+     }  
+     await page.waitForTimeout(3000);
+
+
+     // E-Document Settings kontrolü
+     try {
+      await page.getByText('E-Belge Ayarları').click();
+      const kontrol5 = await page.getByRole('button', { name: '+ Yeni' }).isVisible();
+      if (kontrol5) {
+        console.log('✅ E-Belge Ayarlarında "+ Yeni" butonu bulundu');
+      } else {
+        console.log('❌ E-Belge Ayarlarında buton bulunamadı');
+      }
+     } catch (error) {
+      console.log('❌ E-Belge Ayarlarında buton kontrolünde bir hata oldu:', error.message);
+     }  
+     await page.waitForTimeout(3000);
+
+     // ===== ADIM 6: Üye İşyeri Silme =====
+     try {  
+        // İlk DENEME satırını bul ve expand details butonuna tıkla
+        const expandButton = page.getByRole('row', { name: new RegExp(ad) }).getByRole('button');
+        await expandButton.click();
       
-              // İlk DENEME satırını bul ve expand details butonuna tıkla
-              const expandButton = page.getByRole('row', { name: new RegExp(ad) }).getByRole('button');
-              await expandButton.click();
+    } catch (error) {
+      console.log(`❌ ${ad} ile başlayan üye işyeri bulunamadı:`, error.message);
+    }
       
-          } catch (error) {
-            console.log(`❌ ${ad} ile başlayan üye işyeri bulunamadı:`, error.message);
-          }
-      
-          // Sil butonuna tıkla
-          await page.getByRole('button', { name: 'Sil' }).click();
-      
-          await page.getByRole('button', { name: 'Evet' }).click();
+    // Sil butonuna tıkla
+    await page.getByRole('button', { name: 'Sil' }).click();
+    
+    await page.getByRole('button', { name: 'Evet' }).click();
       
       
-          // Başarı mesajını kontrol et
-            try {
-              const basariMesaji = page.getByText('Başarılı Üye İşyeri başarıyla silindi.');
-              await basariMesaji.waitFor();
-              if (basariMesaji) {
-                console.log('✅ Başarılı: Üye İşyeri başarıyla silindi!');
-              } else {
-                console.log('❌ Başarı mesajı bulunamadı');
-              }
-            } catch (error) {
-              console.log('❌ Başarı mesajı kontrol edilirken hata oluştu:', error.message);
-            }
+    // Başarı mesajını kontrol et
+    try {
+      const basariMesaji = page.getByText('Başarılı Üye İşyeri başarıyla silindi.');
+      await basariMesaji.waitFor();
+      if (basariMesaji) {
+        console.log('✅ Başarılı: Üye İşyeri başarıyla silindi!');
+      } else {
+        console.log('❌ Başarı mesajı bulunamadı');
+      }
+    } catch (error) {
+      console.log('❌ Başarı mesajı kontrol edilirken hata oluştu:', error.message);
+    }
       
 
      // Test sonunda ekranın kapanmasını engellemek için pause

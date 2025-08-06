@@ -1,7 +1,7 @@
 // helpers/login2.ts
 import { Page } from '@playwright/test';
 
-export async function login(page: Page): Promise<void> {
+export async function login2(page: Page): Promise<void> {
   
   // ===== ADIM 1: Sayfaya Gitme =====
   // OverPay Reseller Dashboard sayfasına yönlendirme
