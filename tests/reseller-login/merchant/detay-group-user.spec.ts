@@ -4,11 +4,10 @@ import { zoom } from '../../../helpers/zoom';
 import { uyeIsyeriEkle507Tuzel, uyeIsyeriSil } from '../../../helpers/uyeIsyeriIslemleri';
 import { ePostaUret } from '../../../helpers/ePostaUret';
 import { telNoUret } from '../../../helpers/telNoUret';
-import { stringUret } from '../../../helpers/stringUret';
 
-test('Detay grup kullanıcı ekle ve güncelle (reseller login)', async ({ page }) => {
+test('Detay kullanıcıları gruba ekle ve çıkar (reseller login)', async ({ page }) => {
 
-  console.log('===>  Detay grup kullanıcı ekle ve güncelle (reseller login)  <===');
+  console.log('===>  Detay kullanıcıları gruba ekle ve çıkar (reseller login)  <===');
 
   // Önce sisteme giriş yap
   await login2(page);
