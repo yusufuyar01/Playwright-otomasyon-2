@@ -225,6 +225,8 @@ ilk 41 testten sonrası reseller login ile yapılmaktadır
 
 48- npx playwright test tests/reseller-login/merchant/detay-group-user.spec.ts --headed
 
+49- npx playwright test tests/reseller-login/merchant/detay-belge-ekleme-guncelleme-goruntuleme-silme.spec.ts --headed
+
 
     npx playwright codegen https://overpayresellerdemo.overtech.com.tr/Home/Dashboard/Index
 
