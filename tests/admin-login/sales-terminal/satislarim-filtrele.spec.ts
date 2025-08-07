@@ -55,7 +55,7 @@ test('Satışlarım Filtreleme İşlemleri', async ({ page }) => {
     await page.getByRole('link', { name: ' Satışlarım' }).click();
     await page.waitForTimeout(1000);
 
-// Tarih filtreleme - başlangıç tarihi
+    // Tarih filtreleme - başlangıç tarihi
     await page.locator('#datepicker-1').click();
     await page.waitForTimeout(1000);
     await page.locator('#datepicker-1').press('ArrowLeft');
