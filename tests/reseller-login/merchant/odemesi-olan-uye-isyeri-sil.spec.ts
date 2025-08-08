@@ -3,9 +3,9 @@ import { login2 } from '../../../helpers/login2';
 import { zoom } from '../../../helpers/zoom';
 import { uyeIsyeriEkle509Gercek, uyeIsyeriSil } from '../../../helpers/uyeIsyeriIslemleri';
 
-test('507 Gerçek Mükellef Ekleme (reseller-login)', async ({ page }) => {
+test('Ödemesi Olan Üye İşyeri Silme (reseller-login)', async ({ page }) => {
 
-  console.log('===>  507 Gerçek Mükellef Ekleme (reseller-login)  <===');
+  console.log('===>  Ödemesi Olan Üye İşyeri Silme (reseller-login)  <===');
   
   // Önce sisteme giriş yap
   await login2(page);
