@@ -54,9 +54,9 @@ test('Detay Ödeme Aracıları (reseller login)', async ({ page }) => {
 
   // Başarı mesajını kontrol et
   try {
-    if (await page.tByText('Başarılı Üye İşyeri Ödeme').isVisible()) {
-      await page.tByText('Başarılı Üye İşyeri Ödeme').click();
-      console.log('✅ Başarılı: Ödeme Aracı başarıyla oluşturuldu!');
+    if (await page.getByText('Başarılı Üye İşyeri Ödeme').isVisible()) {
+      await page.getByText('Başarılı Üye İşyeri Ödeme').click();
+      console.log('✅ Başarılı: Ödeme Aracısı başarıyla oluşturuldu!');
     } 
   } catch (error) {
     console.log('❌ Başarı mesajı kontrol edilirken hata oluştu:', error.message);
@@ -77,7 +77,7 @@ test('Detay Ödeme Aracıları (reseller login)', async ({ page }) => {
   try {
     if (await page.getByText('Başarılı Üye İşyeri Ödeme').isVisible()) {
       await page.getByText('Başarılı Üye İşyeri Ödeme').click();
-      console.log('✅ Başarılı: Ödeme Aracı başarıyla güncellendi!');
+      console.log('✅ Başarılı: Ödeme Aracısı başarıyla güncellendi!');
     } 
   } catch (error) {
     console.log('❌ Başarı mesajı kontrol edilirken hata oluştu:', error.message);
@@ -102,7 +102,7 @@ test('Detay Ödeme Aracıları (reseller login)', async ({ page }) => {
   try {
     if (await page.getByText('Başarılı Üye İşyeri Ödeme').isVisible()) {
       await page.getByText('Başarılı Üye İşyeri Ödeme').click();
-      console.log('✅ Başarılı: Ödeme Aracı başarıyla silindi!');
+      console.log('✅ Başarılı: Ödeme Aracısı başarıyla silindi!');
     } else {
       console.log('❌ Başarı mesajı bulunamadı');
     }
@@ -113,7 +113,6 @@ test('Detay Ödeme Aracıları (reseller login)', async ({ page }) => {
 
   // ===== ADIM 8: Üye İşyeri Temizliği =====
   await uyeIsyeriSil(page, isyeriAdi);
-  console.log('🧹 Test sonunda üye işyeri temizlendi');
 
   // Test sonunda ekranın kapanmasını engellemek için pause
   await page.pause();
