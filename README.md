@@ -239,7 +239,6 @@ ilk 41 testten sonrası reseller login ile yapılmaktadır
 
 
 - NPX playwright test tests/reseller-login/merchant/odemesi-olan-uye-isyeri-sil.spec.ts --headed
-
     npx playwright codegen https://overpayresellerdemo.overtech.com.tr/Home/Dashboard/Index
 
 
