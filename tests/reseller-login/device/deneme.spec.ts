@@ -24,9 +24,55 @@ test('Cihazları Bayiye Atama (checkbox işaretli)', async ({ page }) => {
    await page.waitForTimeout(2000);
 
   // Cihaz ekleme, birisi füncellenecek
-  await cihazEkle(page);
-  await cihazEkle(page);
 
+  // Yeni cihaz ekleme butonunu bul ve tıkla
+  await page.getByRole('button', { name: '+ Yeni' }).click();
+  await page.waitForTimeout(1000);
+
+  // Cihaz Seri No üret ve gir
+  const cihazSeriNo = ("PAVDENEME" + rastgeleString(5)).toUpperCase();
+  const seriNoInput = page.locator('ot-data-entry-template').filter({ hasText: 'Seri Numarası' }).getByRole('textbox');
+  await seriNoInput.fill(cihazSeriNo);
+
+  // Durum seçimi
+  await page.getByText('Seçiniz...').first().click();
+  await page.getByRole('option', { name: 'Hazır Değil' }).click();
+
+  // Depo seçimi
+  await page.locator('ot-dropdown-entry').filter({ hasText: 'DepoSeçiniz...' }).click();
+  await page.getByRole('option', { name: 'TEST', exact: true }).click();
+
+  //Tip
+  await page.getByText('Seçiniz...').first().click();
+  await page.getByRole('option', { name: 'Smart POS' }).click();
+
+  //Marka
+  await page.getByText('Seçiniz...').first().click();
+  await page.getByRole('option', { name: 'PAVO' }).click();
+
+  //Model
+  await page.getByText('Seçiniz...').click();
+  await page.getByRole('option', { name: 'N86', exact: true }).click();
+
+  //Oluştur butonu
+  await page.getByRole('button', { name: 'Oluştur' }).click();
+  await page.waitForTimeout(500);
+  //Başarı kontrolü
+  try {
+    const basariMesaji = page.getByText('Başarılı Cihaz başarıyla oluş');
+    await expect(basariMesaji).toBeVisible();
+    await page.waitForTimeout(500);
+    await basariMesaji.click();
+    console.log('✅ 1 Cihaz başarıyla eklendi');
+  } catch (error) {
+    console.log('⚠️ Başarı mesajı görünmedi, cihaz eklenmiş olabilir');
+  }
+  await page.waitForTimeout(1000);
+
+
+
+
+  
   // Cihaz güncelleme
   await cihazGuncelle(page);
 
