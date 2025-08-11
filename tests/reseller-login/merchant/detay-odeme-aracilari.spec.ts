@@ -65,38 +65,24 @@ test('Detay Ödeme Aracıları (reseller login)', async ({ page }) => {
 
   // ===== ADIM 6: Ödeme Aracı Güncelleme =====
   
-  await page.getByLabel('Ödeme Aracıları').getByRole('button', { name: '' }).nth(2).click();
+    await page.getByLabel('Ödeme Aracıları').getByRole('button', { name: '' }).nth(2).click();
   await page.getByRole('textbox').click();
   await page.getByRole('textbox').fill('5');
   await page.getByRole('button', { name: 'Güncelle' }).click();
-  await page.getByText('Başarılı Üye İşyeri Ödeme').click();
 
-  await page..click(); 
+  await page.getByRole('button', { name: 'Güncelle' }).click(); 
   await page.waitForTimeout(1000);
 
   // Güncelleme başarı mesajını kontrol et
   try {
-    if (await page.getByRole('button', { name: 'Güncelle' }).isVisible()) {
-      await page.getByRole('button', { name: 'Güncelle' }).click();
+    if (await page.getByText('Başarılı Üye İşyeri Ödeme').isVisible()) {
+      await page.getByText('Başarılı Üye İşyeri Ödeme').click();
       console.log('✅ Başarılı: Ödeme Aracı başarıyla güncellendi!');
     } 
   } catch (error) {
     console.log('❌ Başarı mesajı kontrol edilirken hata oluştu:', error.message);
   }
   await page.waitForTimeout(1000);
-
-
-
-  // ===== ADIM 7: Parametre ekleme  =====
- 
-
-  await page.waitForTimeout(1000);
-      
-  // Parametre ekleme başarı mesajını kontrol et
-
-
-
-
 
 
 
@@ -107,15 +93,15 @@ test('Detay Ödeme Aracıları (reseller login)', async ({ page }) => {
 
 
   // ===== ADIM 7: Ödeme Aracı Silme =====
-  await page.getByRole('row', { name: ` Kredi Kartı ${binKodu} ${son4Hane}` }).getByRole('button').click();
+    await page.getByLabel('Ödeme Aracıları').getByRole('button', { name: '' }).nth(2).click();
   await page.getByRole('button', { name: 'Sil' }).click();
   await page.getByRole('button', { name: 'Evet' }).click();
   await page.waitForTimeout(1000);
       
   // Silme başarı mesajını kontrol et
   try {
-    if (await page.getByText('Başarılı Ödeme Aracı').isVisible()) {
-      await page.getByText('Başarılı Ödeme Aracı').click();
+    if (await page.getByText('Başarılı Üye İşyeri Ödeme').isVisible()) {
+      await page.getByText('Başarılı Üye İşyeri Ödeme').click();
       console.log('✅ Başarılı: Ödeme Aracı başarıyla silindi!');
     } else {
       console.log('❌ Başarı mesajı bulunamadı');
