@@ -304,7 +304,7 @@ await baskVergiDairesi.click();
 
 
 // "Şehir" dropdown'ına tıkla
-const sehirDropdown = page.locator('ot-data-entry-template').filter({ hasText: 'Şehir' }).locator('span').first();
+const sehirDropdown = page.locator('ot-data-entry-template').filter({ hasText: 'Şehir' }).locator('span').nth(1);
 await sehirDropdown.click();
 
 // "ADANA" seçeneğini seç
