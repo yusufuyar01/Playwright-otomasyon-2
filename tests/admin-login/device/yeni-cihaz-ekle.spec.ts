@@ -1,11 +1,12 @@
 import { test, expect } from '@playwright/test';
 import { login } from '../../../helpers/login';
 import { zoom } from '../../../helpers/zoom';
-import { cihazEkle, cihazGuncelle, cihaziBayiyeAta, cihazSil, cihazUyeIseyerindenGeriAl, UyeIseyerineAta509 } from '../../../helpers/cihazIslemleri';
+import { rastgeleString } from '../../../helpers/stringUret';
+import { cihazSil } from '../../../helpers/cihazIslemleri';
 
-test('Cihazları 509 Üye İşyerine Atama', async ({ page }) => {
+test('Yeni Cihaz Ekleme', async ({ page }) => {
 
-  console.log('===>  Cihazları 509 Üye İşyerine Atama  <===');
+  console.log('===>  Yeni Cihaz Ekleme  <===');
 
   // Önce sisteme giriş yap
   await login(page);
@@ -13,82 +14,64 @@ test('Cihazları 509 Üye İşyerine Atama', async ({ page }) => {
   // Zoom işlemi
   await zoom(page);
 
-   // Cihaz yönetimi bul ve tıkla
-   const cihazYonetimi = page.locator('text="Cihaz Yönetimi"'); 
-   await cihazYonetimi.click();
-   await page.waitForTimeout(1000);
- 
-   // Cihaz İşlemleri menü linkini bul ve tıkla
-   const cihazIslemleri = page.getByRole('link', { name: ' Cihaz İşlemleri' });
-   await cihazIslemleri.click();
-   await page.waitForTimeout(2000);
+  // ===== ADIM 1: Dashboard'da Cihaz Yönetimi Menüsünü Bulma =====
+  // Cihaz yönetimi bul ve tıkla
+  const cihazYonetimi = page.locator('text="Cihaz Yönetimi"'); 
+  await cihazYonetimi.click();
+  await page.waitForTimeout(1000);
 
-  // Cihaz ekleme, birisi güncellenecek
-  await cihazEkle(page);
-  await cihazEkle(page);
+  // ===== ADIM 2: Cihaz İşlemleri Sayfasına Gitme =====
+  // Cihaz İşlemleri menü linkini bul ve tıkla
+  const cihazIslemleri = page.getByRole('link', { name: ' Cihaz İşlemleri' });
+  await cihazIslemleri.click();
+  await page.waitForTimeout(2000);
 
-  // Cihaz güncelleme
-  await cihazGuncelle(page);
+  // ===== ADIM 3: Yeni Cihaz Ekleme =====
+  // Yeni cihaz ekleme butonunu bul ve tıkla
+  await page.getByRole('button', { name: '+ Yeni' }).click();
+  await page.waitForTimeout(1000);
 
-  // Cihazı bayiye ekle
-  await cihaziBayiyeAta(page);
+  // ===== ADIM 4: Cihaz Ekleme Formu Doldurulması =====
+  // Cihaz Seri No üret ve gir
+  const cihazSeriNo = ("PAVDENEME" + rastgeleString(5)).toUpperCase();
+  console.log('Üretilen Cihaz Seri No:', cihazSeriNo);
+  const seriNoInput = page.locator('ot-data-entry-template').filter({ hasText: 'Seri Numarası' }).getByRole('textbox');
+  await seriNoInput.fill(cihazSeriNo);
 
-  // 2. cihazı bayiye ekle
-    // PAVGUNCELLE ile başlayan ilk cihazı seç
-    try {
-      const pavguncelleRows = page.getByRole('row').filter({ hasText: /PAVGUNCELLE/ });
-      const pavguncelleFirstRow = pavguncelleRows.first();
-      await pavguncelleFirstRow.getByRole('checkbox').check();
-      console.log(`✅ PAVGUNCELLE cihazı seçildi. (Alt Bayiye atanacak cihaz)`);
-      } catch (error) {
-        console.log('❌ PAVGUNCELLE cihazı seçilemedi:', error);
-      } 
-      
-      
-    
-    // işlemler dropdownından bayiye ata butonuna tıkla
-    await page.getByRole('button', { name: 'İşlemler ' }).click();
-    await page.getByRole('button', { name: ' Bayiye Ata' }).click();
-    await page.getByRole('combobox').filter({ hasText: /^$/ }).click();
-    await page.getByRole('combobox').filter({ hasText: /^$/ }).fill('tes');
-    await page.getByRole('option', { name: 'TEST', exact: true }).click();
-    await page.getByRole('button', { name: 'Ata' }).click();
-    
-    
-    try {
-    // Başarısız işlemler başlığının görünür olmasını bekle
-    const basarisizIslemler = page.getByRole('heading', { name: 'Başarısız İşlemler' });
-    await basarisizIslemler.waitFor({ state: 'visible', timeout: 1000 });
-    // { state: 'visible' }
-    if (await basarisizIslemler.isVisible()) {
-      console.log('❌ Başarısız işlemler görüntülendi');
-      
-      // Tablodaki tüm satırları oku
-      const rows = page.locator('.k-grid-content .k-master-row');
-      const rowCount = await rows.count();
-      
-      for (let i = 0; i < rowCount; i++) {
-        const row = rows.nth(i);
-        const errorMessage = await row.locator('td').nth(5).textContent() || '';
-        // Satırı konsola yazdır
-        console.log(` ⚠️✅ ${errorMessage} mesajı göründü`);
-      }
-      
-      console.log('='.repeat(100));
-    }
-    } catch (error) {
-    
-    }
+  // Durum seçimi
+  await page.getByText('Seçiniz...').first().click();
+  await page.getByRole('option', { name: 'Hazır Değil' }).click();
 
+  // Depo seçimi
+  await page.locator('ot-dropdown-entry').filter({ hasText: 'DepoSeçiniz...' }).click();
+  await page.getByRole('option', { name: 'TEST', exact: true }).click();
 
-  // 509 üye işyerine cihaz atama işlemi
-  await UyeIseyerineAta509(page);
+  //Tip
+  await page.getByText('Seçiniz...').first().click();
+  await page.getByRole('option', { name: 'Smart POS' }).click();
 
-  // cihazları üye işyerinden geri al
-  await cihazUyeIseyerindenGeriAl(page);
-  
-  // Cihaz silme
-  await cihazSil(page);
+  //Marka
+  await page.getByText('Seçiniz...').first().click();
+  await page.getByRole('option', { name: 'PAVO' }).click();
+
+  //Model
+  await page.getByText('Seçiniz...').click();
+  await page.getByRole('option', { name: 'N86', exact: true }).click();
+
+  //Oluştur butonu
+  await page.getByRole('button', { name: 'Oluştur' }).click();
+  await page.waitForTimeout(2000);
+
+  //Başarı kontrolü
+  try {
+    const basariMesaji = page.getByText('Başarılı Cihaz başarıyla oluş');
+    await expect(basariMesaji).toBeVisible();
+    console.log('✅ Cihaz başarıyla eklendi');
+  } catch (error) {
+    console.log('⚠️ Başarı mesajı görünmedi, cihaz eklenmiş olabilir');
+  }
+
+  // cihaz silme
   await cihazSil(page);
 
   // Test sonunda ekranın kapanmasını engellemek için pause

@@ -1,6 +1,5 @@
 // helpers/login.ts
 import { Page } from '@playwright/test';
-import { cacheTemizle } from './cacheTemizle';
 
 export async function login(page: Page): Promise<void> {
   
@@ -11,11 +10,7 @@ export async function login(page: Page): Promise<void> {
   // Sayfanın yüklenmesini bekle
   await page.waitForLoadState('networkidle');
   
-  // ===== ADIM 2: Cache ve Storage Temizleme =====
-  // Sayfa yüklendikten sonra cache ve storage'ı temizle
-  await cacheTemizle(page);
-  
-  // ===== ADIM 3: Kullanıcı Adı ve Şifre Girişi =====
+  // ===== ADIM 2: Kullanıcı Adı ve Şifre Girişi =====
   // Kullanıcı adı alanını bul ve doldur
   const usernameInput = page.locator('input[type="text"], input[name="username"], input[id="username"], #UserName');
   await usernameInput.fill('pavo.admin'); // Gerçek kullanıcı adınızı buraya yazın
@@ -24,13 +19,13 @@ export async function login(page: Page): Promise<void> {
   await passwordInput.fill('1234'); // Gerçek şifrenizi buraya yazın
   
 
-  // ===== ADIM 4: Giriş Butonuna Tıklama =====
+  // ===== ADIM 3: Giriş Butonuna Tıklama =====
   // Giriş butonunu bul ve tıkla
   const loginButton = page.locator('button[type="submit"], input[type="submit"],  #loginButton');
   await loginButton.click();
 
 
-  // ===== ADIM 5: Test Sonucu =====
+  // ===== ADIM 4: Test Sonucu =====
   // Test tamamlandı, 7 saniye bekle ve browser'ı kapat
   await page.waitForTimeout(3000);
 
