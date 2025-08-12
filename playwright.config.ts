@@ -14,15 +14,16 @@ import { defineConfig, devices } from '@playwright/test';
 export default defineConfig({
   testDir: './tests',
   /* Run tests in files in parallel */
-  fullyParallel: true,
+  fullyParallel: false,
   /* Fail the build on CI if you accidentally left test.only in the source code. */
   forbidOnly: !!process.env.CI,
   /* Retry on CI only */
   retries: process.env.CI ? 2 : 0,
   /* Opt out of parallel tests on CI. */
-  workers: process.env.CI ? 1 : undefined,
+  workers: 1,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
   reporter: 'html',
+  
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
     /* Base URL to use in actions like `await page.goto('/')`. */
@@ -34,6 +35,39 @@ export default defineConfig({
     /* Timeout ayarları */
     actionTimeout: 30000, // Her action için 30 saniye
     navigationTimeout: 60000, // Sayfa yükleme için 60 saniye
+
+    /* Tüm testler için gizli sekme ayarları */
+    launchOptions: {
+      args: [
+        '--incognito',
+        '--disable-web-security', 
+        '--disable-features=VizDisplayCompositor',
+        '--disable-blink-features=AutomationControlled',
+        '--disable-extensions-except',
+        '--disable-plugins-discovery',
+        '--disable-default-apps',
+        '--no-first-run',
+        '--no-default-browser-check',
+        '--disable-background-timer-throttling',
+        '--disable-backgrounding-occluded-windows',
+        '--disable-renderer-backgrounding'
+      ]
+    },
+    
+    /* Context ayarları - tüm testler için gizli sekme */
+    contextOptions: {
+      viewport: { width: 1920, height: 1080 },
+      userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+      locale: 'tr-TR',
+      timezoneId: 'Europe/Istanbul',
+      permissions: ['geolocation'],
+      geolocation: { longitude: 28.9784, latitude: 41.0082 }, // İstanbul koordinatları
+      extraHTTPHeaders: {
+        'Accept-Language': 'tr-TR,tr;q=0.9,en;q=0.8',
+        'Accept-Encoding': 'gzip, deflate, br',
+        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8'
+      }
+    }
   },
 
   /* Global timeout ayarları */
@@ -46,7 +80,10 @@ export default defineConfig({
   projects: [
     {
       name: 'chromium',
-      use: { ...devices['Desktop Chrome'] },
+      use: { 
+        ...devices['Desktop Chrome']
+        // Global launchOptions ve contextOptions kullanılıyor
+      },
     },
     // {
     //   name: 'firefox',

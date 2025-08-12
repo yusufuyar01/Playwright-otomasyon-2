@@ -233,8 +233,9 @@ ilk 41 testten sonrası reseller login ile yapılmaktadır
 
 52- npx playwright test tests/reseller-login/merchant/detay-odeme-aracilari-1.spec.ts --headed
 
+53- npx playwright test tests/reseller-login/merchant/detay-odeme-aracilari-2.spec.ts --headed
 
-
+54- npx playwright test tests/reseller-login/merchant/detay-entegrator.spec.ts --headed
 
 
 
