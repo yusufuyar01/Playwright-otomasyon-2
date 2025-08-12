@@ -4,10 +4,6 @@ import { cacheTemizle } from './cacheTemizle';
 
 export async function login(page: Page): Promise<void> {
   
-  // ===== ADIM 0: Cache ve Storage Temizleme =====
-  // Sayfa yüklenmeden önce tüm cache ve storage'ı temizle
-  await cacheTemizle(page);
-  
   // ===== ADIM 1: Sayfaya Gitme =====
   // OverPay Reseller Dashboard sayfasına yönlendirme
   await page.goto('https://overpayresellerdemo.overtech.com.tr/login');
@@ -15,7 +11,11 @@ export async function login(page: Page): Promise<void> {
   // Sayfanın yüklenmesini bekle
   await page.waitForLoadState('networkidle');
   
-  // ===== ADIM 2: Kullanıcı Adı ve Şifre Girişi =====
+  // ===== ADIM 2: Cache ve Storage Temizleme =====
+  // Sayfa yüklendikten sonra cache ve storage'ı temizle
+  await cacheTemizle(page);
+  
+  // ===== ADIM 3: Kullanıcı Adı ve Şifre Girişi =====
   // Kullanıcı adı alanını bul ve doldur
   const usernameInput = page.locator('input[type="text"], input[name="username"], input[id="username"], #UserName');
   await usernameInput.fill('pavo.admin'); // Gerçek kullanıcı adınızı buraya yazın
@@ -24,13 +24,13 @@ export async function login(page: Page): Promise<void> {
   await passwordInput.fill('1234'); // Gerçek şifrenizi buraya yazın
   
 
-  // ===== ADIM 3: Giriş Butonuna Tıklama =====
+  // ===== ADIM 4: Giriş Butonuna Tıklama =====
   // Giriş butonunu bul ve tıkla
   const loginButton = page.locator('button[type="submit"], input[type="submit"],  #loginButton');
   await loginButton.click();
 
 
-  // ===== ADIM 4: Test Sonucu =====
+  // ===== ADIM 5: Test Sonucu =====
   // Test tamamlandı, 7 saniye bekle ve browser'ı kapat
   await page.waitForTimeout(3000);
 
