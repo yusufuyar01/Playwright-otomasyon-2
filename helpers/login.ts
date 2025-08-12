@@ -1,7 +1,12 @@
 // helpers/login.ts
 import { Page } from '@playwright/test';
+import { cacheTemizle } from './cacheTemizle';
 
 export async function login(page: Page): Promise<void> {
+  
+  // ===== ADIM 0: Cache ve Storage Temizleme =====
+  // Sayfa yüklenmeden önce tüm cache ve storage'ı temizle
+  await cacheTemizle(page);
   
   // ===== ADIM 1: Sayfaya Gitme =====
   // OverPay Reseller Dashboard sayfasına yönlendirme

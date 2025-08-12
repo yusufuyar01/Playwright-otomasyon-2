@@ -3,10 +3,15 @@ import { login } from '../../../helpers/login';
 import { zoom } from '../../../helpers/zoom';
 import { rastgeleString } from '../../../helpers/stringUret';
 import { cihazSil } from '../../../helpers/cihazIslemleri';
+import { cacheTemizle } from '../../../helpers/cacheTemizle';
 
 test('Yeni Cihaz Ekleme', async ({ page }) => {
 
   console.log('===>  Yeni Cihaz Ekleme  <===');
+
+  // ===== ADIM 0: Cache ve Storage Temizleme =====
+  // Test başında tüm cache ve storage'ı temizle
+  await cacheTemizle(page);
 
   // Önce sisteme giriş yap
   await login(page);

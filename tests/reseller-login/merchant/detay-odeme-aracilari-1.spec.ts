@@ -2,11 +2,10 @@ import { test, expect } from '@playwright/test';
 import { login2 } from '../../../helpers/login2';
 import { zoom } from '../../../helpers/zoom';
 import { uyeIsyeriEkle509Gercek, uyeIsyeriSil } from '../../../helpers/uyeIsyeriIslemleri';
-import { rastgeleString } from '../../../helpers/stringUret';
 
-test('Detay Ödeme Aracıları (reseller login)', async ({ page }) => {
+test('Detay Ödeme Aracıları 1 (reseller login)', async ({ page }) => {
 
-  console.log('===>  Detay Ödeme Aracıları (reseller login)  <===');
+  console.log('===>  Detay Ödeme Aracıları 1 (reseller login)  <===');
 
   // Önce sisteme giriş yap
   await login2(page);
@@ -37,6 +36,20 @@ test('Detay Ödeme Aracıları (reseller login)', async ({ page }) => {
   } catch (error) {
     console.log(`❌ ${isyeriAdi} ile başlayan üye işyeri bulunamadı:`, error.message);
   }
+
+  try {
+    const nakit =  page.getByRole('gridcell', { name: 'Nakit' }).isVisible;
+    const bkmTechpos = page.getByRole('gridcell', { name: 'BKM TechPOS' }).isVisible;
+    if(nakit && bkmTechpos){
+      console.log('✅ İlgili Ödeme Araciları ekli!');
+    } else{
+      console.log('❌ İlgili Ödeme Araciları ekli değil!');
+    }
+  } catch {
+    console.log('❌ İlgili Ödeme Araciları kontrol edilirken bir hata oluştu!');
+
+  }
+  
   
   // ===== ADIM 5: Ödeme Aracıları Ekleme =====
   await page.getByText('Ödeme Aracıları').click();
@@ -85,12 +98,26 @@ test('Detay Ödeme Aracıları (reseller login)', async ({ page }) => {
   await page.waitForTimeout(1000);
 
 
+  // ====== Parametre Eklemede hata kontrolü =======
+  await page.getByRole('button', { name: '' }).first().click();
+  await page.getByRole('button', { name: '+ Ekle' }).click();
 
+  try {
+    const hata = await page.getByRole('alert', { name: 'You do not have enough' });
+    if (hata.isVisible()) {
+      await hata.click();
+      console.log('❌ Hata mesajı göründü! (Beklenen Sonuç)');
+    } else {
+      console.log('görünmedi');
+    }
+  } catch (error) {
+    console.log('❌ Başarı mesajı kontrol edilirken hata oluştu:', error.message);
+  }
+  await page.waitForTimeout(1000);
 
+  await page.getByRole('button', { name: ' Kapat' }).click();
 
-
-
-
+  await page.waitForTimeout(1000);
 
   // ===== ADIM 7: Ödeme Aracı Silme =====
     await page.getByLabel('Ödeme Aracıları').getByRole('button', { name: '' }).nth(2).click();

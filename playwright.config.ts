@@ -32,6 +32,20 @@ export default defineConfig({
     /* Timeout ayarları */
     actionTimeout: 30000, // Her action için 30 saniye
     navigationTimeout: 60000, // Sayfa yükleme için 60 saniye
+
+    /* Cache ve storage temizleme ayarları */
+    launchOptions: {
+      args: [
+        '--incognito', // Gizli sekme
+        '--disable-application-cache',
+        '--disable-cache',
+        '--disable-offline-load-stale-cache',
+        '--disk-cache-size=0',
+        '--disable-background-timer-throttling',
+        '--disable-backgrounding-occluded-windows',
+        '--disable-renderer-backgrounding'
+      ]
+    }
   },
 
   /* Global timeout ayarları */
