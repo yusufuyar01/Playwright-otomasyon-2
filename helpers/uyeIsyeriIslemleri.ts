@@ -246,10 +246,7 @@ export async function uyeIsyeriEkle509Gercek(page: Page): Promise<string> {
 
             // ===== ADIM 4: Üye İşyeri Ekleme Formu Doldurulması =====
 
-            // Vergi Tipi seçimi
-            const taxType = page.locator('ot-data-entry-template').filter({ hasText: 'Vergi Tipi' }).locator('span').first();
-            await taxType.click();
-
+          
             // "Durum" dropdown' gözüküyor mu kontrol et
             const durumDropdown = page.locator('ot-data-entry-template').filter({ hasText: 'Durum' }).locator('span').first();
             if (await durumDropdown.isVisible()) {
@@ -261,23 +258,16 @@ export async function uyeIsyeriEkle509Gercek(page: Page): Promise<string> {
                 
                 // Zoom işlemi
                 await zoom(page);
-
-                const yeniUyeIsyeri = page.locator('text="Yeni Ekle"'); 
-                await yeniUyeIsyeri.click();
-                await page.waitForTimeout(1000);
-
-                // Vergi Tipi seçimi
-                const taxType = page.locator('ot-data-entry-template').filter({ hasText: 'Vergi Tipi' }).locator('span').first();
-                await taxType.click();
-    
-                
                 retryCount++;
-                continue; // While döngüsünün başına dön
+                await uyeIsyeriEkle509Gercek(page);
 
-              
             } else {
                 formFilled = true; // Form başarıyla yüklendi
             }
+
+            // Vergi Tipi seçimi
+            const taxType = page.locator('ot-data-entry-template').filter({ hasText: 'Vergi Tipi' }).locator('span').first();
+            await taxType.click();
 
             // gerçek kullanıcı seç
             const taxTypeOption = page.getByRole('option').getByText('Gerçek');
@@ -414,7 +404,6 @@ export async function uyeIsyeriEkle509Gercek(page: Page): Promise<string> {
 
             // Form başarıyla dolduruldu, döngüden çık
             break;
-
         } catch (error) {
             console.log(`❌ Form doldurma sırasında hata oluştu (Deneme ${retryCount + 1}):`, error.message);
             retryCount++;
