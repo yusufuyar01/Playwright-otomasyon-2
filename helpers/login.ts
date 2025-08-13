@@ -30,3 +30,13 @@ export async function login(page: Page): Promise<void> {
   await page.waitForTimeout(3000);
 
 }
+
+export async function logout(page: Page): Promise<void> {
+
+  await page.getByText('P', { exact: true }).first().click();
+  await page.getByText('Çıkış').click();
+  console.log('Adminden çıkış yapıldı');
+  await page.waitForTimeout(1000);
+
+
+}

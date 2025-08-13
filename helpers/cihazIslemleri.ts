@@ -239,7 +239,7 @@ export async function UyeIseyerineAta507(page: Page): Promise<void> {
    await page.getByRole('button', { name: 'İşlemler ' }).click();
    await page.getByRole('button', { name: ' Üye İşyerine Ata' }).click();
    
-   await page.waitForTimeout(1000);  
+   await page.waitForTimeout(1000);
 
     // Seçtiğiniz cihazların bayileri farklıdır mesajını kontrol et
     try {

@@ -30,3 +30,11 @@ export async function login2(page: Page): Promise<void> {
   await page.waitForTimeout(3000);
 
 }
+
+export async function logout2(page: Page): Promise<void> {
+
+  await page.getByText('S', { exact: true }).first().hover();
+  await page.getByText('Çıkış').click();
+  console.log('Sipay PF den çıkış yapıldı');
+  await page.waitForTimeout(1000);
+}
