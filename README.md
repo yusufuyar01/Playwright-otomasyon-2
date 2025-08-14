@@ -107,7 +107,7 @@ Yazılan bağlantıyı bir pencerede açar ve otomasyon için gerekli olan locat
 
 ilk 41 test admin login ile yapılmaktadır
 
-/merchant
+admin/merchant
 1-  npx playwright test tests/admin-login/merchant/507-tuzel-mukellef-ekleme.spec.ts --headed
 
 2-  npx playwright test tests/admin-login/merchant/507-gercek-mukellef-ekleme.spec.ts --headed
@@ -127,7 +127,7 @@ ilk 41 test admin login ile yapılmaktadır
 9-  npx playwright test tests/admin-login/merchant/tip-vergi-tipi-ve-yetkili-bayi-degistirme.spec.ts --headed
 
 
-/reseller
+admin/reseller
     
 10- npx playwright test tests/admin-login/reseller/gercek-kisi-bayi-ekleme.spec.ts --headed
 
@@ -141,7 +141,7 @@ ilk 41 test admin login ile yapılmaktadır
 
 
 
-/device
+admin/deviceadmin
 
 15- npx playwright test tests/admin-login/device/bayiye-atanmamis-ve-uye-isyerine-atanmamis.spec.ts --headed
 
@@ -175,7 +175,7 @@ ilk 41 test admin login ile yapılmaktadır
 
 
 
-/salesTerminal
+admin/salesTerminal
 
 30- npx playwright test tests/admin-login/sales-terminal/terminal-guncelle.spec.ts --headed
 
@@ -187,7 +187,7 @@ ilk 41 test admin login ile yapılmaktadır
 
 
 
-/techpos
+admin/techpos
 
 34- npx playwright test tests/admin-login/techpos/grup-ata-ve-terminal-guncelle.spec.ts --headed
 
@@ -207,7 +207,7 @@ ilk 41 test admin login ile yapılmaktadır
 
 
 
-
+reseller/merchant
 
 ilk 41 testten sonrası reseller login ile yapılmaktadır
 
@@ -242,6 +242,13 @@ ilk 41 testten sonrası reseller login ile yapılmaktadır
 56- npx playwright test tests/reseller-login/merchant/uye-isyeri-guncelle.spec.ts --headed
 
 57- NPX playwright test tests/reseller-login/merchant/odemesi-olan-uye-isyeri-sil.spec.ts --headed
+
+
+
+reseller/device
+
+
+
 
 
 

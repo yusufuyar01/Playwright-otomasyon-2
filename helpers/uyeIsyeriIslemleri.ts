@@ -231,13 +231,8 @@ export async function uyeIsyeriEkle507Tuzel(page: Page): Promise<string> {
 // Üye işyeri ekleme fonksiyonu (509 Gerçek Mükellef)
 export async function uyeIsyeriEkle509Gercek(page: Page): Promise<string> {
 
-    let maxRetries = 3; // Maksimum deneme sayısı
-    let retryCount = 0;
-    let formFilled = false;
-    let ad = "";
-
-    while (retryCount < maxRetries && !formFilled) {
-        try {
+    
+        
             
             // Yeni üye işyeri ekleme butonunu bul ve tıkla
             const yeniUyeIsyeri = page.locator('text="Yeni Ekle"'); 
@@ -258,13 +253,14 @@ export async function uyeIsyeriEkle509Gercek(page: Page): Promise<string> {
                 
                 // Zoom işlemi
                 await zoom(page);
-                retryCount++;
-                await uyeIsyeriEkle509Gercek(page);
 
-            } else {
-                formFilled = true; // Form başarıyla yüklendi
-            }
+                // Yeni üye işyeri ekleme butonunu bul ve tıkla
+                const yeniUyeIsyeri = page.locator('text="Yeni Ekle"'); 
+                await yeniUyeIsyeri.click();
+                await page.waitForTimeout(1000);
 
+
+            } 
             // Vergi Tipi seçimi
             const taxType = page.locator('ot-data-entry-template').filter({ hasText: 'Vergi Tipi' }).locator('span').first();
             await taxType.click();
@@ -295,7 +291,7 @@ export async function uyeIsyeriEkle509Gercek(page: Page): Promise<string> {
             await tcknInput.fill(tckn);
 
             // Gerçek kişi adı, soyadı ve iş yeri kısa adı
-            ad = ("DENEME" + rastgeleString(5)).toUpperCase();
+            const ad = ("DENEME" + rastgeleString(5)).toUpperCase();
             const adInput = page.locator('ot-data-entry-template').filter({ hasText: /^Ad$/ }).getByRole('textbox');
             await adInput.fill(ad);
             const soyadInput = page.locator('div').filter({ hasText: /^Soyad$/ }).getByRole('textbox');
@@ -401,21 +397,6 @@ export async function uyeIsyeriEkle509Gercek(page: Page): Promise<string> {
 
             // Zoom işlemi
             await zoom(page);
-
-            // Form başarıyla dolduruldu, döngüden çık
-            break;
-        } catch (error) {
-            console.log(`❌ Form doldurma sırasında hata oluştu (Deneme ${retryCount + 1}):`, error.message);
-            retryCount++;
-            
-            if (retryCount >= maxRetries) {
-                console.log('❌ Maksimum deneme sayısına ulaşıldı. Form doldurulamadı.');
-                throw new Error('Form doldurma başarısız');
-            }
-            
-           
-        }
-    }
 
     return ad;
 }
