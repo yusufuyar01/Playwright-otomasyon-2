@@ -383,7 +383,7 @@ await page.waitForTimeout(1000);
 
 try{
   const expandDetails = page.getByRole('link', { name: 'Expand Details' });
-  await expandDetails.waitFor({ state: 'visible', timeout: 4000 });
+  await expandDetails.waitFor({ state: 'visible'});
   await expandDetails.click();
 } catch (error) {
   console.log('❌ Satış terminali ekranında cihaz bulunamadı :', error.message);
