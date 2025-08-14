@@ -239,11 +239,15 @@ ilk 41 testten sonrası reseller login ile yapılmaktadır
 
 55- npx playwright test tests/reseller-login/merchant/detay-e-belge-ayarlari.spec.ts --headed
 
+56- npx playwright test tests/reseller-login/merchant/uye-isyeri-guncelle.spec.ts --headed
 
-52- NPX playwright test tests/reseller-login/merchant/odemesi-olan-uye-isyeri-sil.spec.ts --headed
+57- NPX playwright test tests/reseller-login/merchant/odemesi-olan-uye-isyeri-sil.spec.ts --headed
+
+
+
+
     npx playwright codegen https://overpayresellerdemo.overtech.com.tr/Home/Dashboard/Index
 
-    https://tcnumarasi.com/tcuret
 
 
 ```
