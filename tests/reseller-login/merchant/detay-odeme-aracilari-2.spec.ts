@@ -374,7 +374,9 @@ test('Detay Ödeme Aracıları 2 (reseller login)', async ({ page }) => {
 // ===== ADIM 7: Satış terminalinde kontrol =====
 await page.getByText('Satış Terminali').click();
 await page.getByRole('link', { name: ' Terminal' }).click();
+await page.waitForTimeout(1000);
 await page.getByRole('button', { name: '' }).click();
+await page.waitForTimeout(1000);
 await page.getByRole('textbox', { name: 'Seri Numarası Filter' }).click();
 await page.getByRole('textbox', { name: 'Seri Numarası Filter' }).fill(cihazSeriNo);
 await page.waitForTimeout(1000);
@@ -446,10 +448,7 @@ await page.getByRole('link', { name: ' Cihaz İşlemleri' }).click();
   await page.waitForTimeout(1000);
   if (await page.getByRole('button', { name: 'Kabul', exact: true }).isVisible()) {
   await page.getByRole('button', { name: 'Kabul', exact: true }).click();
-  } else if (await page.getByRole('button', { name: 'Kabul' }).isVisible()){  
-    await page.getByRole('button', { name: 'Kapat' }).click();
-    console.log('✅ İstenildiği gibi bayiden geri al işlemi yapılamamalıdır');
-  }
+  } 
   
      await page.waitForTimeout(1000);  
 
