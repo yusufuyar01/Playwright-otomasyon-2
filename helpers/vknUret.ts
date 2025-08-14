@@ -14,6 +14,10 @@ export async function vknUret(page: Page): Promise<string> {
         
         // Web sitesine git
         await newPage.goto('https://tcnumarasi.com/verginouret');
+
+        if (await newPage.getByText('SSL handshake failed').isVisible()) {
+            await newPage.reload();
+          }
         
         // "Vergi No Üret" butonuna tıkla
         await newPage.getByText('VERGİ NO ÜRET').click();

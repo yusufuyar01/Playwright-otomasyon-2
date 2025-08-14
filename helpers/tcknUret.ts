@@ -1,7 +1,7 @@
 import { Page, BrowserContext } from '@playwright/test';
 import { login2 } from './login2';
 
-// VKN (TC Numarası) üretme - Web sitesinden
+// tckn (TC Numarası) üretme - Web sitesinden
 export async function tcknUret(page: Page): Promise<string> {
     let newPage: Page | null = null;
     let context: BrowserContext | null = null;
