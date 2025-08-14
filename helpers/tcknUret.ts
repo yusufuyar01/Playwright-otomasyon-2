@@ -17,7 +17,6 @@ export async function tcknUret(page: Page): Promise<string> {
         await newPage.goto('https://tcnumarasi.com/tcuret');
 
         if (await newPage.getByText('SSL handshake failed').isVisible()) {
-            console.log('❌ SSL handshake failed. Sayfa yeniden yükleniyor...');
             await newPage.reload();
           }
 

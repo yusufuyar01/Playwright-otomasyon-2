@@ -237,7 +237,7 @@ ilk 41 testten sonrası reseller login ile yapılmaktadır
 
 54- npx playwright test tests/reseller-login/merchant/detay-entegrator.spec.ts --headed
 
-
+55- npx playwright test tests/reseller-login/merchant/detay-e-belge-ayarlari.spec.ts --headed
 
 
 52- NPX playwright test tests/reseller-login/merchant/odemesi-olan-uye-isyeri-sil.spec.ts --headed

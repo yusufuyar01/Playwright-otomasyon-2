@@ -2,6 +2,7 @@ import { test, expect } from '@playwright/test';
 import { login2 } from '../../../helpers/login2';
 import { rastgeleString } from '../../../helpers/stringUret';
 import { zoom } from '../../../helpers/zoom';
+import { uyeIsyeriEkle509Gercek, uyeIsyeriSil } from '../../../helpers/uyeIsyeriIslemleri';
 
 test('Detay E-Belge Ayarları', async ({ page }) => {
 
@@ -25,15 +26,18 @@ test('Detay E-Belge Ayarları', async ({ page }) => {
   await uyeIsyeri.click();
   await page.waitForTimeout(500);
 
-  // ===== ADIM 3: Detay Menü =====
-  // Detay menüye tıkla (ilk 10 satırdan rastgele seç)
-  const randomRowNumber = Math.floor(Math.random() * 10) + 2;
-  console.log(`🎯 Rastgele seçilen satır numarası: ${randomRowNumber}`);
-  const firstRowExpand = page.locator(`tr:nth-child(${randomRowNumber}) > .k-hierarchy-cell`);
+// ===== ADIM 3: Üye İşyeri Ekleme =====
+const isyeriAdi = await uyeIsyeriEkle509Gercek(page);
 
-  // bu satır özellikle bir detay satırını incelemek için konulmuştur. hemen yukarıdaki 3 satırı yorum satırına alarak kullanabilirsiniz.
-  // const firstRowExpand = page.locator('tr:nth-child(4) > .k-hierarchy-cell');
-  await firstRowExpand.click();
+// ===== ADIM 4: Detay Menü =====
+console.log(`🎯 Seçilen üye işyeri: ${isyeriAdi}`);
+
+try {
+  await page.getByRole('row', { name: 'Expand Details  ' + isyeriAdi }).getByLabel('Expand Details').click();
+} catch (error) {
+  console.log(`❌ ${isyeriAdi} ile başlayan üye işyeri bulunamadı:`, error.message);
+}
+
 
   // "E-Belge" tıklama 
   const eBelgeAyarlari = page.getByText('E-Belge Ayarları');
@@ -49,79 +53,101 @@ test('Detay E-Belge Ayarları', async ({ page }) => {
     // Entegratör eklenmemişse çıkan hatayı bekle (3 saniye timeout)
     const entegratorHatasi = page.getByText('Üye işyeri için entegratör');
     await entegratorHatasi.waitFor({ timeout: 2000 });
-    console.log('❌ Üye işyeri için entegratör bulunamadı!');
+    console.log('⚠️  Üye işyeri için entegratör bulunamadı! Entegratör ekleniyor...');
+    
   } catch (error) {
-    console.log('✅ Entegratör mesajı görünmedi, E-Belge Ayarları devam ediyor...');
-    
-    // Entegratör seçimi
-    await page.locator('ot-data-entry-template').filter({ hasText: 'Entegratör' }).getByLabel('Select').click();
-    
-    // Dropdown'da çıkan ilk elemana tıkla
-    const firstOption1 = await page.getByRole('option').first();
-    await firstOption1.click();
-
-    // Belge Türü seçimi
-    // Belge Türü sütunundaki tüm hücreleri al
-    const secilmisBelgeTurleriLocator = await page.getByRole('gridcell');
-    const secilmisTumMetinler = await secilmisBelgeTurleriLocator.allTextContents();
-
-    // Örn: ['E-Fatura', 'E-MM', 'E-Arşiv'] gibi bir liste olacak
-    const secilmisSet = new Set(secilmisTumMetinler);
-
-    // Dropdown'u aç
-    await page.locator('ot-data-entry-template').filter({ hasText: 'Belge Türü' }).locator('span').nth(1).click();
-
-    // Tüm seçenekleri al
-    const tumSecenekler = await page.getByRole('option').all();
-
-    // Henüz seçilmemiş ilk seçeneği bul ve tıkla
-    let belgeTuruSecildi = false;
-    for (const option of tumSecenekler) {
-        const optionText = await option.textContent();
-        if (optionText && !secilmisSet.has(optionText.trim())) {
-            await option.click();
-            console.log(`✅ Seçilen Belge Türü: ${optionText.trim()}`);
-            belgeTuruSecildi = true;
-            break;
-        }
-    }
-    
-    // Eğer seçilebilir belge türü bulunamadıysa
-    if (!belgeTuruSecildi) {
-        console.log(' ❌ Belge Türü E-Belge Ayarı zaten kayıtlı');
-        return; // Testi sonlandır
-    }
-
-    // Seri Numarası alanına rastgele metin yaz
-    const eBelgeAdi = rastgeleString(3).toUpperCase();
-    const seriNumaraInput = page.getByRole('dialog').locator('input[type="text"]');
-    await seriNumaraInput.fill(eBelgeAdi);
-
-    // Gönderici Takma Adı alanına rastgele metin yaz
-    const gondericiTakmaAdi = rastgeleString(15);
-    const gondericiTakmaAdiInput = page.locator('textarea');
-    await gondericiTakmaAdiInput.fill(gondericiTakmaAdi);
-
-    // Oluştur butonuna tıkla
-    await page.getByRole('button', { name: 'Oluştur' }).click();
-
-    // Pop-up mesajını kontrol et
-    try {
-      const popupMessage = page.getByText('Başarılı Üye İşyeri E-Belge');
-      await popupMessage.waitFor({ timeout: 3000 });
-      console.log('✅ Üye İşyeri E-Belge Ayarları başarıyla oluşturuldu');
-    } catch (error) {
-      // Başarı mesajı görünmediyse, "E-Belge Ayarı Zaten Kayıtlı" mesajını kontrol et
-      try {
-        const zatenKayitliMessage = page.getByText('E-Belge Ayarı Zaten Kayıtlı Bu e-belge ayarı zaten mevcut.');
-        await zatenKayitliMessage.waitFor({ timeout: 3000 });
-        console.log('e-BELGE AYARI ZATEN KAYITLI');
-      } catch (secondError) {
-        console.log('⚠️ Başarı mesajı görünmedi, işlem tamamlanamadı olabilir.');
-      }
-    }
+    console.log('❌ Entegratör mesajı görünmedi, E-Belge Ayarları (Beklenmeyen durum)');
     
   }
+  await page.getByRole('button', { name: 'Tamam' }).click();
+  await page.waitForTimeout(1000);
+  await page.getByLabel('Close').click();
+
+  // ===== ADIM 5: Entegratör Yönetimi Menüsünü Bulma =====
+  // Entegratör yönetimi menü linkini bul ve tıkla
+  const entegratorler = page.getByText('Entegratörler');  
+  await entegratorler.click();
+  await page.waitForTimeout(1000);
+
+  // ===== ADIM 6: Yeni Entegratör Ekleme =====
+  // Yeni entegratör ekleme butonunu bul ve tıkla
+  await page.getByRole('button', { name: '+ Yeni' }).click(); 
+
+
+  await page.waitForTimeout(1000);
+
+  await page.locator('ot-data-entry-template').filter({ hasText: 'Entegratör' }).getByLabel('Select').click();
+  await page.getByRole('option', { name: 'Pavo Finansal Teknoloji Çözü' }).click();
+  await page.getByRole('button', { name: 'Oluştur' }).click();
+  await page.waitForTimeout(500);
+
+  // ===== ADIM 8: Başarı Kontrolü =====
+  // Başarı mesajını kontrol et
+  try {
+    const basariMesaji = page.getByText('Başarılı Üye İşyeri Entegratö');
+    await basariMesaji.waitFor({ timeout: 5000 });
+    await basariMesaji.click();
+    console.log('✅ Entegratör başarıyla eklendi');
+  } catch (error) {
+    console.log('⚠️ Başarı mesajı görünmedi, entegratör ekleme işlem tamamlanamadı olabilir.');
+  }
+  await page.waitForTimeout(1000);
+
+
+// ===== ADIM 7: E-Belge Ayarları =====
+  // "E-Belge" tıklama 
+  await eBelgeAyarlari.click();
+
+  // "Yeni" butonu
+  await yeniButton.click();
+
+  
+  // Entegratör seçimi
+  await page.locator('ot-data-entry-template').filter({ hasText: 'Entegratör' }).getByLabel('Select').click();
+    
+  // Dropdown'da çıkan ilk elemana tıkla
+  const firstOption1 = await page.getByRole('option').first();
+  await firstOption1.click();
+
+  // Belge Türü seçimi
+  await page.locator('ot-data-entry-template').filter({ hasText: 'Belge Türü' }).locator('span').nth(1).click();
+  await page.getByRole('option', { name: 'E-Arşiv' }).click();
+
+  
+
+  // Seri Numarası alanına rastgele metin yaz
+  const eBelgeAdi = rastgeleString(3).toUpperCase();
+  const seriNumaraInput = page.getByRole('dialog').locator('input[type="text"]');
+  await seriNumaraInput.fill(eBelgeAdi);
+
+  // Gönderici Takma Adı alanına rastgele metin yaz
+  const gondericiTakmaAdi = rastgeleString(15);
+  const gondericiTakmaAdiInput = page.locator('textarea');
+  await gondericiTakmaAdiInput.fill(gondericiTakmaAdi);
+
+  // Oluştur butonuna tıkla
+  await page.getByRole('button', { name: 'Oluştur' }).click();
+
+    // Pop-up mesajını kontrol et
+  try {
+    const popupMessage = page.getByText('Başarılı Üye İşyeri E-Belge');
+    await popupMessage.waitFor({ timeout: 3000 });
+    console.log('✅ Üye İşyeri E-Belge Ayarları başarıyla oluşturuldu');
+  } catch (error) {
+    // Başarı mesajı görünmediyse, "E-Belge Ayarı Zaten Kayıtlı" mesajını kontrol et
+    try {
+      const zatenKayitliMessage = page.getByText('E-Belge Ayarı Zaten Kayıtlı Bu e-belge ayarı zaten mevcut.');
+      await zatenKayitliMessage.waitFor({ timeout: 3000 });
+      console.log('e-BELGE AYARI ZATEN KAYITLI');
+    } catch (secondError) {
+      console.log('⚠️ Başarı mesajı görünmedi, işlem tamamlanamadı olabilir.');
+    }
+  }
+
+  // ===== ADIM 8: E-Belge Ayarları Silme =====
+  await uyeIsyeriSil(page, isyeriAdi);
+
+
 
    await page.pause();
 

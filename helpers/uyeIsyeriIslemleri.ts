@@ -413,10 +413,7 @@ export async function uyeIsyeriEkle509Gercek(page: Page): Promise<string> {
                 throw new Error('Form doldurma başarısız');
             }
             
-            // Hata durumunda sayfayı yenile ve tekrar dene
-            await page.reload();
-            await page.waitForTimeout(2000);
-            await zoom(page);
+           
         }
     }
 
