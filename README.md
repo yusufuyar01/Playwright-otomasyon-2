@@ -245,6 +245,7 @@ ilk 41 testten sonrası reseller login ile yapılmaktadır
 
 58- npx playwright test tests/reseller-login/device/cihazi-bayiye-ata.spec.ts --headed
 
+59- npx playwright test tests/reseller-login/device/cihazi-uye-isyerine-ata.spec.ts --headed
 
 
 reseller/device
