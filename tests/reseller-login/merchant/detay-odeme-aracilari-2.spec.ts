@@ -460,6 +460,7 @@ try {
   const cihazSeriNoRows = page.getByRole('row').filter({ hasText: cihazSeriNo });
   const cihazSeriNoFirstRow = cihazSeriNoRows.first();
   await cihazSeriNoFirstRow.getByRole('checkbox').check();
+  await page.waitForTimeout(1000);
   console.log(`✅ ${cihazSeriNo} cihazı seçildi. (Silinecek cihaz)`);
   } catch (error) {
     console.log('❌ ${cihazSeriNo} cihazı seçilemedi:', error);

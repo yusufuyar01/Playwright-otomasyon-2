@@ -91,60 +91,107 @@ test('Cihazı Bayiye Ata', async ({ page }) => {
   // 6. Zoom
   await zoom(page);
 
-  // 7. Eklenen cihazı bayiye (sipaypf) ata
+  // 7. Eklenen cihazı üye işyerine ata
   await page.getByText('Cihaz Yönetimi').click();
   await page.getByRole('link', { name: ' Cihaz İşlemleri' }).click();
   await page.waitForTimeout(1000);
 
+  await uyeIsyerineAta(cihazSeriNo);
 
-    // Oluşturmuş olduğumuz cihazı seç
-    try {
-        const cihazSeriNoRows = page.getByRole('row').filter({ hasText: cihazSeriNo });
-        const cihazSeriNoFirstRow = cihazSeriNoRows.first();
-        await cihazSeriNoFirstRow.getByRole('checkbox').check();
-        console.log(`✅ ${cihazSeriNo} cihazı seçildi. (Bayiye atanacak cihaz)`);
-        } catch (error) {
-          console.log('❌ ${cihazSeriNo} cihazı seçilemedi:', error);
-        } 
-        
-      // işlemler dropdownından bayiye ata butonuna tıkla
-      await page.getByRole('button', { name: 'İşlemler ' }).click();
-      await page.getByRole('button', { name: ' Bayiye Ata' }).click();
+  async function uyeIsyerineAta(cihazSeriNo: string){
+    
+  await zoom(page);
 
-      try {
-        await page.getByRole('textbox').fill('6530334023');
-        await page.waitForTimeout(1000);
-        await page.getByRole('button', { name: ' Bul' }).click();
-        await page.getByRole('dialog').getByText('enesbayii').waitFor({ state: 'visible', timeout: 10000 });
+     // ihazı seç
+  try {
+    const cihazSeriNoRows = page.getByRole('row').filter({ hasText: cihazSeriNo });
+    const cihazSeriNoFirstRow = cihazSeriNoRows.first();
+    await cihazSeriNoFirstRow.getByRole('checkbox').check();
+    console.log(`✅ ${cihazSeriNo} cihazı seçildi. (Üye işyerine atanacak cihaz)`);
+    } catch (error) {
+      console.log('❌ ${cihazSeriNo} cihazı seçilemedi:', error);
+    } 
+    
+  
+    // işlemler dropdownından üye işyerine ata butonuna tıkla
+    await page.getByRole('button', { name: 'İşlemler ' }).click();
+    await page.getByRole('button', { name: ' Üye İşyerine Ata' }).click();
+  
+    await page.waitForTimeout(1000);  
+  
+    await page.locator('ot-data-entry-template').filter({ hasText: 'VKN/TCKN' }).getByRole('textbox').fill('4548992552');
+    await page.getByRole('button', { name: ' Bul' }).click();
+    await page.getByRole('dialog').getByText('Erdal Bakkal').waitFor({ state: 'visible', timeout: 4000 });
+    if (await page.getByRole('dialog').getByText('Erdal Bakkal').isVisible()) {
+      console.log('✅ VKN/TCKN ile Erdal Bakkal bulundu');
+    } else {
+      console.log('❌ Erdal Bakkal bulunamadı');
+    }
 
-        if (await page.getByRole('dialog').getByText('enesbayii').isVisible()) {
-          console.log('✅ Bayi bulundu! Atama işlemi Yapılıyor...');
-        } else {
-          console.log('❌ Bayi VKN/TCKN değeriyle bulunamadı');
-        }
-        await page.getByRole('button', { name: 'Ata' }).click();
-        await page.waitForTimeout(1000);
+    await page.locator('ot-data-entry-template').filter({ hasText: 'Şube' }).locator('span').nth(1).click();
+    await page.getByRole('option', { name: 'Central Branch' }).click();
+    await page.locator('ot-data-entry-template').filter({ hasText: 'PF' }).locator('span').nth(1).click();
+    await page.getByRole('option', { name: 'No PF' }).click();
+    await page.locator('ot-data-entry-template').filter({ hasText: 'Tebliğ Tipi' }).locator('span').nth(1).click();
+    await page.getByRole('option', { name: '507' }).click();
+    await page.locator('ot-dropdown-entry').filter({ hasText: 'Environment' }).click();
+    await page.getByRole('option', { name: 'Demo' }).click();
+    await page.getByRole('button', { name: 'Ata' }).click();
 
-        if (await page.locator('td:nth-child(5)').first().textContent() === 'enesbayii') {
-          console.log('✅ Bayi bulundu! Atama işlemi başarılı');
-        } else {
-          console.log('❌ Bayi atama işlemi başarısız');
-        }
+    await page.waitForTimeout(1000);   
 
-      } catch (error) {
-        console.log('❌ Bayi bulunamadı');
-      }
+    if (await page.getByRole('heading', { name: 'Başarısız İşlemler' }).isVisible()) {
+    console.log('❌ Başarısız işlemler görüntülendi');
+    await page.reload();
+    await page.waitForTimeout(1000);
+    await uyeIsyerineAta(cihazSeriNo);
+    return;
+    }
+    
+
+      await page.waitForTimeout(3000);
+
+    if (  await page.locator('td:nth-child(7)').first().textContent() === 'Erdal Bakkal') {
+      console.log('✅ Cihaz üye işyerine atandı');
+    } else {
+      console.log('❌ Cihaz üye işyerine atanamadı');
+    }
+
+}
+
+    await page.waitForTimeout(1000);
+
 
       await logout2(page);
 
       await login(page);
       await zoom(page);
 
-      // Cihazı bayiden geri al
+      // Cihazı üye işyerinden geri al
+
       await page.getByText('Cihaz Yönetimi').click();
       await page.getByRole('link', { name: ' Cihaz İşlemleri' }).click();
       await page.waitForTimeout(1000);
-    
+
+      try {
+        const cihazSeriNoRows = page.getByRole('row').filter({ hasText: cihazSeriNo });
+        const cihazSeriNoFirstRow = cihazSeriNoRows.first();
+        await cihazSeriNoFirstRow.getByRole('checkbox').check();
+        console.log(`✅ ${cihazSeriNo} cihazı seçildi. (Üye işyerinden geri alınacak cihaz)`);
+        } catch (error) {
+          console.log('❌ ${cihazSeriNo} cihazı seçilemedi:', error);
+        } 
+       
+         // işlemler dropdownından üye işyerinden geri al butonuna tıkla
+         await page.getByRole('button', { name: 'İşlemler ' }).click();
+        await page.getByRole('button', { name: ' Üye İşyerinden Geri Al' }).click();
+        await page.getByRole('dialog').locator('span').nth(1).click();
+        await page.getByRole('option', { name: 'Diğer' }).click();
+        await page.getByRole('button', { name: 'Unassign' }).click();
+         
+         await page.waitForTimeout(1000);  
+
+        // Cihazı bayiden geri al
         // cihazı seç
         try {
             const cihazSeriNoRows = page.getByRole('row').filter({ hasText: cihazSeriNo });
