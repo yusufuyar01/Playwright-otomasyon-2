@@ -379,7 +379,8 @@ await page.getByRole('button', { name: '' }).click();
 await page.waitForTimeout(1000);
 await page.getByRole('textbox', { name: 'Seri Numarası Filter' }).click();
 await page.getByRole('textbox', { name: 'Seri Numarası Filter' }).fill(cihazSeriNo);
-await page.waitForTimeout(1000);
+await page.waitForTimeout(5000);
+
 
 try{
   const expandDetails = page.getByRole('link', { name: 'Expand Details' });
@@ -475,44 +476,42 @@ await page.getByRole('button', { name: 'Evet' }).click();
 await page.waitForTimeout(1000);
 
 
-   await page.waitForTimeout(1000);  
+// ===== ADIM 11: Üye işyeri Silme =====
+await page.getByText('Üye İşyeri Yönetimi').click();
+await page.waitForTimeout(1000);
+await page.getByRole('link', { name: ' Üye İşyeri', exact: true }).click();
+await page.waitForTimeout(1000);
 
 
+try {
+  // İlk DENEME satırını bul ve expand details butonuna tıkla
+  const expandButton = page.getByRole('row', { name: 'Expand Details  ' + ad}).getByRole('button');
+  await expandButton.click();
+
+} catch (error) {
+  console.log(`❌ ${ad} ile başlayan üye işyeri bulunamadı:`, error.message);
+}
+
+// Sil butonuna tıkla
+await page.getByRole('button', { name: 'Sil' }).click();
+
+await page.getByRole('button', { name: 'Evet' }).click();
 
 
-
-
-
-  await page.pause();
-
-
-  
-
-  
-
-  // ===== ADIM 7: Ödeme Aracı Silme =====
-    await page.getByLabel('Ödeme Aracıları').getByRole('button', { name: '' }).nth(2).click();
-  await page.getByRole('button', { name: 'Sil' }).click();
-  await page.getByRole('button', { name: 'Evet' }).click();
-  await page.waitForTimeout(1000);
-      
-  // Silme başarı mesajını kontrol et
-  try {
-    if (await page.getByText('Başarılı Üye İşyeri Ödeme').isVisible()) {
-      await page.getByText('Başarılı Üye İşyeri Ödeme').click();
-      console.log('✅ Başarılı: Ödeme Aracısı başarıyla silindi!');
-    } else {
-      console.log('❌ Başarı mesajı bulunamadı');
-    }
-  } catch (error) {
-    console.log('❌ Başarı mesajı kontrol edilirken hata oluştu:', error.message);
+// Başarı mesajını kontrol et
+try {
+  const basariMesaji = page.getByText('Başarılı Üye İşyeri başarıyla silindi.');
+  await basariMesaji.waitFor();
+  if (basariMesaji) {
+    console.log('✅ Başarılı: Üye İşyeri başarıyla silindi!');
+  } else {
+    console.log('❌ Başarı mesajı bulunamadı');
   }
-  await page.waitForTimeout(1000);
+} catch (error) {
+  console.log('❌ Başarı mesajı kontrol edilirken hata oluştu:', error.message);
+}
 
-  // ===== ADIM 8: Üye İşyeri Temizliği =====
-  await uyeIsyeriSil(page, isyeriAdi);
 
-  // Test sonunda ekranın kapanmasını engellemek için pause
   await page.pause();
 
 });
