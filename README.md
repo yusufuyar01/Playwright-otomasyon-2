@@ -105,7 +105,7 @@ Yazılan bağlantıyı bir pencerede açar ve otomasyon için gerekli olan locat
 
 ```bash
 
-ilk 41 test admin login ile yapılmaktadır
+ilk 43 test admin login ile yapılmaktadır
 
 admin/merchant
 1-  npx playwright test tests/admin-login/merchant/507-tuzel-mukellef-ekleme.spec.ts --headed
@@ -128,128 +128,128 @@ admin/merchant
 
 10- npx playwright test tests/admin-login/merchant/detay-merchant-ibans.spec.ts --headed
 
-11- 
+11- npx playwright test tests/admin-login/merchant/detay-merchant-parameters.spec.ts --headed
 
 
 admin/reseller
     
-10- npx playwright test tests/admin-login/reseller/gercek-kisi-bayi-ekleme.spec.ts --headed
+12- npx playwright test tests/admin-login/reseller/gercek-kisi-bayi-ekleme.spec.ts --headed
 
-11- npx playwright test tests/admin-login/reseller/tuzel-kisi-bayi-ekleme.spec.ts --headed
+13- npx playwright test tests/admin-login/reseller/tuzel-kisi-bayi-ekleme.spec.ts --headed
 
-12- npx playwright test tests/admin-login/reseller/bayi-guncelle.spec.ts --headed
+14- npx playwright test tests/admin-login/reseller/bayi-guncelle.spec.ts --headed
 
-13- npx playwright test tests/admin-login/reseller/detay-iletisim-bilgileri-ekleme-guncelleme.spec.ts --headed
+15- npx playwright test tests/admin-login/reseller/detay-iletisim-bilgileri-ekleme-guncelleme.spec.ts --headed
 
-14- npx playwright test tests/admin-login/reseller/detay-kullanici-ekleme-guncelleme.spec.ts --headed
+16- npx playwright test tests/admin-login/reseller/detay-kullanici-ekleme-guncelleme.spec.ts --headed
 
 
 
 admin/deviceadmin
 
-15- npx playwright test tests/admin-login/device/bayiye-atanmamis-ve-uye-isyerine-atanmamis.spec.ts --headed
+17- npx playwright test tests/admin-login/device/bayiye-atanmamis-ve-uye-isyerine-atanmamis.spec.ts --headed
 
-16- npx playwright test tests/admin-login/device/yeni-cihaz-ekle.spec.ts --headed
+18- npx playwright test tests/admin-login/device/yeni-cihaz-ekle.spec.ts --headed
 
-17- npx playwright test tests/admin-login/device/cihaz-guncelle.spec.ts --headed
+19- npx playwright test tests/admin-login/device/cihaz-guncelle.spec.ts --headed
 
-18- npx playwright test tests/admin-login/device/cihazlari-bayiye-ata-1.spec.ts --headed
+20- npx playwright test tests/admin-login/device/cihazlari-bayiye-ata-1.spec.ts --headed
 
-19- npx playwright test tests/admin-login/device/cihazlari-bayiye-ata-2.spec.ts --headed
+21- npx playwright test tests/admin-login/device/cihazlari-bayiye-ata-2.spec.ts --headed
 
-20- npx playwright test tests/admin-login/device/uye-isyeri-olan-cihazlari-bayiye-ata.spec.ts --headed
+22- npx playwright test tests/admin-login/device/uye-isyeri-olan-cihazlari-bayiye-ata.spec.ts --headed
 
-21- npx playwright test tests/admin-login/device/bayiye-atali-cihazlari-bayiden-geri-al.spec.ts --headed
+23- npx playwright test tests/admin-login/device/bayiye-atali-cihazlari-bayiden-geri-al.spec.ts --headed
 
-22- npx playwright test tests/admin-login/device/uye-isyerine-atali-cihazlari-bayiden-geri-al.spec.ts --headed
+24- npx playwright test tests/admin-login/device/uye-isyerine-atali-cihazlari-bayiden-geri-al.spec.ts --headed
 
-23- npx playwright test tests/admin-login/device/birden-fazla-cihaza-operasyonel-bayi-ata.spec.ts --headed
+25- npx playwright test tests/admin-login/device/birden-fazla-cihaza-operasyonel-bayi-ata.spec.ts --headed
 
-24- npx playwright test tests/admin-login/device/tek-cihaz-operasyonel-bayi-atama.spec.ts --headed
+26- npx playwright test tests/admin-login/device/tek-cihaz-operasyonel-bayi-atama.spec.ts --headed
 
-25- npx playwright test tests/admin-login/device/uye-isyerine-atanmis-cihazlari-uye-isyerine-ata.spec.ts --headed
+27- npx playwright test tests/admin-login/device/uye-isyerine-atanmis-cihazlari-uye-isyerine-ata.spec.ts --headed
 
-26- npx playwright test tests/admin-login/device/cihazlari-507-uye-isyerine-ata.spec.ts --headed
+28- npx playwright test tests/admin-login/device/cihazlari-507-uye-isyerine-ata.spec.ts --headed
 
-27- npx playwright test tests/admin-login/device/cihazlari-509-uye-isyerine-ata.spec.ts --headed
+29- npx playwright test tests/admin-login/device/cihazlari-509-uye-isyerine-ata.spec.ts --headed
 
-28- npx playwright test tests/admin-login/device/cihazlari-507-uye-isyerine-ata-e-belge-var.spec.ts --headed
+30- npx playwright test tests/admin-login/device/cihazlari-507-uye-isyerine-ata-e-belge-var.spec.ts --headed
 
-29- npx playwright test tests/admin-login/device/cihazlari-507-uye-isyerine-ata-e-belge-yok.spec.ts --headed
+31- npx playwright test tests/admin-login/device/cihazlari-507-uye-isyerine-ata-e-belge-yok.spec.ts --headed
 
 
 
 admin/salesTerminal
 
-30- npx playwright test tests/admin-login/sales-terminal/terminal-guncelle.spec.ts --headed
+32- npx playwright test tests/admin-login/sales-terminal/terminal-guncelle.spec.ts --headed
 
-31- npx playwright test tests/admin-login/sales-terminal/detay-mediator-islemleri.spec.ts --headed
+33- npx playwright test tests/admin-login/sales-terminal/detay-mediator-islemleri.spec.ts --headed
 
-32- npx playwright test tests/admin-login/sales-terminal/detay-dokuman-on-eki-islemleri.spec.ts --headed
+34- npx playwright test tests/admin-login/sales-terminal/detay-dokuman-on-eki-islemleri.spec.ts --headed
 
-33- npx playwright test tests/admin-login/sales-terminal/satislarim-filtrele.spec.ts --headed
+35- npx playwright test tests/admin-login/sales-terminal/satislarim-filtrele.spec.ts --headed
 
 
 
 admin/techpos
 
-34- npx playwright test tests/admin-login/techpos/grup-ata-ve-terminal-guncelle.spec.ts --headed
+36- npx playwright test tests/admin-login/techpos/grup-ata-ve-terminal-guncelle.spec.ts --headed
 
-35- npx playwright test tests/admin-login/techpos/techpos-islemleri-ekrani-filtre.spec.ts --headed
+37- npx playwright test tests/admin-login/techpos/techpos-islemleri-ekrani-filtre.spec.ts --headed
 
-36- npx playwright test tests/admin-login/techpos/techpos-batch-ekrani-filtre.spec.ts --headed
+38- npx playwright test tests/admin-login/techpos/techpos-batch-ekrani-filtre.spec.ts --headed
 
-37- npx playwright test tests/admin-login/techpos/batch-ozet-ve-islemler.spec.ts --headed
+39- npx playwright test tests/admin-login/techpos/batch-ozet-ve-islemler.spec.ts --headed
 
-38- npx playwright test tests/admin-login/techpos/techpos-grup-ekrani-crud.spec.ts --headed
+40- npx playwright test tests/admin-login/techpos/techpos-grup-ekrani-crud.spec.ts --headed
 
-30- npx playwright test tests/admin-login/techpos/techpos-terminalde-tanimli-banka-listesi.spec.ts --headed
+41- npx playwright test tests/admin-login/techpos/techpos-terminalde-tanimli-banka-listesi.spec.ts --headed
   
-40- npx playwright test tests/admin-login/techpos/techpos-seri-no.spec.ts --headed
+42- npx playwright test tests/admin-login/techpos/techpos-seri-no.spec.ts --headed
   
-41- npx playwright test tests/admin-login/techpos/BKM-techpos-banka-pf-islem-listesi.spec.ts --headed
+43- npx playwright test tests/admin-login/techpos/BKM-techpos-banka-pf-islem-listesi.spec.ts --headed
 
 
 
 reseller/merchant
 
-ilk 41 testten sonrası reseller login ile yapılmaktadır
+ilk 43 testten sonrası reseller login ile yapılmaktadır
 
-42- npx playwright test tests/reseller-login/merchant/507-tuzel-mukellef-ekleme.spec.ts --headed
+44- npx playwright test tests/reseller-login/merchant/507-tuzel-mukellef-ekleme.spec.ts --headed
 
-43- npx playwright test tests/reseller-login/merchant/507-gercek-mukellef-ekleme.spec.ts --headed
+45- npx playwright test tests/reseller-login/merchant/507-gercek-mukellef-ekleme.spec.ts --headed
 
-44- npx playwright test tests/reseller-login/merchant/509-tuzel-mukellef-ekleme.spec.ts --headed
+46- npx playwright test tests/reseller-login/merchant/509-tuzel-mukellef-ekleme.spec.ts --headed
 
-45- npx playwright test tests/reseller-login/merchant/509-gercek-mukellef-ekleme.spec.ts --headed
+47- npx playwright test tests/reseller-login/merchant/509-gercek-mukellef-ekleme.spec.ts --headed
 
-46-npx playwright test tests/reseller-login/merchant/detay-iletisim-bilgisi-ekle-guncelle.spec.ts --headed
+48-npx playwright test tests/reseller-login/merchant/detay-iletisim-bilgisi-ekle-guncelle.spec.ts --headed
 
-47- npx playwright test tests/reseller-login/merchant/detay-kullanici-ekle-guncelle-mail-at.spec.ts --headed
+49- npx playwright test tests/reseller-login/merchant/detay-kullanici-ekle-guncelle-mail-at.spec.ts --headed
 
-48- npx playwright test tests/reseller-login/merchant/detay-group-user.spec.ts --headed
+50- npx playwright test tests/reseller-login/merchant/detay-group-user.spec.ts --headed
 
-49- npx playwright test tests/reseller-login/merchant/detay-belge-ekleme-guncelleme-goruntuleme-silme.spec.ts --headed
+51- npx playwright test tests/reseller-login/merchant/detay-belge-ekleme-guncelleme-goruntuleme-silme.spec.ts --headed
 
-50- npx playwright test tests/reseller-login/merchant/detay-satis-uygulamalari.spec.ts --headed
+52- npx playwright test tests/reseller-login/merchant/detay-satis-uygulamalari.spec.ts --headed
 
-51- npx playwright test tests/reseller-login/merchant/detay-odeme-tipleri.spec.ts --headed
+53- npx playwright test tests/reseller-login/merchant/detay-odeme-tipleri.spec.ts --headed
 
-52- npx playwright test tests/reseller-login/merchant/detay-odeme-aracilari-1.spec.ts --headed
+54- npx playwright test tests/reseller-login/merchant/detay-odeme-aracilari-1.spec.ts --headed
 
-53- npx playwright test tests/reseller-login/merchant/detay-odeme-aracilari-2.spec.ts --headed
+55- npx playwright test tests/reseller-login/merchant/detay-odeme-aracilari-2.spec.ts --headed
 
-54- npx playwright test tests/reseller-login/merchant/detay-entegrator.spec.ts --headed
+56- npx playwright test tests/reseller-login/merchant/detay-entegrator.spec.ts --headed
 
-55- npx playwright test tests/reseller-login/merchant/detay-e-belge-ayarlari.spec.ts --headed
+57- npx playwright test tests/reseller-login/merchant/detay-e-belge-ayarlari.spec.ts --headed
 
-56- npx playwright test tests/reseller-login/merchant/uye-isyeri-guncelle.spec.ts --headed
+58- npx playwright test tests/reseller-login/merchant/uye-isyeri-guncelle.spec.ts --headed
 
-57- NPX playwright test tests/reseller-login/merchant/odemesi-olan-uye-isyeri-sil.spec.ts --headed
+59- NPX playwright test tests/reseller-login/merchant/odemesi-olan-uye-isyeri-sil.spec.ts --headed
 
-58- npx playwright test tests/reseller-login/device/cihazi-bayiye-ata.spec.ts --headed
+60- npx playwright test tests/reseller-login/device/cihazi-bayiye-ata.spec.ts --headed
 
-59- npx playwright test tests/reseller-login/device/cihazi-uye-isyerine-ata.spec.ts --headed
+61- npx playwright test tests/reseller-login/device/cihazi-uye-isyerine-ata.spec.ts --headed
 
 
 reseller/device
