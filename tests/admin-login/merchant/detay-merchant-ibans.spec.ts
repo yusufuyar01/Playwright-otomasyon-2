@@ -311,6 +311,7 @@ test('Detay Merchant IBANs', async ({ page }) => {
     await page.waitForTimeout(1000);
     if (await page.getByText('Başarılı Merchant Iban başarı').isVisible()) {
       console.log('✅ Başarılı: IBAN başarıyla eklendi!');
+      await page.waitForTimeout(1000);
       await page.getByText('Başarılı Merchant Iban başarı').click();
     } else if (await page.getByRole('alert', { name: 'IbanNo exists with' }).isVisible()) {
         console.log('❌ Başarılı: IBAN zaten var!');
@@ -335,6 +336,7 @@ test('Detay Merchant IBANs', async ({ page }) => {
     await page.waitForTimeout(1000);
     if (await page.getByText('Başarılı Merchant Iban başarı').isVisible()) {
       console.log('✅ Başarılı: IBAN başarıyla güncellendi!');
+      await page.waitForTimeout(1000);
       await page.getByText('Başarılı Merchant Iban başarı').click();
     } else {
       console.log('❌ Başarı mesajı bulunamadı');
@@ -351,6 +353,7 @@ test('Detay Merchant IBANs', async ({ page }) => {
     await page.waitForTimeout(1000);
     if (await page.getByText('Başarılı Merchant Iban başarı').isVisible()) {
       console.log('✅ Başarılı: IBAN başarıyla silindi!');
+      await page.waitForTimeout(1000);
       await page.getByText('Başarılı Merchant Iban başarı').click();
     } else {
       console.log('❌ Başarı mesajı bulunamadı');
