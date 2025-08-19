@@ -359,12 +359,6 @@ test('Detay Merchant IBANs', async ({ page }) => {
     console.log('❌ Başarı mesajı kontrol edilirken hata oluştu:', error.message);
   } 
   
-
-
-
-
-
-
     // ===== ADIM 6: Üye İşyeri Silme =====
     try {
     // İlk DENEME satırını bul ve expand details butonuna tıkla
