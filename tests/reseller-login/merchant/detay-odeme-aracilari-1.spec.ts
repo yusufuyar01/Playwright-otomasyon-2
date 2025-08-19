@@ -128,6 +128,7 @@ test('Detay Ödeme Aracıları 1 (reseller login)', async ({ page }) => {
   // Silme başarı mesajını kontrol et
   try {
     if (await page.getByText('Başarılı Üye İşyeri Ödeme').isVisible()) {
+      await page.waitForTimeout(1000);
       await page.getByText('Başarılı Üye İşyeri Ödeme').click();
       console.log('✅ Başarılı: Ödeme Aracısı başarıyla silindi!');
     } else {
