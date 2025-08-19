@@ -126,6 +126,10 @@ admin/merchant
 
 9-  npx playwright test tests/admin-login/merchant/tip-vergi-tipi-ve-yetkili-bayi-degistirme.spec.ts --headed
 
+10- npx playwright test tests/admin-login/merchant/detay-merchant-ibans.spec.ts --headed
+
+11- 
+
 
 admin/reseller
     
