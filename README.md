@@ -254,6 +254,10 @@ ilk 43 testten sonrası reseller login ile yapılmaktadır
 
 reseller/device
 
+62- 
+
+63- npx playwright test tests/reseller-login/service-support/cagri-olustur-ve-guncelle.spec.ts --headed
+
 
 
 
