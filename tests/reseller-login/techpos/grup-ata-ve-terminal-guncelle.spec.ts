@@ -1,24 +1,24 @@
 import { test, expect } from '@playwright/test';
-import { login } from '../../../helpers/login';
+import { login2 } from '../../../helpers/login2';
 import { zoom } from '../../../helpers/zoom';
 
 test('TechPOS - Grup Ata ve Terminal Güncelle', async ({ page }) => {
   
-    console.log('===>  Techpos Grup Ata ve Terminal Güncelle  <===');
+    console.log('===>  Techpos Grup Ata ve Terminal Güncelle (reseller-login) <===');
 
-    await login(page);
+    await login2(page);
     
     await zoom(page);
 
-    // Techpos yönetimine ve techpos terminal sayfasına tıkla
+// Techpos yönetimine ve techpos terminal sayfasına tıkla
     await page.getByText('Techpos Yönetimi').click();
     await page.getByRole('link', { name: ' Techpos Terminal', exact: true }).click();
 
     // Terminali getir
     await page.getByRole('button', { name: '' }).click();
     await page.getByRole('spinbutton', { name: 'Id Filter', exact: true }).click();
-    await page.getByRole('spinbutton', { name: 'Id Filter', exact: true }).fill('76353');
-    await page.getByRole('row', { name: ' 76353 77661 PAV860024186' }).locator('#selectAllCheckboxId').check();
+    await page.getByRole('spinbutton', { name: 'Id Filter', exact: true }).fill('76009');
+    await page.getByRole('row', { name: ' 76009 77301 PAV860066571	' }).locator('#selectAllCheckboxId').check();
     await page.getByText('Techpos Grup Seç').click();
     
     // Rastgele bir grup seç (1-25 arası)
@@ -69,6 +69,6 @@ test('TechPOS - Grup Ata ve Terminal Güncelle', async ({ page }) => {
     } catch (error) {
         console.log('❌ Techpos terminal güncelleme başarısız');
     }
-    
+
     await page.pause();
 });

@@ -260,8 +260,9 @@ reseller/device
 
 
 
+reseller/techpos
 
-
+-  npx playwright test tests/reseller-login/techpos/grup-ata-ve-terminal-guncelle.spec.ts --headed
 
 
     npx playwright codegen https://overpayresellerdemo.overtech.com.tr/Home/Dashboard/Index
