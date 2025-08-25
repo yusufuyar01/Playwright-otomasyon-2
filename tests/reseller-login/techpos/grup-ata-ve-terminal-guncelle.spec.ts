@@ -2,7 +2,7 @@ import { test, expect } from '@playwright/test';
 import { login2 } from '../../../helpers/login2';
 import { zoom } from '../../../helpers/zoom';
 
-test('TechPOS - Grup Ata ve Terminal Güncelle', async ({ page }) => {
+test('TechPOS - Grup Ata ve Terminal Güncelle (reseller-login)', async ({ page }) => {
   
     console.log('===>  Techpos Grup Ata ve Terminal Güncelle (reseller-login) <===');
 
