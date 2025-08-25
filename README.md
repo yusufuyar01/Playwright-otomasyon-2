@@ -264,6 +264,10 @@ reseller/techpos
 
 -  npx playwright test tests/reseller-login/techpos/grup-ata-ve-terminal-guncelle.spec.ts --headed
 
+- npx playwright test tests/reseller-login/techpos/techpos-islemleri-ekrani-filtre.spec.ts --headed
+
+
+
 
     npx playwright codegen https://overpayresellerdemo.overtech.com.tr/Home/Dashboard/Index
 
