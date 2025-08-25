@@ -1,11 +1,11 @@
 import { test, expect } from '@playwright/test';
-import { login } from '../../../helpers/login';
+import { login2 } from '../../../helpers/login2';   
 import { zoom } from '../../../helpers/zoom';
 
-test('TechPOS - İşlemleri Ekranı Filtre', async ({ page }) => {
+test('TechPOS İşlemleri Ekranı Filtre (reseller-login)', async ({ page }) => {
   
-    console.log('===>  Techpos İşlemleri Ekranı Filtreleme  <===');
-    
+    console.log('===>  Techpos İşlemleri Ekranı Filtreleme (reseller-login) <===');
+        
     // Bugünün tarihini konsola yazdır
     const bugun = new Date();
     const tarihString = bugun.toLocaleDateString('tr-TR', {
@@ -16,16 +16,16 @@ test('TechPOS - İşlemleri Ekranı Filtre', async ({ page }) => {
     });
     console.log(`📅 Bugünün tarihi: ${tarihString}`);
 
-    // 20 gün öncesinin tarihini konsola yazdır
-    const yirmiGunOncesi = new Date();
-    yirmiGunOncesi.setDate(bugun.getDate() - 20);
-    const yirmiGunOncesiString = yirmiGunOncesi.toLocaleDateString('tr-TR', {
+    // 30 gün öncesinin tarihini konsola yazdır
+    const otuzGunOncesi = new Date();
+    otuzGunOncesi.setDate(bugun.getDate() - 30);
+    const otuzGunOncesiString = otuzGunOncesi.toLocaleDateString('tr-TR', {
         year: 'numeric',
         month: 'long',
         day: 'numeric',
         weekday: 'long'
     });
-    console.log(`📅 20 gün öncesi: ${yirmiGunOncesiString}`);
+    console.log(`📅 30 gün öncesi: ${otuzGunOncesiString}`);
 
     // Ay numarasını ay adına çeviren fonksiyon
     const ayAdiGetirTam = (ayNumarasi: number): string => {
@@ -46,7 +46,7 @@ test('TechPOS - İşlemleri Ekranı Filtre', async ({ page }) => {
     };  
 
 
-    await login(page);
+    await login2(page);
     
     await zoom(page);
 
@@ -62,15 +62,15 @@ test('TechPOS - İşlemleri Ekranı Filtre', async ({ page }) => {
     await page.waitForTimeout(1000);
 
     // Tarih string'ini oluştur
-    const gun = yirmiGunOncesi.getDate();
-    const ay = yirmiGunOncesi.getMonth() + 1;
-    const yıl = yirmiGunOncesi.getFullYear();
+    const gun = otuzGunOncesi.getDate();
+    const ay = otuzGunOncesi.getMonth() + 1;
+    const yıl = otuzGunOncesi.getFullYear();
     
     // Gün adını al
     await page.waitForTimeout(1000);
 
     // Tarih seçimi - GG.AA.YYYY formatında (numara olarak)
-    console.log(`🔍  20 Gün Öncesi Seçildi`);
+    console.log(`🔍  30 Gün Öncesi Seçildi`);
     const tarih = gun.toString() + ay.toString() + yıl.toString();
     
     // Tarih string'ini karakterlerine ayır ve her birini ayrı ayrı bas
@@ -80,11 +80,11 @@ test('TechPOS - İşlemleri Ekranı Filtre', async ({ page }) => {
     }
     
     // Gün adını al
-    const gunAdi = gunAdiGetir(yirmiGunOncesi.getDay());
+    const gunAdi = gunAdiGetir(otuzGunOncesi.getDay());
     await page.waitForTimeout(1000);
 
     // Tarih seçimi
-    const titleText = `${gun} ${ayAdiGetirTam(ay)} ${yirmiGunOncesi.getFullYear()} ${gunAdi}`;
+    const titleText = `${gun} ${ayAdiGetirTam(ay)} ${otuzGunOncesi.getFullYear()} ${gunAdi}`;
     console.log(`🔍 Seçilecek başlangıç tarihi: "${titleText}"`);
 
     // await page.getByTitle(titleText).locator('span').click();
@@ -95,22 +95,111 @@ test('TechPOS - İşlemleri Ekranı Filtre', async ({ page }) => {
 
     // Terminal id doldur
     await page.locator('ot-data-entry-template').filter({ hasText: 'Terminal' }).getByRole('textbox').fill('77301');
+    await page.getByRole('button', { name: 'Filtrele' }).click();
+    await page.waitForTimeout(4000);
+
+    // Belirtilen hücrelerdeki değerleri oku ve kontrol et
+    const cellsTerminalId = [
+        await page.locator('td:nth-child(3)').first(),
+        await page.locator('.k-master-row.k-alt > td:nth-child(3)').first(),
+        await page.locator('tr:nth-child(3) > td:nth-child(3)'),
+        await page.locator('tr:nth-child(4) > td:nth-child(3)'),
+        await page.locator('tr:nth-child(5) > td:nth-child(3)'),
+        await page.locator('tr:nth-child(6) > td:nth-child(3)')
+    ];
+
+    let allMatchTerminalId = true;
+
+    const expectedValueTerminalId = '77301';
+
+    for (let i = 0; i < cellsTerminalId.length; i++) {
+        const cellText = await cellsTerminalId[i].textContent();
+        
+        if (cellText?.trim() !== expectedValueTerminalId) {
+            allMatchTerminalId = false;
+            console.log(`Hücre ${i + 1} eşleşmiyor. Beklenen: ${expectedValueTerminalId}, Bulunan: ${cellText}`);
+        }
+    }
+
+    if (allMatchTerminalId) {
+        console.log('✅ Filtreleme sonucu terminal id eşleşti');
+    } else {
+        console.log('❌ Filtreleme sonucu terminal id eşleşmedi');
+    }
+
+    await page.locator('ot-data-entry-template').filter({ hasText: 'Terminal' }).getByRole('textbox').fill('');
+
 
     // BKM Seri No doldur
     await page.locator('ot-data-entry-template').filter({ hasText: 'BKM Seri No' }).getByRole('textbox').click();
     await page.locator('ot-data-entry-template').filter({ hasText: 'BKM Seri No' }).getByRole('textbox').fill('PAV860066571');
+    await page.getByRole('button', { name: 'Filtrele' }).click();
+    await page.waitForTimeout(4000);
+
+    const cellsBkmSeriNo = [
+        await page.locator('td:nth-child(5)').first(),
+        await page.locator('.k-master-row.k-alt > td:nth-child(5)').first(),
+        await page.locator('tr:nth-child(3) > td:nth-child(5)'),
+        await page.locator('tr:nth-child(4) > td:nth-child(5)'),
+        await page.locator('tr:nth-child(5) > td:nth-child(5)'),
+        await page.locator('tr:nth-child(6) > td:nth-child(5)')
+    ];
+
+    let allMatchBkmSeriNo = true;
+
+    const expectedValueBkmSeriNo = 'PAV860066571';
+
+    for (let i = 0; i < cellsBkmSeriNo.length; i++) {
+        const cellText = await cellsBkmSeriNo[i].textContent();
+        
+        if (cellText?.trim() !== expectedValueBkmSeriNo) {
+            allMatchBkmSeriNo = false;
+            console.log(`Hücre ${i + 1} eşleşmiyor. Beklenen: ${expectedValueBkmSeriNo}, Bulunan: ${cellText}`);
+        }
+    }
+
+    if (allMatchBkmSeriNo) {
+        console.log('✅ Filtreleme sonucu BKM Seri No eşleşti');
+    } else {
+        console.log('❌ Filtreleme sonucu bkm seri no eşleşmedi');
+    }
+
+    await page.locator('ot-data-entry-template').filter({ hasText: 'BKM Seri No' }).getByRole('textbox').fill('');
 
     // Üye işyeri doldur
     await page.locator('ot-data-entry-template').filter({ hasText: 'Üye İşyeri' }).getByRole('combobox').click();
     await page.locator('ot-data-entry-template').filter({ hasText: 'Üye İşyeri' }).getByRole('combobox').fill('erdal');
     await page.getByRole('option', { name: 'Erdal Bakkal' }).click();
-
-
-
-    // Filtrele butonuna tıkla
     await page.getByRole('button', { name: 'Filtrele' }).click();
     await page.waitForTimeout(4000);
 
+    const cellsUyeIsyeri = [
+        await page.locator('td:nth-child(14)').first(),
+        await page.locator('.k-master-row.k-alt > td:nth-child(14)').first(),
+        await page.locator('tr:nth-child(3) > td:nth-child(14)'),
+        await page.locator('tr:nth-child(4) > td:nth-child(14)'),
+        await page.locator('tr:nth-child(5) > td:nth-child(14)'),
+        await page.locator('tr:nth-child(6) > td:nth-child(14)')
+    ];
+
+    let allMatchUyeIsyeri = true;
+
+    const expectedValueUyeIsyeri = 'Erdal Bakkal';
+
+    for (let i = 0; i < cellsUyeIsyeri.length; i++) {
+        const cellText = await cellsUyeIsyeri[i].textContent();
+        
+        if (cellText?.trim() !== expectedValueUyeIsyeri) {
+            allMatchUyeIsyeri = false;
+            console.log(`Hücre ${i + 1} eşleşmiyor. Beklenen: ${expectedValueUyeIsyeri}, Bulunan: ${cellText}`);
+        }
+    }
+
+    if (allMatchUyeIsyeri) {
+        console.log('✅ Filtreleme sonucu üye işyeri eşleşti');
+    } else {
+        console.log('❌ Filtreleme sonucu üye işyeri eşleşmedi');
+    }
 
     // "Kayıt bulunamadı" mesajının görünüp görünmediğini kontrol et
     const kayitBulunamadiElement = page.getByText('Kayıt bulunamadı');
@@ -131,92 +220,11 @@ test('TechPOS - İşlemleri Ekranı Filtre', async ({ page }) => {
         return;
     }
 
-    // Belirtilen hücrelerdeki değerleri oku ve kontrol et
-    const cellsTerminalId = [
-        await page.locator('td:nth-child(3)').first(),
-        await page.locator('.k-master-row.k-alt > td:nth-child(3)').first(),
-        await page.locator('tr:nth-child(3) > td:nth-child(3)'),
-        await page.locator('tr:nth-child(4) > td:nth-child(3)'),
-        await page.locator('tr:nth-child(5) > td:nth-child(3)'),
-        await page.locator('tr:nth-child(6) > td:nth-child(3)')
-    ];
-
-    const cellsBkmSeriNo = [
-        await page.locator('td:nth-child(5)').first(),
-        await page.locator('.k-master-row.k-alt > td:nth-child(5)').first(),
-        await page.locator('tr:nth-child(3) > td:nth-child(5)'),
-        await page.locator('tr:nth-child(4) > td:nth-child(5)'),
-        await page.locator('tr:nth-child(5) > td:nth-child(5)'),
-        await page.locator('tr:nth-child(6) > td:nth-child(5)')
-    ];
+    
 
 
-    const cellsUyeIsyeri = [
-        await page.locator('td:nth-child(14)').first(),
-        await page.locator('.k-master-row.k-alt > td:nth-child(14)').first(),
-        await page.locator('tr:nth-child(3) > td:nth-child(14)'),
-        await page.locator('tr:nth-child(4) > td:nth-child(14)'),
-        await page.locator('tr:nth-child(5) > td:nth-child(14)'),
-        await page.locator('tr:nth-child(6) > td:nth-child(14)')
-    ];
-
-
-    let allMatchTerminalId = true;
-    let allMatchBkmSeriNo = true;
-    let allMatchUyeIsyeri = true;
-
-    const expectedValueTerminalId = '77301';
-
-    for (let i = 0; i < cellsTerminalId.length; i++) {
-        const cellText = await cellsTerminalId[i].textContent();
-        
-        if (cellText?.trim() !== expectedValueTerminalId) {
-            allMatchTerminalId = false;
-            console.log(`Hücre ${i + 1} eşleşmiyor. Beklenen: ${expectedValueTerminalId}, Bulunan: ${cellText}`);
-        }
-    }
-
-    if (allMatchTerminalId) {
-        console.log('✅ Filtreleme sonucu terminal id eşleşti');
-    } else {
-        console.log('❌ Filtreleme sonucu terminal id eşleşmedi');
-    }
-
-
-    const expectedValueBkmSeriNo = 'PAV860066571';
-
-    for (let i = 0; i < cellsBkmSeriNo.length; i++) {
-        const cellText = await cellsBkmSeriNo[i].textContent();
-        
-        if (cellText?.trim() !== expectedValueBkmSeriNo) {
-            allMatchBkmSeriNo = false;
-            console.log(`Hücre ${i + 1} eşleşmiyor. Beklenen: ${expectedValueBkmSeriNo}, Bulunan: ${cellText}`);
-        }
-    }
-
-    if (allMatchBkmSeriNo) {
-        console.log('✅ Filtreleme sonucu BKM Seri No eşleşti');
-    } else {
-        console.log('❌ Filtreleme sonucu bkm seri no eşleşmedi');
-    }
-
-    const expectedValueUyeIsyeri = 'Erdal Bakkal';
-
-    for (let i = 0; i < cellsUyeIsyeri.length; i++) {
-        const cellText = await cellsUyeIsyeri[i].textContent();
-        
-        if (cellText?.trim() !== expectedValueUyeIsyeri) {
-            allMatchUyeIsyeri = false;
-            console.log(`Hücre ${i + 1} eşleşmiyor. Beklenen: ${expectedValueUyeIsyeri}, Bulunan: ${cellText}`);
-        }
-    }
-
-    if (allMatchUyeIsyeri) {
-        console.log('✅ Filtreleme sonucu üye işyeri eşleşti');
-    } else {
-        console.log('❌ Filtreleme sonucu üye işyeri eşleşmedi');
-    }
+    
 
 
     await page.pause();
-}); 
+});
