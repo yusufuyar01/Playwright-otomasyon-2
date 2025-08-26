@@ -97,6 +97,11 @@ test('TechPOS - Batch Ekranı Filtre', async ({ page }) => {
     // Terminal id doldur
     await page.locator('ot-data-entry-template').filter({ hasText: 'Terminal' }).getByRole('combobox').click();
     await page.waitForTimeout(3000);
+    const isLoadingScreen = await page.locator('ot-loading-screen img');
+    if (await isLoadingScreen.isVisible()) {
+        await isLoadingScreen.waitFor({ state: 'hidden' , timeout: 90000 });
+        await page.waitForTimeout(1000);
+    }
     await page.locator('ot-data-entry-template').filter({ hasText: 'Terminal' }).getByRole('combobox').fill('77301');
     await page.locator('ot-data-entry-template').filter({ hasText: 'Terminal' }).getByRole('combobox').fill('7730');
     await page.getByRole('option', { name: '77301' }).click();
@@ -104,7 +109,11 @@ test('TechPOS - Batch Ekranı Filtre', async ({ page }) => {
 
     // BKM Seri No doldur
     await page.locator('ot-data-entry-template').filter({ hasText: 'BKM Seri No' }).getByRole('combobox').click();
-    await page.waitForTimeout(10000);
+    await page.waitForTimeout(3000);
+    if (await isLoadingScreen.isVisible()) {
+        await isLoadingScreen.waitFor({ state: 'hidden' , timeout: 90000 });
+        await page.waitForTimeout(1000);
+    }
 
     await page.locator('ot-data-entry-template').filter({ hasText: 'BKM Seri No' }).getByRole('combobox').fill('PAV860066571');
     await page.waitForTimeout(3000);
