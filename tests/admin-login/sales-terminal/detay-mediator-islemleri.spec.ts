@@ -2,7 +2,7 @@ import { test, expect } from '@playwright/test';
 import { login } from '../../../helpers/login';
 import { zoom } from '../../../helpers/zoom';
 import { rastgeleString } from '../../../helpers/stringUret';
-import { mediatorEkle, mediatorGuncelle, mediatorSil, parametreEkle, parametreGuncelle, parametreSil, terminaliGetir } from '../../../helpers/satisYerminaliIslemleri';
+import { mediatorEkle, mediatorGuncelle, mediatorSil, parametreEkle, parametreGuncelle, parametreSil, terminaliGetir } from '../../../helpers/satisTerminaliIslemleri';
 
 test('Mediator İşlemleri - Ekleme, Güncelleme ve Silme', async ({ page }) => {
 

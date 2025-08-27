@@ -74,7 +74,7 @@ Yazılan bağlantıyı bir pencerede açar ve otomasyon için gerekli olan locat
 
 **İş Modülü Fonksiyonları:**
 - `cihazIslemleri.ts` : Cihaz yönetimi işlemleri (ekleme, güncelleme, silme, atama işlemleri) için kapsamlı fonksiyonlar.
-- `satisYerminaliIslemleri.ts` : Satış terminali işlemleri (mediator ekleme/güncelleme/silme, parametre işlemleri, doküman ön eki işlemleri) için fonksiyonlar.
+- `satisTerminaliIslemleri.ts` : Satış terminali işlemleri (mediator ekleme/güncelleme/silme, parametre işlemleri, doküman ön eki işlemleri) için fonksiyonlar.
 
 **Örnek Dosyalar:**
 - `ornek/` : Test sırasında kullanılan örnek dosyalar (JPEG, PDF, PNG formatlarında).
@@ -271,6 +271,20 @@ reseller/techpos
 - npx playwright test tests/reseller-login/techpos/batch-ozet-ve-islemler.spec.ts --headed
 
 - npx playwright test tests/reseller-login/techpos/techpos-grup-ekrani-crud.spec.ts --headed
+
+
+
+reseller/sales-terminal
+
+- npx playwright test tests/reseller-login/sales-terminal/terminal-guncelle.spec.ts --headed
+
+- npx playwright test tests/reseller-login/sales-terminal/detay-mediator-islemleri.spec.ts --headed
+
+- npx playwright test tests/reseller-login/sales-terminal/detay-dokuman-on-eki-islemleri.spec.ts --headed
+
+
+
+
 
 
 

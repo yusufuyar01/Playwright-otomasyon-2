@@ -1,8 +1,6 @@
 import { test, expect } from '@playwright/test';
 import { login2 } from '../../../helpers/login2';
 import { zoom } from '../../../helpers/zoom';
-import { rastgeleString } from '../../../helpers/stringUret';
-import { mediatorEkle, mediatorGuncelle, mediatorSil, parametreEkle, parametreGuncelle, parametreSil, terminaliGetir } from '../../../helpers/satisYerminaliIslemleri';
 
 test('Mediator İşlemleri - Ekleme, Güncelleme ve Silme (reseller login)', async ({ page }) => {
 

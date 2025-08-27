@@ -2,7 +2,7 @@ import { test, expect } from '@playwright/test';
 import { login } from '../../../helpers/login';
 import { zoom } from '../../../helpers/zoom';
 import { rastgeleString } from '../../../helpers/stringUret';
-import { dokumanOnEkiEkle, dokumanOnEkiGuncelle, dokumanOnEkiSil, terminaliGetir } from '../../../helpers/satisYerminaliIslemleri';
+import { dokumanOnEkiEkle, dokumanOnEkiGuncelle, dokumanOnEkiSil, terminaliGetir } from '../../../helpers/satisTerminaliIslemleri';
 
 test('Doküman Ön Eki İşlemleri - Ekleme, Güncelleme ve Silme', async ({ page }) => {
 

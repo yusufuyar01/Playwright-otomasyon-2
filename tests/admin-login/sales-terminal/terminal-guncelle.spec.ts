@@ -2,7 +2,7 @@ import { test, expect } from '@playwright/test';
 import { login } from '../../../helpers/login';
 import { zoom } from '../../../helpers/zoom';
 import { rastgeleString } from '../../../helpers/stringUret';
-import { terminaliGetir } from '../../../helpers/satisYerminaliIslemleri';
+import { terminaliGetir } from '../../../helpers/satisTerminaliIslemleri';
 
 test('Terminal bilgilerini güncelleme', async ({ page }) => {
 
