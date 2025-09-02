@@ -69,15 +69,39 @@ test('TechPOS İşlemleri Ekranı Filtre (reseller-login)', async ({ page }) => 
     // Gün adını al
     await page.waitForTimeout(1000);
 
-    // Tarih seçimi - GG.AA.YYYY formatında (numara olarak)
-    console.log(`🔍  30 Gün Öncesi Seçildi`);
-    const tarih = gun.toString() + ay.toString() + yıl.toString();
-    
-    // Tarih string'ini karakterlerine ayır ve her birini ayrı ayrı bas
-    for (let i = 0; i < tarih.length; i++) {
-        await page.locator('#datepicker-1').press(tarih[i]);
+   // Tarih seçimi - GG.AA.YYYY formatında (numara olarak)
+   console.log(`🔍  30 Gün Öncesi Seçildi`);
+   const tarih = gun.toString() + ay.toString() + yıl.toString();
+   if (gun.toString() !== '31') {
+   const gunStr = ['3','4','5','6','7','8','9'].includes(gun.toString()) ? '0' + gun.toString() : gun.toString();
+   const tarih = gunStr + ay.toString() + yıl.toString();
+   }
+   
+   if (['1','3','5','7','8','10','12'].includes(ay.toString())) {
+    await page.locator('#datepicker-1').click();
+    for (let i = 0; i < yıl.toString().length; i++) {
+    await page.locator('#datepicker-1').press(yıl.toString()[i]);
+    await page.waitForTimeout(300); // Her karakter arasında kısa bekleme
+    }
+    await page.locator('#datepicker-1').press('ArrowLeft');
+    for (let i = 0; i < ay.toString().length; i++) {
+        await page.locator('#datepicker-1').press(ay.toString()[i]);
         await page.waitForTimeout(300); // Her karakter arasında kısa bekleme
     }
+    await page.locator('#datepicker-1').press('ArrowLeft');
+    await page.locator('#datepicker-1').press('ArrowLeft');
+    for (let i = 0; i < gun.toString().length; i++) {
+        await page.locator('#datepicker-1').press(gun.toString()[i]);
+        await page.waitForTimeout(300); // Her karakter arasında kısa bekleme
+    }
+   } else {
+       // Tarih string'ini karakterlerine ayır ve her birini ayrı ayrı bas
+   for (let i = 0; i < tarih.length; i++) {
+    await page.locator('#datepicker-1').press(tarih[i]);
+    await page.waitForTimeout(300); // Her karakter arasında kısa bekleme
+    }   
+    }
+
     
     // Gün adını al
     const gunAdi = gunAdiGetir(otuzGunOncesi.getDay());
