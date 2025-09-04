@@ -266,7 +266,7 @@ reseller/techpos
 
 - npx playwright test tests/reseller-login/techpos/techpos-islemleri-ekrani-filtre.spec.ts --headed
 
-- !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! npx playwright test tests/reseller-login/techpos/techpos-batch-ekrani-filtre.spec.ts --headed
+- npx playwright test tests/reseller-login/techpos/techpos-batch-ekrani-filtre.spec.ts --headed
 
 - npx playwright test tests/reseller-login/techpos/batch-ozet-ve-islemler.spec.ts --headed
 

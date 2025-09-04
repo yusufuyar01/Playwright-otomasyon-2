@@ -116,7 +116,14 @@ test('TechPOS - Batch Ekranı Filtre (reseller-login)', async ({ page }) => {
    await page.locator('ot-data-entry-template').filter({ hasText: 'Bitiş Tarihi' }).getByLabel('Takvimden seç').click();
    await page.getByRole('button', { name: 'Bugün' }).click();
 
-   // Terminal id doldur
+    // Filtrele butonuna tıkla
+    await page.getByRole('button', { name: 'Filtrele' }).click();
+    await page.waitForTimeout(4000);
+
+   // Terminal id bul ve doldur
+   const terminalId = await page.locator('tr:nth-child(3) > td:nth-child(7)').textContent();
+   console.log('Terminal ID', terminalId);
+
    await page.locator('ot-data-entry-template').filter({ hasText: 'Terminal' }).getByRole('combobox').click();
    await page.waitForTimeout(3000);
    const isLoadingScreen = await page.locator('ot-loading-screen img');
@@ -124,33 +131,9 @@ test('TechPOS - Batch Ekranı Filtre (reseller-login)', async ({ page }) => {
        await isLoadingScreen.waitFor({ state: 'hidden' });
        await page.waitForTimeout(1000);
    }
-   await page.locator('ot-data-entry-template').filter({ hasText: 'Terminal' }).getByRole('combobox').fill('77301');
-   await page.locator('ot-data-entry-template').filter({ hasText: 'Terminal' }).getByRole('combobox').fill('7730');
-   await page.getByRole('option', { name: '77301' }).click();
-   
-
-   // BKM Seri No doldur
-   await page.locator('ot-data-entry-template').filter({ hasText: 'BKM Seri No' }).getByRole('combobox').click();
-   await page.waitForTimeout(3000);
-   if (await isLoadingScreen.isVisible()) {
-       await isLoadingScreen.waitFor({ state: 'hidden' });
-       await page.waitForTimeout(1000);
-   }
-
-   await page.locator('ot-data-entry-template').filter({ hasText: 'BKM Seri No' }).getByRole('combobox').fill('PAV860066571');
-   await page.waitForTimeout(3000);
-   await page.locator('ot-data-entry-template').filter({ hasText: 'BKM Seri No' }).getByRole('combobox').fill('PAV86006657');
-   await page.waitForTimeout(1000);
-   await page.locator('ot-data-entry-template').filter({ hasText: 'BKM Seri No' }).getByRole('combobox').fill('PAV8600665');
-   await page.waitForTimeout(1000);
-   await page.locator('ot-data-entry-template').filter({ hasText: 'BKM Seri No' }).getByRole('combobox').fill('PAV86006657');
-   await page.waitForTimeout(1000);
-   await page.getByRole('option', { name: 'PAV860066571' }).click();
-   
-   // Üye işyeri doldur
-   await page.locator('kendo-combobox').getByRole('combobox').click();
-   await page.locator('kendo-combobox').getByRole('combobox').fill('erda');
-   await page.getByRole('option', { name: 'Erdal Bakkal-' }).click();
+   await page.locator('ot-data-entry-template').filter({ hasText: 'Terminal' }).getByRole('combobox').fill(terminalId);
+   await page.locator('ot-data-entry-template').filter({ hasText: 'Terminal' }).getByRole('combobox').fill(terminalId);
+   await page.getByRole('option').first().click();
 
    // Filtrele butonuna tıkla
    await page.getByRole('button', { name: 'Filtrele' }).click();
@@ -175,88 +158,184 @@ test('TechPOS - Batch Ekranı Filtre (reseller-login)', async ({ page }) => {
        return;
    }
 
-   // Belirtilen hücrelerdeki değerleri oku ve kontrol et
-   const cellsTerminalId = [
-       await page.locator('td:nth-child(7)').first(),
-       await page.locator('.k-master-row.k-alt > td:nth-child(7)').first(),
-       await page.locator('tr:nth-child(3) > td:nth-child(7)'),
-       await page.locator('tr:nth-child(4) > td:nth-child(7)'),
-       await page.locator('tr:nth-child(5) > td:nth-child(7)'),
-       await page.locator('tr:nth-child(6) > td:nth-child(7)')
-   ];
+    // Belirtilen hücrelerdeki değerleri oku ve kontrol et
+    const cellsTerminalId = [
+        await page.locator('td:nth-child(7)').first(),
+        await page.locator('.k-master-row.k-alt > td:nth-child(7)').first(),
+        await page.locator('tr:nth-child(3) > td:nth-child(7)'),
+        await page.locator('tr:nth-child(4) > td:nth-child(7)'),
+        await page.locator('tr:nth-child(5) > td:nth-child(7)'),
+        await page.locator('tr:nth-child(6) > td:nth-child(7)')
+    ];
+
+    let allMatchTerminalId = true;
+
+    for (let i = 0; i < cellsTerminalId.length; i++) {
+        const cellText = await cellsTerminalId[i].textContent();
+        
+        if (cellText?.trim() !== terminalId) {
+            allMatchTerminalId = false;
+            console.log(`Hücre ${i + 1} eşleşmiyor. Beklenen: ${terminalId}, Bulunan: ${cellText}`);
+        }
+    }
+ 
+    if (allMatchTerminalId) {
+        console.log('✅ Filtreleme sonucu terminal id eşleşti');
+    } else {
+        console.log('❌ Filtreleme sonucu terminal id eşleşmedi');
+    }
+    
+    // BKM Seri No bul ve doldur
+    const bkmSeriNo = await page.locator('tr:nth-child(1) > td:nth-child(8)').textContent();
+    console.log('BKM Seri No', bkmSeriNo);
+ 
+    await page.getByRole('button', { name: 'clear', exact: true }).click();
+
+    await page.locator('ot-data-entry-template').filter({ hasText: 'BKM Seri No' }).getByRole('combobox').click();
+    await page.waitForTimeout(3000);
+    if (await isLoadingScreen.isVisible()) {
+        await isLoadingScreen.waitFor({ state: 'hidden' });
+        await page.waitForTimeout(1000);
+    }
+
+    await page.locator('ot-data-entry-template').filter({ hasText: 'BKM Seri No' }).getByRole('combobox').fill(bkmSeriNo);
+    await page.waitForTimeout(3000);
+    await page.getByRole('option').first().click();
+
+   // Filtrele butonuna tıkla
+   await page.getByRole('button', { name: 'Filtrele' }).click();
+   await page.waitForTimeout(4000);
+
+      // "Kayıt bulunamadı" mesajının görünüp görünmediğini kontrol et
+   const kayitBulunamadiElement2 = page.getByText('Kayıt bulunamadı');
+   const isKayitBulunamadiVisible2 = await kayitBulunamadiElement2.isVisible();
+
+   // "Seçilecek maksimum gün aralığı:" mesajının görünüp görünmediğini kontrol et
+   const gunUyarisi2 = page.getByText('Seçilecek maksimum gün aralığı:');
+   const isGunUyarisiVisible2 = await gunUyarisi2.isVisible();
+
+   if (isGunUyarisiVisible2) {
+       console.log('❌ Seçilecek maksimum gün aralığı: 30');
+       await page.pause();
+       return;
+   }
+   else if (isKayitBulunamadiVisible2) {
+       console.log('❌ Kayıt bulunamadı');
+       await page.pause();
+       return;
+   }
 
    const cellsBkmSeriNo = [
-       await page.locator('td:nth-child(8)').first(),
-       await page.locator('.k-master-row.k-alt > td:nth-child(8)').first(),
-       await page.locator('tr:nth-child(3) > td:nth-child(8)'),
-       await page.locator('tr:nth-child(4) > td:nth-child(8)'),
-       await page.locator('tr:nth-child(5) > td:nth-child(8)'),
-       await page.locator('tr:nth-child(6) > td:nth-child(8)')
-   ];
+    await page.locator('td:nth-child(8)').first(),
+    await page.locator('.k-master-row.k-alt > td:nth-child(8)').first(),
+    await page.locator('tr:nth-child(3) > td:nth-child(8)'),
+    await page.locator('tr:nth-child(4) > td:nth-child(8)'),
+    await page.locator('tr:nth-child(5) > td:nth-child(8)'),
+    await page.locator('tr:nth-child(6) > td:nth-child(8)')
+    ];
+
+    let allMatchBkmSeriNo = true;
+
+
+    for (let i = 0; i < cellsBkmSeriNo.length; i++) {
+        const cellText = await cellsBkmSeriNo[i].textContent();
+        
+        if (cellText?.trim() !== bkmSeriNo) {
+            allMatchBkmSeriNo = false;
+            console.log(`Hücre ${i + 1} eşleşmiyor. Beklenen: ${bkmSeriNo}, Bulunan: ${cellText}`);
+        }
+    }
+ 
+    if (allMatchBkmSeriNo) {
+        console.log('✅ Filtreleme sonucu BKM Seri No eşleşti');
+    } else {
+        console.log('❌ Filtreleme sonucu bkm seri no eşleşmedi');
+    }
+
+    // Üye İşyeri bul ve doldur
+    const uyeIsyeri = await page.locator('tr:nth-child(1) > td:nth-child(10)').textContent();
+    console.log('Üye İşyeri', uyeIsyeri);
+ 
+    await page.getByRole('button', { name: 'clear', exact: true }).click();
+
+    await page.locator('kendo-combobox').getByRole('combobox').click();
+    await page.locator('kendo-combobox').getByRole('combobox').fill(uyeIsyeri);
+    await page.getByRole('option').first().click();
+
+    // Filtrele butonuna tıkla
+   await page.getByRole('button', { name: 'Filtrele' }).click();
+   await page.waitForTimeout(4000);
+
+   // "Kayıt bulunamadı" mesajının görünüp görünmediğini kontrol et
+   const kayitBulunamadiElement3 = page.getByText('Kayıt bulunamadı');
+   const isKayitBulunamadiVisible3 = await kayitBulunamadiElement3.isVisible();
+
+   // "Seçilecek maksimum gün aralığı:" mesajının görünüp görünmediğini kontrol et
+   const gunUyarisi3 = page.getByText('Seçilecek maksimum gün aralığı:');
+   const isGunUyarisiVisible3 = await gunUyarisi3.isVisible();
+
+   if (isGunUyarisiVisible3) {
+       console.log('❌ Seçilecek maksimum gün aralığı: 30');
+       await page.pause();
+       return;
+   }
+   else if (isKayitBulunamadiVisible3) {
+       console.log('❌ Kayıt bulunamadı');
+       await page.pause();
+       return;
+   }
 
    const cellsUyeIsyeri = [
-       await page.locator('td:nth-child(10)').first(),
-       await page.locator('.k-master-row.k-alt > td:nth-child(10)').first(),
-       await page.locator('tr:nth-child(3) > td:nth-child(10)'),
-       await page.locator('tr:nth-child(4) > td:nth-child(10)'),
-       await page.locator('tr:nth-child(5) > td:nth-child(10)'),
-       await page.locator('tr:nth-child(6) > td:nth-child(10)')
-   ];
+    await page.locator('td:nth-child(10)').first(),
+    await page.locator('.k-master-row.k-alt > td:nth-child(10)').first(),
+    await page.locator('tr:nth-child(3) > td:nth-child(10)'),
+    await page.locator('tr:nth-child(4) > td:nth-child(10)'),
+    await page.locator('tr:nth-child(5) > td:nth-child(10)'),
+    await page.locator('tr:nth-child(6) > td:nth-child(10)')
+    ];
 
-   let allMatchTerminalId = true;
-   let allMatchBkmSeriNo = true;
-   let allMatchUyeIsyeri = true;
-   const expectedValueTerminalId = '77301';
+    let allMatchUyeIsyeri = true;
 
-   for (let i = 0; i < cellsTerminalId.length; i++) {
-       const cellText = await cellsTerminalId[i].textContent();
-       
-       if (cellText?.trim() !== expectedValueTerminalId) {
-           allMatchTerminalId = false;
-           console.log(`Hücre ${i + 1} eşleşmiyor. Beklenen: ${expectedValueTerminalId}, Bulunan: ${cellText}`);
-       }
-   }
+    for (let i = 0; i < cellsUyeIsyeri.length; i++) {
+        const cellText = await cellsUyeIsyeri[i].textContent();
+        
+        if (cellText?.trim() !== uyeIsyeri) {
+            allMatchUyeIsyeri = false;
+            console.log(`Hücre ${i + 1} eşleşmiyor. Beklenen: ${uyeIsyeri}, Bulunan: ${cellText}`);
+        }
+    }
+ 
+    if (allMatchUyeIsyeri) {
+        console.log('✅ Filtreleme sonucu üye işyeri eşleşti');
+    } else {
+        console.log('❌ Filtreleme sonucu üye işyeri eşleşmedi');
+    }
+ 
 
-   if (allMatchTerminalId) {
-       console.log('✅ Filtreleme sonucu terminal id eşleşti');
-   } else {
-       console.log('❌ Filtreleme sonucu terminal id eşleşmedi');
-   }
+   await page.pause();
 
-   const expectedValueBkmSeriNo = 'PAV860066571';
 
-   for (let i = 0; i < cellsBkmSeriNo.length; i++) {
-       const cellText = await cellsBkmSeriNo[i].textContent();
-       
-       if (cellText?.trim() !== expectedValueBkmSeriNo) {
-           allMatchBkmSeriNo = false;
-           console.log(`Hücre ${i + 1} eşleşmiyor. Beklenen: ${expectedValueBkmSeriNo}, Bulunan: ${cellText}`);
-       }
-   }
 
-   if (allMatchBkmSeriNo) {
-       console.log('✅ Filtreleme sonucu BKM Seri No eşleşti');
-   } else {
-       console.log('❌ Filtreleme sonucu bkm seri no eşleşmedi');
-   }
 
-   const expectedValueUyeIsyeri = 'ERDAL BAKKAL';
 
-   for (let i = 0; i < cellsUyeIsyeri.length; i++) {
-       const cellText = await cellsUyeIsyeri[i].textContent();
-       
-       if (cellText?.trim() !== expectedValueUyeIsyeri) {
-           allMatchUyeIsyeri = false;
-           console.log(`Hücre ${i + 1} eşleşmiyor. Beklenen: ${expectedValueUyeIsyeri}, Bulunan: ${cellText}`);
-       }
-   }
 
-   if (allMatchUyeIsyeri) {
-       console.log('✅ Filtreleme sonucu üye işyeri eşleşti');
-   } else {
-       console.log('❌ Filtreleme sonucu üye işyeri eşleşmedi');
-   }
 
+
+
+
+
+   
+   
+   // Üye işyeri doldur
+
+
+
+
+   
+
+   
+
+   
   await page.pause();
 });
 
