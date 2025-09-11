@@ -7,15 +7,15 @@ async function Generic_Exception(page: Page) {
   
     console.log('❌ Generic Exception hatası oluştu, "işi tamamla" butonuna yeniden tıklanılacak');
     await page.getByText('Unexpected Generic Exception').click();
-    await page.getByRole('button', { name: 'İşi Tamamla' }).click();
+    await page.getByRole('button', { name: 'Reddet' }).click();
     if (await page.getByText('Unexpected Generic Exception').isVisible()) {
     Generic_Exception(page);
     }
 }
 
-test('Servis destek görevini üstüne al ve bitir (reseller login)', async ({ page }) => {
+test('Servis destek görevini üstüne al ve reddet (reseller login)', async ({ page }) => {
     
-console.log('===>  Servis destek görevini üstüne al ve bitir (reseller login)  <===');
+console.log('===>  Servis destek görevini üstüne al ve reddet (reseller login)  <===');
     
   // Giriş
   await login2(page);
@@ -56,8 +56,6 @@ console.log('===>  Servis destek görevini üstüne al ve bitir (reseller login)
 
   const talepNo = await page.locator('tr:nth-child(1) > td:nth-child(2)').textContent();
   console.log('🔍 Talep No:', talepNo);
-
-
   await page.waitForTimeout(20000);
   
   await logout2(page);
@@ -80,7 +78,7 @@ console.log('===>  Servis destek görevini üstüne al ve bitir (reseller login)
 
   try { 
   await page.getByRole('button', { name: 'İşi Üzerine Al' }).click();
-  await page.waitForTimeout(2000);
+  await page.waitForTimeout(1000);
   if (await page.getByText('Başarılı Service Support baş').isVisible()) {
     console.log('✅ İş üzerine alındı');
     await page.waitForTimeout(1000);
@@ -111,42 +109,29 @@ console.log('===>  Servis destek görevini üstüne al ve bitir (reseller login)
   }
   await page.waitForTimeout(1000);
 
-  try {
-  await page.getByRole('button', { name: 'Başla' }).click();
-  await page.waitForTimeout(2000);
-  if (await page.getByText('Başarılı Servis Destek başarı').isVisible()) {
-    console.log('✅ İş başlatıldı');
-    await page.waitForTimeout(1000);
-    await page.getByText('Başarılı Servis Destek başarı').click();
-  } else {
-    console.log('❌ İş başlatılamadı');
-  }
-  } catch (error) {
-    console.log('❌ İşi başlatılırken bir hata oluştu', error);
-  }
 
-  await page.getByRole('button', { name: 'İşi Tamamla' }).click();
+  await page.getByRole('button', { name: 'Reddet' }).click();
   await page.waitForTimeout(1000);
   await page.getByText('Seçiniz...').click();
-  await page.getByRole('option', { name: 'Customers Configuration fix' }).click();
+  await page.getByRole('option', { name: 'Yapılmayacak' }).click();
   await page.waitForTimeout(1000);
 
   try {
-  await page.getByRole('button', { name: 'İşi Tamamla' }).click();
+  await page.getByRole('button', { name: 'Reddet' }).click();
   await page.waitForTimeout(1000);
   if (await page.getByText('Unexpected Generic Exception').isVisible()) {
     Generic_Exception(page);
   } else {}
-  await page.waitForTimeout(1500);
+  await page.waitForTimeout(1000);
   if (await page.getByText('Başarılı Servis Destek başarı').isVisible()) {
-    console.log('✅ İş tamamlandı');
+    console.log('✅ İş reddedildi');
     await page.waitForTimeout(1000);
     await page.getByText('Başarılı Servis Destek başarı').click();
   } else {
-    console.log('❌ İş tamamlanamadı');
+    console.log('❌ İş reddedilemedi');
   }
   } catch (error) {
-    console.log('❌ İşi tamamlamakta bir hata oluştu', error);
+    console.log('❌ İşi reddetmekte bir hata oluştu', error);
   }
   await page.waitForTimeout(1000);
 
@@ -163,8 +148,7 @@ console.log('===>  Servis destek görevini üstüne al ve bitir (reseller login)
     console.log('❌ ' + talepNo + ' talep Numarası tüm çağrılar ekranında bulunamadı');
   }
 
-  await serviceLogout(page);
+//   await serviceLogout(page);
 
   await page.pause();
 });
-

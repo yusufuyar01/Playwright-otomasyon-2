@@ -16,7 +16,7 @@ export async function serviceLogin(page: Page): Promise<void> {
   await usernameInput.fill('servisdestek.level1'); // Gerçek kullanıcı adınızı buraya yazın
   
   const passwordInput = page.locator('input[type="password"], input[name="password"], input[id="password"], #Password');
-  await passwordInput.fill('1234'); // Gerçek şifrenizi buraya yazın
+  await passwordInput.fill('Test.123'); // Gerçek şifrenizi buraya yazın
   
 
   // ===== ADIM 3: Giriş Butonuna Tıklama =====
@@ -35,7 +35,7 @@ export async function serviceLogin(page: Page): Promise<void> {
 
 export async function serviceLogout(page: Page): Promise<void> {
 
-  await page.getByText('S', { exact: true }).first().hover();
+  await page.getByText('L', { exact: true }).first().hover();
   await page.getByText('Çıkış').click();
   console.log('Servis Destek (Level 1) ile çıkış yapıldı');
   await page.waitForTimeout(1000);

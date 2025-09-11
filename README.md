@@ -247,16 +247,29 @@ ilk 43 testten sonrası reseller login ile yapılmaktadır
 
 59- NPX playwright test tests/reseller-login/merchant/odemesi-olan-uye-isyeri-sil.spec.ts --headed
 
+
+
+reseller/device
+
 60- npx playwright test tests/reseller-login/device/cihazi-bayiye-ata.spec.ts --headed
 
 61- npx playwright test tests/reseller-login/device/cihazi-uye-isyerine-ata.spec.ts --headed
 
 
-reseller/device
+
+reseller/service-support
 
 62- npx playwright test tests/reseller-login/service-support/gorevlerim.spec.ts --headed
 
 63- npx playwright test tests/reseller-login/service-support/cagri-olustur-ve-guncelle.spec.ts --headed
+
+64- npx playwright test tests/reseller-login/service-support/servis-destek-ustune-al-ve-bitir.spec.ts --headed
+
+
+
+
+
+
 
 
 
