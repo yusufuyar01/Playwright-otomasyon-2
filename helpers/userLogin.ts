@@ -28,15 +28,15 @@ export async function userLogin(page: Page): Promise<void> {
   // ===== ADIM 4: Test Sonucu =====
   // Test tamamlandı, 7 saniye bekle ve browser'ı kapat
   await page.waitForTimeout(3000);
-  console.log('Kullanıcı ile giriş yapıldı');
+  console.log('Kullanıcı (yusuf.uyar) ile giriş yapıldı');
 
 
 }
 
 export async function userLogout(page: Page): Promise<void> {
 
-  await page.getByText('S', { exact: true }).first().hover();
+  await page.getByText('Y', { exact: true }).first().hover();
   await page.getByText('Çıkış').click();
-  console.log('Kullanıcı ile çıkış yapıldı');
+  console.log('Kullanıcı (yusuf.uyar) ile çıkış yapıldı');
   await page.waitForTimeout(1000);
 }

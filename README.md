@@ -265,7 +265,9 @@ reseller/service-support
 
 64- npx playwright test tests/reseller-login/service-support/servis-destek-ustune-al-ve-bitir.spec.ts --headed
 
+65- npx playwright test tests/reseller-login/service-support/servis-destek-ustune-al-ve-reddet.spec.ts --headed
 
+66- npx playwright test tests/reseller-login/service-support/servis-destek-gruba-ata-ve-kullanici-uzerinden-bitir.spec.ts --headed
 
 
 
