@@ -269,7 +269,7 @@ reseller/service-support
 
 66- npx playwright test tests/reseller-login/service-support/servis-destek-gruba-ata-ve-kullanici-uzerinden-bitir.spec.ts --headed
 
-
+- px playwright test tests/reseller-login/service-support/servis-destek-gruba-ata-ve-kullanici-uzerinden-reddet.spec.ts --headed
 
 
 
